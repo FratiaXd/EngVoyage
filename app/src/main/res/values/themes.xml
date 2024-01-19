@@ -3,6 +3,8 @@
     <style name="Base.Theme.EngVoyage" parent="Theme.Material3.DayNight.NoActionBar">
         <!-- Customize your light theme here. -->
         <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+        <item name="colorPrimary">@color/beige</item>
+        <item name="android:colorBackground">@color/beige</item>
     </style>
 
     <style name="Theme.EngVoyage" parent="Base.Theme.EngVoyage" />
