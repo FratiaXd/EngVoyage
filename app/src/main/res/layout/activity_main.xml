@@ -6,5 +6,69 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:orientation="vertical"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            style="@style/MyTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="35dp"
+            android:layout_marginBottom="5dp"
+            android:text="Email:"/>
+
+        <com.google.android.material.textfield.TextInputLayout
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginHorizontal="35dp"
+            app:hintEnabled="false"
+            app:boxStrokeWidth="2dp"
+            app:boxStrokeColor="@color/dark_grey"
+            app:shapeAppearance="@style/Rounded">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/emailInput"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="example@gmail.com"
+                android:textSize="14sp"
+                android:fontFamily="@font/worksanslight"/>
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <TextView
+            style="@style/MyTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="35dp"
+            android:layout_marginBottom="5dp"
+            android:layout_marginTop="20dp"
+            android:text="Password:"/>
+
+        <com.google.android.material.textfield.TextInputLayout
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginHorizontal="35dp"
+            app:hintEnabled="false"
+            app:boxStrokeWidth="2dp"
+            app:boxStrokeColor="@color/dark_grey"
+            app:shapeAppearance="@style/Rounded"
+            app:endIconMode="password_toggle">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/passwordInput"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="********"
+                android:textSize="14sp"
+                android:fontFamily="@font/worksanslight"/>
+        </com.google.android.material.textfield.TextInputLayout>
+
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -3,9 +3,19 @@
     <style name="Base.Theme.EngVoyage" parent="Theme.Material3.DayNight.NoActionBar">
         <!-- Customize your light theme here. -->
         <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
-        <item name="colorPrimary">@color/beige</item>
         <item name="android:colorBackground">@color/beige</item>
+        <item name="android:fontFamily">@font/worksansmed</item>
+    </style>
+    <style name="Theme.EngVoyage" parent="Base.Theme.EngVoyage" />
+
+    <style name="MyTextView">
+        <item name="android:textColor">@color/dark_brown</item>
+        <item name="android:textSize">18sp</item>
     </style>
 
-    <style name="Theme.EngVoyage" parent="Base.Theme.EngVoyage" />
+    <style name="Rounded" parent="ShapeAppearance.Material3.SmallComponent">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">8dp</item>
+    </style>
+
 </resources>
