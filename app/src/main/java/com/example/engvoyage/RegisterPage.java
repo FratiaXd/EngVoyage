@@ -43,7 +43,7 @@ public class RegisterPage extends AppCompatActivity {
                 if (task.isSuccessful()) {
                     Log.d("RegisterPage", "createUserWithEmail:success");
                     FirebaseUser user = mAuth.getCurrentUser();
-                    Toast.makeText(RegisterPage.this, "Authentication success.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(RegisterPage.this, "Account created successfully.", Toast.LENGTH_SHORT).show();
 
                     Map<String, Object> userInfo = new HashMap<>();
                     userInfo.put("name", name);
@@ -62,9 +62,10 @@ public class RegisterPage extends AppCompatActivity {
                                     Log.w("RegisterPage", "Error writing document", e);
                                 }
                             });
+                    finish();
                 } else {
                     Log.w("RegisterPage", "createUserWithEmail:failure", task.getException());
-                    Toast.makeText(RegisterPage.this, "Authentication failed.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(RegisterPage.this, "Failed to create an account.", Toast.LENGTH_SHORT).show();
                 }
             }
         });

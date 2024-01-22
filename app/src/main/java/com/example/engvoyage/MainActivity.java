@@ -52,8 +52,7 @@ public class MainActivity extends AppCompatActivity {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             FirebaseUser user = mAuth.getCurrentUser();
-                            Toast.makeText(MainActivity.this, "Authentication " +
-                                    "success. Use an intent to move to a new activity", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(MainActivity.this, "Authentication complete", Toast.LENGTH_SHORT).show();
                         } else {
                             Log.w("MainActivity", "logInWithEmail:failure", task.getException());
                             Toast.makeText(MainActivity.this, "Authentication failed.",
