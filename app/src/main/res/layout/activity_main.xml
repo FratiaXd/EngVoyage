@@ -36,8 +36,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="example@gmail.com"
-                android:textSize="14sp"
-                android:fontFamily="@font/worksanslight"/>
+                style="@style/MyTextInputEdit"/>
         </com.google.android.material.textfield.TextInputLayout>
 
         <TextView
@@ -46,7 +45,7 @@
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="35dp"
             android:layout_marginBottom="5dp"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="10dp"
             android:text="Password:"/>
 
         <com.google.android.material.textfield.TextInputLayout
@@ -65,19 +64,19 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="********"
-                android:textSize="14sp"
-                android:fontFamily="@font/worksanslight"/>
+                style="@style/MyTextInputEdit"/>
         </com.google.android.material.textfield.TextInputLayout>
 
         <android.widget.Button
-            style="@style/MyButtonMain"
             android:id="@+id/loginBtn"
+            style="@style/MyButtonMain"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="LOG IN"
-            android:background="@drawable/round_button"
             android:layout_marginHorizontal="35dp"
-            android:layout_marginTop="60dp"/>
+            android:layout_marginTop="60dp"
+            android:background="@drawable/round_button"
+            android:onClick="logInClicked"
+            android:text="LOG IN" />
 
         <TextView
             style="@style/MyTextLight"
