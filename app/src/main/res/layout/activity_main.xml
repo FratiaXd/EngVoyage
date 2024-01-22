@@ -22,7 +22,7 @@
             android:text="Email:"/>
 
         <com.google.android.material.textfield.TextInputLayout
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginHorizontal="35dp"
@@ -50,7 +50,7 @@
             android:text="Password:"/>
 
         <com.google.android.material.textfield.TextInputLayout
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginHorizontal="35dp"
@@ -68,6 +68,34 @@
                 android:textSize="14sp"
                 android:fontFamily="@font/worksanslight"/>
         </com.google.android.material.textfield.TextInputLayout>
+
+        <android.widget.Button
+            style="@style/MyButtonMain"
+            android:id="@+id/loginBtn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="LOG IN"
+            android:background="@drawable/round_button"
+            android:layout_marginHorizontal="35dp"
+            android:layout_marginTop="60dp"/>
+
+        <TextView
+            style="@style/MyTextLight"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="35dp"
+            android:gravity="center"
+            android:layout_marginTop="5dp"
+            android:text="Don't have an account?"/>
+
+        <android.widget.Button
+            style="@style/MyButtonLight"
+            android:id="@+id/registerBtn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="REGISTER"
+            android:background="@drawable/roud_button_light"
+            android:layout_marginHorizontal="35dp"/>
 
     </LinearLayout>
 

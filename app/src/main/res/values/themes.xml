@@ -13,9 +13,24 @@
         <item name="android:textSize">18sp</item>
     </style>
 
+    <style name="MyTextLight">
+        <item name="android:textColor">@color/dark_brown</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:fontFamily">@font/worksanslight</item>
+    </style>
+
     <style name="Rounded" parent="ShapeAppearance.Material3.SmallComponent">
         <item name="cornerFamily">rounded</item>
         <item name="cornerSize">8dp</item>
     </style>
 
+    <style name="MyButtonMain">
+        <item name="android:textColor">@color/beige</item>
+        <item name="android:fontFamily">@font/worksanssemibold</item>
+    </style>
+
+    <style name="MyButtonLight">
+        <item name="android:textColor">@color/dark_brown</item>
+        <item name="android:fontFamily">@font/worksanssemibold</item>
+    </style>
 </resources>
