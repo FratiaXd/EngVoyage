@@ -1,5 +1,7 @@
 package com.example.engvoyage;
 
+import static android.provider.AlarmClock.EXTRA_MESSAGE;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -11,14 +13,20 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 public class MainActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
+    private FirebaseUser currentUser;
+    private FirebaseFirestore db;
     Button openRegister;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,6 +35,8 @@ public class MainActivity extends AppCompatActivity {
 
         mAuth = FirebaseAuth.getInstance();
         openRegister = findViewById(R.id.registerBtn);
+        currentUser = mAuth.getCurrentUser();
+        db = FirebaseFirestore.getInstance();
 
         openRegister.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -39,7 +49,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void onStart() {
         super.onStart();
-        FirebaseUser currentUser = mAuth.getCurrentUser();
+        currentUser = mAuth.getCurrentUser();
         if (currentUser != null) {
             Intent intent = new Intent(MainActivity.this, HomePage.class);
             startActivity(intent);

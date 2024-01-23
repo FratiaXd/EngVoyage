@@ -35,26 +35,24 @@ public class RegisterPage extends AppCompatActivity {
         db = FirebaseFirestore.getInstance();
     }
 
-    public void register(String name, String surname, String email, String password) {
-        mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(this,
+    public void register(User user1, String password) {
+        mAuth.createUserWithEmailAndPassword(user1.getEmail(), password).addOnCompleteListener(this,
                 new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if (task.isSuccessful()) {
                     Log.d("RegisterPage", "createUserWithEmail:success");
-                    FirebaseUser user = mAuth.getCurrentUser(); //get user id?
+                    FirebaseUser user = mAuth.getCurrentUser();
+                    String uid = user.getUid(); //get user id?
                     //get database ref with user id (customer reg 5:10)
                     Toast.makeText(RegisterPage.this, "Account created successfully.", Toast.LENGTH_SHORT).show();
 
-                    Map<String, Object> userInfo = new HashMap<>();
-                    userInfo.put("name", name);
-                    userInfo.put("surname", surname);
-                    userInfo.put("email", email);
                     db.collection("users")
-                            .add(userInfo)
-                            .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                            .document(uid)
+                            .set(user1)
+                            .addOnSuccessListener(new OnSuccessListener<Void>() {
                                 @Override
-                                public void onSuccess(DocumentReference documentReference) {
+                                public void onSuccess(Void unused) {
                                     Log.d("RegisterPage", "DocumentSnapshot successfully written!");
                                 }
                             }).addOnFailureListener(new OnFailureListener() {
@@ -83,7 +81,8 @@ public class RegisterPage extends AppCompatActivity {
         String email = emailValue.getText().toString().trim();
         String password = passwordValue.getText().toString().trim();
 
-        register(name, surname, email, password);
+        User user1 = new User(name, surname, email);
+        register(user1, password);
     }
 
     public void goBackToLogIn(View view) {
