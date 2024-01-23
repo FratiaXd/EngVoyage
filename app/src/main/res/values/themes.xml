@@ -37,6 +37,18 @@
         <item name="android:fontFamily">@font/worksanssemibold</item>
     </style>
 
+    <style name="CourseNameText">
+        <item name="android:textColor">@color/dark_brown</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:fontFamily">@font/worksansmed</item>
+    </style>
+
+    <style name="CourseDurationText">
+        <item name="android:textColor">@color/dark_grey</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:fontFamily">@font/worksanslight</item>
+    </style>
+
     <style name="MyTextLight">
         <item name="android:textColor">@color/dark_brown</item>
         <item name="android:textSize">14sp</item>

@@ -40,9 +40,51 @@
         android:layout_marginLeft="23dp"
         android:layout_marginTop="115dp"/>
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/listCourses"
+    <HorizontalScrollView
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:fillViewport="true"
+        android:layout_marginLeft="23dp"
+        android:layout_marginTop="170dp">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:orientation="horizontal" >
+
+            <LinearLayout
+                android:id="@+id/course1"
+                android:orientation="vertical"
+                android:background="@drawable/box_design"
+                android:layout_width="160dp"
+                android:layout_height="165dp"
+                android:gravity="center"
+                android:layout_weight="1">
+
+                <ImageView
+                    android:id="@+id/coursePic1"
+                    android:layout_width="130dp"
+                    android:layout_height="110dp"
+                    android:src="@drawable/punctuations"/>
+
+                <TextView
+                    style="@style/CourseNameText"
+                    android:id="@+id/courseName1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="0dp"
+                    android:text="Punctuations"/>
+
+                <TextView
+                    style="@style/CourseDurationText"
+                    android:id="@+id/courseDur1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="1 hour"/>
+
+            </LinearLayout>
+        </LinearLayout>
+    </HorizontalScrollView>
+
 
 </FrameLayout>
