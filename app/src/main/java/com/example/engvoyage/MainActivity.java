@@ -41,7 +41,8 @@ public class MainActivity extends AppCompatActivity {
         super.onStart();
         FirebaseUser currentUser = mAuth.getCurrentUser();
         if (currentUser != null) {
-
+            Intent intent = new Intent(MainActivity.this, HomePage.class);
+            startActivity(intent);
         }
     }
 
@@ -53,6 +54,8 @@ public class MainActivity extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             FirebaseUser user = mAuth.getCurrentUser();
                             Toast.makeText(MainActivity.this, "Authentication complete", Toast.LENGTH_SHORT).show();
+                            Intent intent = new Intent(MainActivity.this, HomePage.class);
+                            startActivity(intent);
                         } else {
                             Log.w("MainActivity", "logInWithEmail:failure", task.getException());
                             Toast.makeText(MainActivity.this, "Authentication failed.",
@@ -66,8 +69,8 @@ public class MainActivity extends AppCompatActivity {
         TextInputEditText emailValue = findViewById(R.id.emailInput);
         TextInputEditText passwordValue = findViewById(R.id.passwordInput);
 
-        String email = emailValue.getText().toString();
-        String password = passwordValue.getText().toString();
+        String email = emailValue.getText().toString().trim();
+        String password = passwordValue.getText().toString().trim();
 
 /*        if (email.isEmpty()) {
             emailValue.setError("The email is required");

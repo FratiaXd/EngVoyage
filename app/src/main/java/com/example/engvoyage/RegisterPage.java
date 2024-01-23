@@ -42,7 +42,8 @@ public class RegisterPage extends AppCompatActivity {
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if (task.isSuccessful()) {
                     Log.d("RegisterPage", "createUserWithEmail:success");
-                    FirebaseUser user = mAuth.getCurrentUser();
+                    FirebaseUser user = mAuth.getCurrentUser(); //get user id?
+                    //get database ref with user id (customer reg 5:10)
                     Toast.makeText(RegisterPage.this, "Account created successfully.", Toast.LENGTH_SHORT).show();
 
                     Map<String, Object> userInfo = new HashMap<>();
@@ -77,10 +78,10 @@ public class RegisterPage extends AppCompatActivity {
         TextInputEditText emailValue = findViewById(R.id.emailInput);
         TextInputEditText passwordValue = findViewById(R.id.passwordInput);
 
-        String name = nameValue.getText().toString();
-        String surname = surnameValue.getText().toString();
-        String email = emailValue.getText().toString();
-        String password = passwordValue.getText().toString();
+        String name = nameValue.getText().toString().trim();
+        String surname = surnameValue.getText().toString().trim();
+        String email = emailValue.getText().toString().trim();
+        String password = passwordValue.getText().toString().trim();
 
         register(name, surname, email, password);
     }
