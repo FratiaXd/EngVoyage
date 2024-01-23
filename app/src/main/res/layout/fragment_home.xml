@@ -7,8 +7,42 @@
 
     <!-- TODO: Update blank fragment layout -->
     <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/title_home" />
+        style="@style/AppName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/app_name"
+        android:layout_marginLeft="23dp"
+        android:layout_marginTop="20dp"/>
+
+    <TextView
+        style="@style/StreakText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Streak"
+        android:layout_gravity="top|right"
+        android:layout_marginRight="70dp"
+        android:layout_marginTop="27dp"/>
+
+    <TextView
+        style="@style/GreetingText"
+        android:id="@+id/greeting"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Hi"
+        android:layout_marginLeft="23dp"
+        android:layout_marginTop="90dp"/>
+
+    <TextView
+        style="@style/HeadingText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Explore courses"
+        android:layout_marginLeft="23dp"
+        android:layout_marginTop="115dp"/>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/listCourses"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
 
 </FrameLayout>

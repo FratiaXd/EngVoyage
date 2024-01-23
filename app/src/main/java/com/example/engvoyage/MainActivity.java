@@ -33,6 +33,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        //need loading animation
         mAuth = FirebaseAuth.getInstance();
         openRegister = findViewById(R.id.registerBtn);
         currentUser = mAuth.getCurrentUser();

@@ -18,7 +18,7 @@
     </FrameLayout>
 
     <!-- TODO! Might need a fix -->
-    <ImageView
+<!--    <ImageView
         android:layout_width="380dp"
         android:layout_height="wrap_content"
         android:src="@drawable/divider"
@@ -26,7 +26,7 @@
         app:layout_constraintBottom_toTopOf="@+id/bottomNavigationView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/frame_layout" />
+        app:layout_constraintTop_toBottomOf="@+id/frame_layout" />-->
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottomNavigationView"
@@ -37,6 +37,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:menu="@menu/bottom_nav_menu"
         app:labelVisibilityMode="unlabeled"
+        app:itemActiveIndicatorStyle="@color/beige"
         app:backgroundTint="@color/beige"
         app:itemIconSize="28dp"/>
 </androidx.constraintlayout.widget.ConstraintLayout>
