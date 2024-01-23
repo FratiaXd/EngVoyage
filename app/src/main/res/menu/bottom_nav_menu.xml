@@ -3,17 +3,17 @@
 
     <item
         android:id="@+id/home"
-        android:icon="@drawable/home"
+        android:icon="@drawable/home_selector"
         android:title="Home"/>
 
     <item
         android:id="@+id/vocBuilder"
-        android:icon="@drawable/book"
+        android:icon="@drawable/book_selector"
         android:title="Vocabulary Builder"/>
 
     <item
         android:id="@+id/profile"
-        android:icon="@drawable/user"
+        android:icon="@drawable/profile_selector"
         android:title="Profile"/>
 
 </menu>
