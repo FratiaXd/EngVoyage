@@ -51,7 +51,7 @@ public class MainActivity extends AppCompatActivity {
         super.onStart();
         currentUser = mAuth.getCurrentUser();
         if (currentUser != null) {
-            Intent intent = new Intent(MainActivity.this, HomePage.class);
+            Intent intent = new Intent(MainActivity.this, Navigation.class);
             startActivity(intent);
         }
     }
@@ -64,7 +64,7 @@ public class MainActivity extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             FirebaseUser user = mAuth.getCurrentUser();
                             Toast.makeText(MainActivity.this, "Authentication complete", Toast.LENGTH_SHORT).show();
-                            Intent intent = new Intent(MainActivity.this, HomePage.class);
+                            Intent intent = new Intent(MainActivity.this, Navigation.class);
                             startActivity(intent);
                         } else {
                             Log.w("MainActivity", "logInWithEmail:failure", task.getException());
