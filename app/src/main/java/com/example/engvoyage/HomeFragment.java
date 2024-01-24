@@ -7,6 +7,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -24,6 +25,10 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -35,13 +40,16 @@ public class HomeFragment extends Fragment {
     private FirebaseUser currentUser;
     private FirebaseFirestore db;
     private DocumentReference docRefUser;
-    private DocumentReference docRefCourse;
+
     public View view;
     public TextView greeting;
     public User user;
     public Course course;
     public LinearLayout courseLayout;
     public TextView showCourses;
+    private CoursePreviewAdapter coursePreviewAdapter;
+    private List<Course> courseList;
+    private RecyclerView recyclerView;
 
     public HomeFragment() {
         // Required empty public constructor
@@ -55,8 +63,8 @@ public class HomeFragment extends Fragment {
         db = FirebaseFirestore.getInstance();
         String uid = currentUser.getUid();
         docRefUser = db.collection("users").document(uid);
-        docRefCourse = db.collection("courses").document("Conditionals");
-
+        courseList = new ArrayList<>();
+        coursePreviewAdapter = new CoursePreviewAdapter(courseList);
     }
 
     @Override
@@ -64,10 +72,31 @@ public class HomeFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_home, container, false);
-        courseLayout = (LinearLayout) view.findViewById(R.id.course1);
-        showCourses = (TextView) view.findViewById(R.id.showall);
 
-        courseLayout.setOnClickListener(new View.OnClickListener() {
+        recyclerView = view.findViewById(R.id.recyclerViewHorizontal); // Replace with your RecyclerView ID
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
+        recyclerView.setAdapter(coursePreviewAdapter);
+
+        db.collection("courses")
+                .get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        for (QueryDocumentSnapshot document : task.getResult()) {
+                            String name = document.getString("courseName");
+                            String duration = document.getString("courseDuration");
+                            String desc = document.getString("courseDesc");
+
+                            Course course = new Course(name, duration, desc);
+                            courseList.add(course);
+                        }
+                        coursePreviewAdapter.notifyDataSetChanged();
+                    } else {
+                        Log.d("CourseListFragment", "Error", task.getException());
+                    }
+                });
+
+
+/*        courseLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 courseLayout.setBackgroundResource(R.drawable.box_design_pressed);
@@ -75,7 +104,9 @@ public class HomeFragment extends Fragment {
                 fr.replace(R.id.frame_layout, new BuilderFragment());
                 fr.commit();
             }
-        });
+        });*/
+
+        showCourses = (TextView) view.findViewById(R.id.showall);
 
         showCourses.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -83,19 +114,6 @@ public class HomeFragment extends Fragment {
                 FragmentTransaction fr = getParentFragmentManager().beginTransaction();
                 fr.replace(R.id.frame_layout, new CourseListFragment());
                 fr.commit();
-            }
-        });
-
-        docRefCourse.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                if (task.isSuccessful()) {
-                    DocumentSnapshot document = task.getResult();
-                    if (document.exists()) {
-                        course = document.toObject(Course.class);
-                        setCourseInfo();
-                    }
-                }
             }
         });
 
@@ -117,12 +135,5 @@ public class HomeFragment extends Fragment {
     private void greetUser() {
         greeting = (TextView) view.findViewById(R.id.greeting);
         greeting.setText("Hi " + user.getName() + "!");
-    }
-
-    private void setCourseInfo() {
-        TextView name = (TextView) view.findViewById(R.id.courseName1);
-        TextView dur = (TextView) view.findViewById(R.id.courseDur1);
-        name.setText(course.courseName);
-        dur.setText(course.courseDuration);
     }
 }
