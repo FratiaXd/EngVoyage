@@ -12,4 +12,16 @@ public class Course {
         this.courseDuration = duration;
         this.courseDesc = desc;
     }
+
+    public String getCourseName() {
+        return courseName;
+    }
+
+    public String getCourseDuration() {
+        return courseDuration;
+    }
+
+    public String getCourseDesc() {
+        return courseDesc;
+    }
 }

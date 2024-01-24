@@ -50,6 +50,18 @@
         <item name="android:fontFamily">@font/worksansmed</item>
     </style>
 
+    <style name="CourseNameTextList">
+        <item name="android:textColor">@color/dark_brown</item>
+        <item name="android:textSize">22sp</item>
+        <item name="android:fontFamily">@font/worksansmed</item>
+    </style>
+
+    <style name="CourseDurationTextList">
+        <item name="android:textColor">@color/dark_grey</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:fontFamily">@font/worksanslight</item>
+    </style>
+
     <style name="CourseDurationText">
         <item name="android:textColor">@color/dark_grey</item>
         <item name="android:textSize">14sp</item>
