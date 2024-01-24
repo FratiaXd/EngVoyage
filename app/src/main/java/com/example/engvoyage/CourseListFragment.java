@@ -23,13 +23,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CourseListFragment extends Fragment {
-    private FirebaseAuth mAuth;
-    private FirebaseUser currentUser;
     private FirebaseFirestore db;
-    private DocumentReference docRef;
-
-    public View view;
-    public ImageButton back;
     private CourseAdapter courseAdapter;
     private List<Course> courseList;
     private RecyclerView recyclerView;
@@ -49,30 +43,47 @@ public class CourseListFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.fragment_course_list, container, false);
-        back = (ImageButton) view.findViewById(R.id.goBack);
-        recyclerView = view.findViewById(R.id.recyclerView); // Replace with your RecyclerView ID
+        View view = inflater.inflate(R.layout.fragment_course_list, container, false);
+
+        initRecyclerView(view);
+        returnHome(view);
+        readCourses();
+
+        return view;
+    }
+
+    private void initRecyclerView(View view) {
+        recyclerView = view.findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setAdapter(courseAdapter);
+    }
 
+    private void readCourses() {
         db.collection("courses")
                 .get()
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
                         for (QueryDocumentSnapshot document : task.getResult()) {
-                            String name = document.getString("courseName");
-                            String duration = document.getString("courseDuration");
-                            String desc = document.getString("courseDesc");
-
-                            Course course = new Course(name, duration, desc);
-                            courseList.add(course);
+                            buildListData(document);
                         }
                         courseAdapter.notifyDataSetChanged();
                     } else {
                         Log.d("CourseListFragment", "Error", task.getException());
                     }
                 });
+    }
 
+    private void buildListData(QueryDocumentSnapshot document) {
+        String name = document.getString("courseName");
+        String duration = document.getString("courseDuration");
+        String desc = document.getString("courseDesc");
+
+        Course course = new Course(name, duration, desc);
+        courseList.add(course);
+    }
+
+    private void returnHome(View view) {
+        ImageButton back = (ImageButton) view.findViewById(R.id.goBack);
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -81,6 +92,5 @@ public class CourseListFragment extends Fragment {
                 fr.commit();
             }
         });
-        return view;
     }
 }

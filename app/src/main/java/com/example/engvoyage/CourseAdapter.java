@@ -6,6 +6,8 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.fragment.app.FragmentActivity;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
 
 import org.w3c.dom.Text;
@@ -14,6 +16,7 @@ import java.util.List;
 
 public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.CourseViewHolder> {
     private List<Course> courseList;
+    View view;
 
     public CourseAdapter(List<Course> courseList) {
         this.courseList = courseList;
@@ -21,7 +24,7 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.CourseView
     @NonNull
     @Override
     public CourseAdapter.CourseViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.course, parent, false);
+        view = LayoutInflater.from(parent.getContext()).inflate(R.layout.course, parent, false);
         return new CourseViewHolder(view);
     }
 
@@ -29,6 +32,13 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.CourseView
     public void onBindViewHolder(@NonNull CourseAdapter.CourseViewHolder holder, int position) {
         Course course = courseList.get(position);
         holder.bind(course);
+
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
     }
 
     @Override
@@ -49,6 +59,9 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.CourseView
             nameTxt.setText(course.courseName);
             durTxt.setText(course.courseDuration);
         }
+    }
+
+    private void navigateToDescription(String course) {
     }
 }
 

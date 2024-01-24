@@ -40,13 +40,7 @@ public class HomeFragment extends Fragment {
     private FirebaseUser currentUser;
     private FirebaseFirestore db;
     private DocumentReference docRefUser;
-
-    public View view;
-    public TextView greeting;
     public User user;
-    public Course course;
-    public LinearLayout courseLayout;
-    public TextView showCourses;
     private CoursePreviewAdapter coursePreviewAdapter;
     private List<Course> courseList;
     private RecyclerView recyclerView;
@@ -71,30 +65,11 @@ public class HomeFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        view = inflater.inflate(R.layout.fragment_home, container, false);
-
-        recyclerView = view.findViewById(R.id.recyclerViewHorizontal); // Replace with your RecyclerView ID
-        recyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
-        recyclerView.setAdapter(coursePreviewAdapter);
-
-        db.collection("courses")
-                .get()
-                .addOnCompleteListener(task -> {
-                    if (task.isSuccessful()) {
-                        for (QueryDocumentSnapshot document : task.getResult()) {
-                            String name = document.getString("courseName");
-                            String duration = document.getString("courseDuration");
-                            String desc = document.getString("courseDesc");
-
-                            Course course = new Course(name, duration, desc);
-                            courseList.add(course);
-                        }
-                        coursePreviewAdapter.notifyDataSetChanged();
-                    } else {
-                        Log.d("CourseListFragment", "Error", task.getException());
-                    }
-                });
-
+        View view = inflater.inflate(R.layout.fragment_home, container, false);
+        initRecyclerView(view);
+        readCourses();
+        openAllCourses(view);
+        greetUser(view);
 
 /*        courseLayout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -105,9 +80,41 @@ public class HomeFragment extends Fragment {
                 fr.commit();
             }
         });*/
+        return view;
+    }
 
-        showCourses = (TextView) view.findViewById(R.id.showall);
+    private void initRecyclerView(View view) {
+        recyclerView = view.findViewById(R.id.recyclerViewHorizontal);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
+        recyclerView.setAdapter(coursePreviewAdapter);
+    }
 
+    private void readCourses() {
+        db.collection("courses")
+                .get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        for (QueryDocumentSnapshot document : task.getResult()) {
+                            buildListData(document);
+                        }
+                        coursePreviewAdapter.notifyDataSetChanged();
+                    } else {
+                        Log.d("CourseListFragment", "Error", task.getException());
+                    }
+                });
+    }
+
+    private void buildListData(QueryDocumentSnapshot document) {
+        String name = document.getString("courseName");
+        String duration = document.getString("courseDuration");
+        String desc = document.getString("courseDesc");
+
+        Course course = new Course(name, duration, desc);
+        courseList.add(course);
+    }
+
+    public void openAllCourses(View view) {
+        TextView showCourses = (TextView) view.findViewById(R.id.showall);
         showCourses.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -116,7 +123,10 @@ public class HomeFragment extends Fragment {
                 fr.commit();
             }
         });
+    }
 
+    private void greetUser(View view) {
+        TextView greeting = (TextView) view.findViewById(R.id.greeting);
         docRefUser.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
@@ -124,16 +134,10 @@ public class HomeFragment extends Fragment {
                     DocumentSnapshot document = task.getResult();
                     if (document.exists()) {
                         user = document.toObject(User.class);
-                        greetUser();
+                        greeting.setText("Hi " + user.getName() + "!");
                     }
                 }
             }
         });
-        return view;
-    }
-
-    private void greetUser() {
-        greeting = (TextView) view.findViewById(R.id.greeting);
-        greeting.setText("Hi " + user.getName() + "!");
     }
 }
