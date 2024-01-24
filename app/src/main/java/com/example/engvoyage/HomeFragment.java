@@ -3,11 +3,15 @@ package com.example.engvoyage;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.HorizontalScrollView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -49,6 +53,18 @@ public class HomeFragment extends Fragment {
         db = FirebaseFirestore.getInstance();
         String uid = currentUser.getUid();
         docRef = db.collection("users").document(uid);
+
+        LinearLayout courseLayout = (LinearLayout) view.findViewById(R.id.course1);
+
+        courseLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                courseLayout.setBackgroundResource(R.drawable.box_design_pressed);
+                FragmentTransaction fr = getParentFragmentManager().beginTransaction();
+                fr.replace(R.id.frame_layout, new BuilderFragment());
+                fr.commit();
+            }
+        });
 
         docRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override

@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".HomeFragment">
 
     <!-- TODO: Update blank fragment layout -->
@@ -40,51 +41,176 @@
         android:layout_marginLeft="23dp"
         android:layout_marginTop="115dp"/>
 
+    <TextView
+        style="@style/ShowallText"
+        android:id="@+id/showall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="top|right"
+        android:text="Show all"
+        android:layout_marginRight="15dp"
+        android:layout_marginTop="140dp"/>
+
     <HorizontalScrollView
+        android:id="@+id/scrollView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fillViewport="true"
-        android:layout_marginLeft="23dp"
-        android:layout_marginTop="170dp">
+
+        android:scrollbarStyle="outsideInset"
+        android:layout_marginLeft="19dp"
+        android:layout_marginTop="160dp">
 
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
+            android:layout_marginBottom="5dp"
             android:orientation="horizontal" >
 
             <LinearLayout
                 android:id="@+id/course1"
-                android:orientation="vertical"
+                android:layout_width="170dp"
+                android:layout_height="190dp"
+                android:layout_weight="1"
                 android:background="@drawable/box_design"
-                android:layout_width="160dp"
-                android:layout_height="165dp"
+                android:clickable="true"
+                android:descendantFocusability="blocksDescendants"
                 android:gravity="center"
-                android:layout_weight="1">
+                android:orientation="vertical">
 
-                <ImageView
+                <com.google.android.material.imageview.ShapeableImageView
                     android:id="@+id/coursePic1"
-                    android:layout_width="130dp"
-                    android:layout_height="110dp"
-                    android:src="@drawable/punctuations"/>
+                    android:layout_width="122dp"
+                    android:layout_height="93dp"
+                    android:scaleType="centerCrop"
+                    app:shapeAppearanceOverlay="@style/RoundedImage"
+                    app:srcCompat="@drawable/punctuations" />
 
                 <TextView
-                    style="@style/CourseNameText"
                     android:id="@+id/courseName1"
+                    style="@style/CourseNameText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="0dp"
-                    android:text="Punctuations"/>
+                    android:layout_marginTop="3dp"
+                    android:layout_gravity="start"
+                    android:layout_marginStart="16dp"
+                    android:text="Punctuations" />
 
                 <TextView
-                    style="@style/CourseDurationText"
                     android:id="@+id/courseDur1"
+                    style="@style/CourseDurationText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="1 hour"/>
+                    android:layout_gravity="start"
+                    android:layout_marginStart="16dp"
+                    android:text="1 hour" />
+
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/course2"
+                android:layout_width="170dp"
+                android:layout_height="190dp"
+                android:layout_weight="1"
+                android:background="@drawable/box_design"
+                android:clickable="true"
+                android:descendantFocusability="blocksDescendants"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <com.google.android.material.imageview.ShapeableImageView
+                    android:id="@+id/coursePic2"
+                    android:layout_width="122dp"
+                    android:layout_height="93dp"
+                    android:scaleType="centerCrop"
+                    app:shapeAppearanceOverlay="@style/RoundedImage"
+                    app:srcCompat="@drawable/conditionals" />
+
+                <TextView
+                    android:id="@+id/courseName2"
+                    style="@style/CourseNameText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="3dp"
+                    android:layout_gravity="start"
+                    android:layout_marginStart="16dp"
+                    android:text="Conditionals" />
+
+                <TextView
+                    android:id="@+id/courseDur2"
+                    style="@style/CourseDurationText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="start"
+                    android:layout_marginStart="16dp"
+                    android:text="2 hours" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/course3"
+                android:layout_width="170dp"
+                android:layout_height="190dp"
+                android:layout_weight="1"
+                android:background="@drawable/box_design"
+                android:clickable="true"
+                android:descendantFocusability="blocksDescendants"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <com.google.android.material.imageview.ShapeableImageView
+                    android:id="@+id/coursePic3"
+                    android:layout_width="122dp"
+                    android:layout_height="93dp"
+                    android:scaleType="centerCrop"
+                    app:shapeAppearanceOverlay="@style/RoundedImage"
+                    app:srcCompat="@drawable/punctuations" />
+
+                <TextView
+                    android:id="@+id/courseName3"
+                    style="@style/CourseNameText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="3dp"
+                    android:layout_gravity="start"
+                    android:layout_marginStart="16dp"
+                    android:text="Punctuations" />
+
+                <TextView
+                    android:id="@+id/courseDur3"
+                    style="@style/CourseDurationText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="start"
+                    android:layout_marginStart="16dp"
+                    android:text="1 hour" />
 
             </LinearLayout>
         </LinearLayout>
     </HorizontalScrollView>
 
+    <TextView
+        style="@style/HeadingText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="My Courses"
+        android:layout_marginLeft="23dp"
+        android:layout_marginTop="370dp"/>
+
+    <LinearLayout
+        android:id="@+id/mycourses"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:minHeight="280dp"
+        android:layout_weight="1"
+        android:layout_marginTop="415dp"
+        android:background="@drawable/box_design"
+        android:clickable="true"
+        android:layout_marginHorizontal="19dp"
+        android:descendantFocusability="blocksDescendants"
+        android:gravity="center"
+        android:orientation="vertical">
+
+
+    </LinearLayout>
 
 </FrameLayout>

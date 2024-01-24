@@ -5,6 +5,7 @@
         <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
         <item name="android:colorBackground">@color/beige</item>
         <item name="android:fontFamily">@font/worksansmed</item>
+        <item name="android:statusBarColor">@color/dark_brown</item>
     </style>
     <style name="Theme.EngVoyage" parent="Base.Theme.EngVoyage" />
 
@@ -29,6 +30,12 @@
         <item name="android:textColor">@color/dark_brown</item>
         <item name="android:textSize">24sp</item>
         <item name="android:fontFamily">@font/worksanslight</item>
+    </style>
+
+    <style name="ShowallText">
+        <item name="android:textColor">@color/dark_brown</item>
+        <item name="android:textSize">12sp</item>
+        <item name="android:fontFamily">@font/worksansreg</item>
     </style>
 
     <style name="HeadingText">
@@ -58,6 +65,11 @@
     <style name="Rounded" parent="ShapeAppearance.Material3.SmallComponent">
         <item name="cornerFamily">rounded</item>
         <item name="cornerSize">8dp</item>
+    </style>
+
+    <style name="RoundedImage" parent="ShapeAppearance.Material3.SmallComponent">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">5dp</item>
     </style>
 
     <style name="MyButtonMain">
