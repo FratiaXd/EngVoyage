@@ -16,15 +16,16 @@ import java.util.List;
 
 public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.CourseViewHolder> {
     private List<Course> courseList;
-    View view;
+    private ItemClickListener clickListener;
 
-    public CourseAdapter(List<Course> courseList) {
+    public CourseAdapter(List<Course> courseList, ItemClickListener clickListener) {
         this.courseList = courseList;
+        this.clickListener = clickListener;
     }
     @NonNull
     @Override
     public CourseAdapter.CourseViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        view = LayoutInflater.from(parent.getContext()).inflate(R.layout.course, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.course, parent, false);
         return new CourseViewHolder(view);
     }
 
@@ -33,11 +34,8 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.CourseView
         Course course = courseList.get(position);
         holder.bind(course);
 
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-            }
+        holder.itemView.setOnClickListener(v -> {
+            clickListener.onItemClick(course);
         });
     }
 
@@ -61,7 +59,8 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.CourseView
         }
     }
 
-    private void navigateToDescription(String course) {
+    public interface ItemClickListener {
+        public void onItemClick(Course course);
     }
 }
 

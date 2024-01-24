@@ -18,7 +18,6 @@
         android:layout_weight="1"
         android:padding="20dp"
         android:background="@drawable/box_design"
-        android:clickable="true"
         android:descendantFocusability="blocksDescendants"
         android:gravity="left"
         android:orientation="horizontal">

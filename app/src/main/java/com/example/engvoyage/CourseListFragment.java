@@ -22,7 +22,7 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CourseListFragment extends Fragment {
+public class CourseListFragment extends Fragment implements CourseAdapter.ItemClickListener{
     private FirebaseFirestore db;
     private CourseAdapter courseAdapter;
     private List<Course> courseList;
@@ -37,7 +37,7 @@ public class CourseListFragment extends Fragment {
         super.onCreate(savedInstanceState);
         db = FirebaseFirestore.getInstance();
         courseList = new ArrayList<>();
-        courseAdapter = new CourseAdapter(courseList);
+        courseAdapter = new CourseAdapter(courseList, this);
     }
 
     @Override
@@ -92,5 +92,17 @@ public class CourseListFragment extends Fragment {
                 fr.commit();
             }
         });
+    }
+
+    @Override
+    public void onItemClick(Course course) {
+        Fragment fragment = CourseDetailFragment.newInstance(course.getCourseName(), course.getCourseDuration());
+
+        FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.frame_layout, fragment, "fragment_course_detail");
+        //transaction.hide(getActivity().getSupportFragmentManager().findFragmentByTag("fragment_course_list"));
+        //transaction.add(R.id.frame_layout, fragment);
+        transaction.addToBackStack(null);
+        transaction.commit();
     }
 }
