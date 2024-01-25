@@ -1,39 +1,77 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".CourseDetailFragment">
 
-    <TextView
-        android:id="@+id/detailsCourseName"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/hello_blank_fragment"
-        app:layout_constraintBottom_toTopOf="@+id/detailsCourseDur"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+    <LinearLayout
+        android:id="@+id/courseTop"
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
+        android:layout_weight="1"
+        android:background="@drawable/course_page"
+        android:gravity="center"
+        android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/detailsCourseDur"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@+id/detailsCourseName"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintBottom_toTopOf="@+id/detailsCourseDesc"
-        android:text="@string/hello_blank_fragment"/>
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/idea"/>
 
-    <TextView
-        android:id="@+id/detailsCourseDesc"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@+id/detailsCourseDur"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        android:text="@string/hello_blank_fragment"/>
+    </LinearLayout>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <LinearLayout
+        android:id="@+id/courseBottom"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="300dp"
+        android:layout_marginHorizontal="23dp"
+        android:layout_weight="1"
+        android:gravity="left"
+        android:orientation="vertical">
+
+        <TextView
+            style="@style/HeadingText"
+            android:layout_marginTop="10dp"
+            android:id="@+id/detailsCourseName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="hello_blank"/>
+
+        <TextView
+            style="@style/CourseDurationText"
+            android:id="@+id/detailsCourseDur"
+            android:layout_gravity="top|right"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/hello_blank_fragment"/>
+
+        <TextView
+            style="@style/MyTextView"
+            android:id="@+id/about"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="About"/>
+
+        <TextView
+            style="@style/CourseDescr"
+            android:id="@+id/detailsCourseDesc"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/hello_blank_fragment"/>
+
+    </LinearLayout>
+
+    <android.widget.Button
+        style="@style/WhiteText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="50dp"
+        android:layout_gravity="bottom"
+        android:layout_marginBottom="25dp"
+        android:background="@drawable/round_btn_green"
+        android:text="ENROLL"/>
+
+</FrameLayout>

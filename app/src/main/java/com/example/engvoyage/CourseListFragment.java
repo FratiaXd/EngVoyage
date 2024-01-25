@@ -96,12 +96,9 @@ public class CourseListFragment extends Fragment implements CourseAdapter.ItemCl
 
     @Override
     public void onItemClick(Course course) {
-        Fragment fragment = CourseDetailFragment.newInstance(course.getCourseName(), course.getCourseDuration());
-
+        Fragment fragment = CourseDetailFragment.newInstance(course.getCourseName(), course.getCourseDuration(), course.getCourseDesc());
         FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.frame_layout, fragment, "fragment_course_detail");
-        //transaction.hide(getActivity().getSupportFragmentManager().findFragmentByTag("fragment_course_list"));
-        //transaction.add(R.id.frame_layout, fragment);
         transaction.addToBackStack(null);
         transaction.commit();
     }
