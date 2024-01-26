@@ -3,37 +3,51 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".CourseMaterialFragment">
+    tools:context=".CoursePracticeFragment">
 
     <TextView
-        android:id="@+id/courseTitle"
+        android:id="@+id/courseTitle1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/hello_blank_fragment" />
 
     <TextView
-        android:id="@+id/courseNumber"
+        android:id="@+id/coursePracticeNumber"
         android:layout_marginTop="80dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/hello_blank_fragment" />
 
     <TextView
-        android:id="@+id/courseMaterial"
+        android:id="@+id/practiceInfo"
         android:layout_marginTop="160dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/hello_blank_fragment" />
+
+    <TextView
+        android:id="@+id/practiceTask"
+        android:layout_marginTop="250dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/hello_blank_fragment" />
 
     <android.widget.Button
         style="@style/WhiteText"
-        android:id="@+id/openPractice"
+        android:id="@+id/practiceAnswer1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="50dp"
-        android:layout_gravity="bottom"
-        android:layout_marginBottom="25dp"
-        android:background="@drawable/round_btn_green"
-        android:text="ALRIGHT"/>
+        android:layout_marginTop="320dp"
+        android:background="@drawable/round_btn_green" />
+
+    <android.widget.Button
+        style="@style/WhiteText"
+        android:id="@+id/practiceAnswer2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="50dp"
+        android:layout_marginTop="450dp"
+        android:background="@drawable/round_btn_green" />
 
 </FrameLayout>
