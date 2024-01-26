@@ -92,13 +92,17 @@ public class CourseDetailFragment extends Fragment {
         enrollBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                UserCourses userCourse = new UserCourses(mParam1, "0");
+                UserCourses userCourse = new UserCourses(mParam1, "1");
                 docRefUser.collection("userCourses").document(mParam1)
                         .set(userCourse)
                         .addOnSuccessListener(new OnSuccessListener<Void>() {
                             @Override
                             public void onSuccess(Void unused) {
                                 Log.d("CourseDetailFragment", "User enrolled");
+                                Fragment fragment = CourseMaterialFragment.newInstance(userCourse.getCourseName(), userCourse.getCourseProgress());
+                                FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+                                transaction.replace(R.id.frame_layout, fragment, "fragment_course_material");
+                                transaction.commit();
                             }
                         }).addOnFailureListener(new OnFailureListener() {
                             @Override
