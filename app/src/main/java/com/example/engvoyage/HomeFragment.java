@@ -1,5 +1,6 @@
 package com.example.engvoyage;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -13,6 +14,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -40,7 +42,6 @@ public class HomeFragment extends Fragment {
     private FirebaseUser currentUser;
     private FirebaseFirestore db;
     private DocumentReference docRefUser;
-    public User user;
     private CoursePreviewAdapter coursePreviewAdapter;
     private List<Course> courseList;
     private RecyclerView recyclerView;
@@ -70,6 +71,7 @@ public class HomeFragment extends Fragment {
         readCourses();
         openAllCourses(view);
         greetUser(view);
+        logout(view);
 
 /*        courseLayout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -133,10 +135,22 @@ public class HomeFragment extends Fragment {
                 if (task.isSuccessful()) {
                     DocumentSnapshot document = task.getResult();
                     if (document.exists()) {
-                        user = document.toObject(User.class);
+                        User user = document.toObject(User.class);
                         greeting.setText("Hi " + user.getName() + "!");
                     }
                 }
+            }
+        });
+    }
+
+    private void logout(View view) {
+        Button logoutBtn = (Button) view.findViewById(R.id.logout);
+        logoutBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mAuth.signOut();
+                Intent intent = new Intent(getActivity(), MainActivity.class);
+                startActivity(intent);
             }
         });
     }

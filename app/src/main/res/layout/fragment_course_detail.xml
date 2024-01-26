@@ -22,6 +22,25 @@
 
     </LinearLayout>
 
+    <ImageButton
+        android:id="@+id/goBackToList"
+        android:layout_width="35dp"
+        android:layout_height="35dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="23dp"
+        android:layout_gravity="top|end"
+        android:background="@drawable/arrow_left"/>
+
+    <TextView
+        style="@style/CourseDurationText"
+        android:id="@+id/detailsCourseDur"
+        android:layout_gravity="top|right"
+        android:layout_marginEnd="23dp"
+        android:layout_marginTop="329dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/hello_blank_fragment"/>
+
     <LinearLayout
         android:id="@+id/courseBottom"
         android:layout_width="match_parent"
@@ -34,38 +53,36 @@
 
         <TextView
             style="@style/HeadingText"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="15dp"
             android:id="@+id/detailsCourseName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="hello_blank"/>
 
         <TextView
-            style="@style/CourseDurationText"
-            android:id="@+id/detailsCourseDur"
-            android:layout_gravity="top|right"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/hello_blank_fragment"/>
-
-        <TextView
             style="@style/MyTextView"
             android:id="@+id/about"
+            android:layout_marginTop="10dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="About"/>
 
         <TextView
             style="@style/CourseDescr"
+            android:layout_marginTop="5dp"
             android:id="@+id/detailsCourseDesc"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/hello_blank_fragment"/>
+            android:text="Lorem ipsum dolor sit amet consectetur adipisicing elit. Maxime mollitia,
+molestiae quas vel sint commodi repudiandae consequuntur voluptatum laborum
+numquam blanditiis harum quisquam eius sed odit fugiat iusto fuga praesentium
+optio, eaque rerum! Provident similique accusantium nemo autem."/>
 
     </LinearLayout>
 
     <android.widget.Button
         style="@style/WhiteText"
+        android:id="@+id/enrollUser"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="50dp"
