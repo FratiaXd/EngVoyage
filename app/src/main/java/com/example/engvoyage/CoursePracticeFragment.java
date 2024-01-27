@@ -3,6 +3,7 @@ package com.example.engvoyage;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -50,6 +51,7 @@ public class CoursePracticeFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_course_practice, container, false);
         setPracticeInfo(view);
+        openNext(view);
         return view;
     }
 
@@ -64,5 +66,18 @@ public class CoursePracticeFragment extends Fragment {
         task.setText(lessonInfo.getPracticeTask());
         answ1.setText(lessonInfo.getPracticeTrue());
         answ2.setText(lessonInfo.getPracticeFalse());
+    }
+
+    public void openNext(View view) {
+        Button answ1 = (Button) view.findViewById(R.id.practiceAnswer1);
+        answ1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Fragment fragment = CourseMaterialFragment.newInstance(userCoursesInfo, courseInfo);
+                FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+                transaction.replace(R.id.frame_layout, fragment, "fragment_course_material");
+                transaction.commit();
+            }
+        });
     }
 }

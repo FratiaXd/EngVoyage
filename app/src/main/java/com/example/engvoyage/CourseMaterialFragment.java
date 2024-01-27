@@ -28,8 +28,6 @@ public class CourseMaterialFragment extends Fragment {
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
-    private String mParam1;
-    private String mParam2;
     public Lesson lesson;
     public UserCourses userCourseInfo;
     public Course currentCourse;
@@ -100,7 +98,6 @@ public class CourseMaterialFragment extends Fragment {
                 Fragment fragment = CoursePracticeFragment.newInstance(lesson, currentCourse, userCourseInfo);
                 FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
                 transaction.replace(R.id.frame_layout, fragment, "fragment_course_practice");
-                transaction.addToBackStack(null);
                 transaction.commit();
             }
         });

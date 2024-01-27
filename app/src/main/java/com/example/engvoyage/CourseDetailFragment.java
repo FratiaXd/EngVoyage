@@ -32,12 +32,7 @@ public class CourseDetailFragment extends Fragment {
     private DocumentReference docRefUser;
     private List<UserCourses> userCoursesList;
     private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-    private static final String ARG_PARAM3 = "param3";
 
-    private String mParam1;
-    private String mParam2;
-    private String mParam3;
     private Course courseInfo;
 
     public static CourseDetailFragment newInstance(Course course) {
