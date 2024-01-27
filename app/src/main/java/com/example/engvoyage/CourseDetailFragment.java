@@ -96,7 +96,7 @@ public class CourseDetailFragment extends Fragment {
                             @Override
                             public void onSuccess(Void unused) {
                                 Log.d("CourseDetailFragment", "User enrolled");
-                                Fragment fragment = CourseMaterialFragment.newInstance(userCourse.getCourseName(), userCourse.getCourseProgress());
+                                Fragment fragment = CourseMaterialFragment.newInstance(userCourse);
                                 FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
                                 transaction.replace(R.id.frame_layout, fragment, "fragment_course_material");
                                 transaction.commit();

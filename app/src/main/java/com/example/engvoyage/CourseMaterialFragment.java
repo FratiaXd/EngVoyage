@@ -31,16 +31,16 @@ public class CourseMaterialFragment extends Fragment {
     private String mParam1;
     private String mParam2;
     public Lesson lesson;
+    public UserCourses userCourseInfo;
 
     public CourseMaterialFragment() {
         // Required empty public constructor
     }
 
-    public static CourseMaterialFragment newInstance(String param1, String param2) {
+    public static CourseMaterialFragment newInstance(UserCourses userCourse) {
         CourseMaterialFragment fragment = new CourseMaterialFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
+        args.putParcelable(ARG_PARAM1, userCourse);
         fragment.setArguments(args);
         return fragment;
     }
@@ -49,13 +49,12 @@ public class CourseMaterialFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+            userCourseInfo = getArguments().getParcelable(ARG_PARAM1);
         }
-        String currentLesson = "lesson" + mParam2;
+        String currentLesson = "lesson" + userCourseInfo.getCourseProgress();
         db = FirebaseFirestore.getInstance();
         docRefCourse = db.collection("courses")
-                .document(mParam1)
+                .document(userCourseInfo.getCourseName())
                 .collection("lessons")
                 .document(currentLesson);
     }
@@ -81,8 +80,8 @@ public class CourseMaterialFragment extends Fragment {
                     DocumentSnapshot document = task.getResult();
                     if (document.exists()) {
                         lesson = document.toObject(Lesson.class);
-                        courseTitle.setText(mParam1);
-                        courseNumber.setText(mParam2);
+                        courseTitle.setText(userCourseInfo.getCourseName());
+                        courseNumber.setText(userCourseInfo.getCourseProgress());
                         courseMaterial.setText(lesson.getMaterial());
                     }
                 }
