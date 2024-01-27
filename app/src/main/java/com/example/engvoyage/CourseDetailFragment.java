@@ -38,13 +38,12 @@ public class CourseDetailFragment extends Fragment {
     private String mParam1;
     private String mParam2;
     private String mParam3;
+    private Course courseInfo;
 
-    public static CourseDetailFragment newInstance(String param1, String param2, String param3) {
+    public static CourseDetailFragment newInstance(Course course) {
         CourseDetailFragment fragment = new CourseDetailFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        args.putString(ARG_PARAM3, param3);
+        args.putParcelable(ARG_PARAM1, course);
         fragment.setArguments(args);
         return fragment;
     }
@@ -57,9 +56,7 @@ public class CourseDetailFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-            mParam3 = getArguments().getString(ARG_PARAM3);
+            courseInfo = getArguments().getParcelable(ARG_PARAM1);
         }
         mAuth = FirebaseAuth.getInstance();
         currentUser = mAuth.getCurrentUser();
@@ -77,9 +74,9 @@ public class CourseDetailFragment extends Fragment {
         TextView detailsName = view.findViewById(R.id.detailsCourseName);
         TextView detailsDur = view.findViewById(R.id.detailsCourseDur);
         TextView detailsDesc = view.findViewById(R.id.detailsCourseDesc);
-        detailsName.setText(mParam1);
-        detailsDur.setText(mParam2);
-        detailsDesc.setText(mParam3);
+        detailsName.setText(courseInfo.getCourseName());
+        detailsDur.setText(courseInfo.getCourseDuration());
+        detailsDesc.setText(courseInfo.getCourseDesc());
 
         enrollUser(view);
         returnToList(view);
@@ -92,8 +89,8 @@ public class CourseDetailFragment extends Fragment {
         enrollBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                UserCourses userCourse = new UserCourses(mParam1, "1");
-                docRefUser.collection("userCourses").document(mParam1)
+                UserCourses userCourse = new UserCourses(courseInfo.getCourseName(), "1");
+                docRefUser.collection("userCourses").document(courseInfo.getCourseName())
                         .set(userCourse)
                         .addOnSuccessListener(new OnSuccessListener<Void>() {
                             @Override

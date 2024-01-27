@@ -1,6 +1,11 @@
 package com.example.engvoyage;
 
-public class Course {
+import android.os.Parcel;
+import android.os.Parcelable;
+
+import androidx.annotation.NonNull;
+
+public class Course implements Parcelable {
     public String courseName;
     public String courseDuration;
     public String courseDesc;
@@ -13,6 +18,24 @@ public class Course {
         this.courseDesc = desc;
     }
 
+    protected Course(Parcel in) {
+        courseName = in.readString();
+        courseDuration = in.readString();
+        courseDesc = in.readString();
+    }
+
+    public static final Creator<Course> CREATOR = new Creator<Course>() {
+        @Override
+        public Course createFromParcel(Parcel in) {
+            return new Course(in);
+        }
+
+        @Override
+        public Course[] newArray(int size) {
+            return new Course[size];
+        }
+    };
+
     public String getCourseName() {
         return courseName;
     }
@@ -23,5 +46,17 @@ public class Course {
 
     public String getCourseDesc() {
         return courseDesc;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(@NonNull Parcel dest, int flags) {
+        dest.writeString(courseName);
+        dest.writeString(courseDuration);
+        dest.writeString(courseDesc);
     }
 }
