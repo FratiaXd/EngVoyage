@@ -32,15 +32,17 @@ public class CourseMaterialFragment extends Fragment {
     private String mParam2;
     public Lesson lesson;
     public UserCourses userCourseInfo;
+    public Course currentCourse;
 
     public CourseMaterialFragment() {
         // Required empty public constructor
     }
 
-    public static CourseMaterialFragment newInstance(UserCourses userCourse) {
+    public static CourseMaterialFragment newInstance(UserCourses userCourse, Course course) {
         CourseMaterialFragment fragment = new CourseMaterialFragment();
         Bundle args = new Bundle();
         args.putParcelable(ARG_PARAM1, userCourse);
+        args.putParcelable(ARG_PARAM2, course);
         fragment.setArguments(args);
         return fragment;
     }
@@ -50,6 +52,7 @@ public class CourseMaterialFragment extends Fragment {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             userCourseInfo = getArguments().getParcelable(ARG_PARAM1);
+            currentCourse = getArguments().getParcelable(ARG_PARAM2);
         }
         String currentLesson = "lesson" + userCourseInfo.getCourseProgress();
         db = FirebaseFirestore.getInstance();
@@ -94,7 +97,7 @@ public class CourseMaterialFragment extends Fragment {
         practiceBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Fragment fragment = CoursePracticeFragment.newInstance(lesson);
+                Fragment fragment = CoursePracticeFragment.newInstance(lesson, currentCourse, userCourseInfo);
                 FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
                 transaction.replace(R.id.frame_layout, fragment, "fragment_course_practice");
                 transaction.addToBackStack(null);

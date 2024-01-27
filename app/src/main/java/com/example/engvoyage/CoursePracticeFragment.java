@@ -7,6 +7,7 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 public class CoursePracticeFragment extends Fragment {
@@ -14,25 +15,21 @@ public class CoursePracticeFragment extends Fragment {
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
     private static final String ARG_PARAM3 = "param3";
-    private static final String ARG_PARAM4 = "param4";
-    private static final String ARG_PARAM5 = "param5";
-
-    private String mParam1;
-    private String mParam2;
-    private String mParam3;
-    private String mParam4;
-    private String mParam5;
 
     private Lesson lessonInfo;
+    private Course courseInfo;
+    private UserCourses userCoursesInfo;
 
     public CoursePracticeFragment() {
         // Required empty public constructor
     }
 
-    public static CoursePracticeFragment newInstance(Lesson lesson) {
+    public static CoursePracticeFragment newInstance(Lesson lesson, Course course, UserCourses userCourse) {
         CoursePracticeFragment fragment = new CoursePracticeFragment();
         Bundle args = new Bundle();
         args.putParcelable(ARG_PARAM1, lesson);
+        args.putParcelable(ARG_PARAM2, course);
+        args.putParcelable(ARG_PARAM3, userCourse);
         fragment.setArguments(args);
         return fragment;
     }
@@ -42,6 +39,8 @@ public class CoursePracticeFragment extends Fragment {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             lessonInfo = getArguments().getParcelable(ARG_PARAM1);
+            courseInfo = getArguments().getParcelable(ARG_PARAM2);
+            userCoursesInfo = getArguments().getParcelable(ARG_PARAM3);
         }
     }
 
@@ -56,6 +55,14 @@ public class CoursePracticeFragment extends Fragment {
 
     public void setPracticeInfo(View view) {
         TextView name = (TextView) view.findViewById(R.id.courseTitle1);
-        name.setText(lessonInfo.getPracticeTask());
+        TextView number = (TextView) view.findViewById(R.id.coursePracticeNumber);
+        TextView task = (TextView) view.findViewById(R.id.practiceTask);
+        Button answ1 = (Button) view.findViewById(R.id.practiceAnswer1);
+        Button answ2 = (Button) view.findViewById(R.id.practiceAnswer2);
+        name.setText(courseInfo.getCourseName());
+        number.setText(courseInfo.getCourseDuration());
+        task.setText(lessonInfo.getPracticeTask());
+        answ1.setText(lessonInfo.getPracticeTrue());
+        answ2.setText(lessonInfo.getPracticeFalse());
     }
 }
