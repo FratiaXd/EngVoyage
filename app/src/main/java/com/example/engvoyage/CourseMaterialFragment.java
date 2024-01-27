@@ -4,6 +4,7 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -29,6 +30,7 @@ public class CourseMaterialFragment extends Fragment {
 
     private String mParam1;
     private String mParam2;
+    public Lesson lesson;
 
     public CourseMaterialFragment() {
         // Required empty public constructor
@@ -64,6 +66,7 @@ public class CourseMaterialFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_course_material, container, false);
         displayCourseMaterial(view);
+        goToPractice(view);
         return view;
     }
 
@@ -77,7 +80,7 @@ public class CourseMaterialFragment extends Fragment {
                 if (task.isSuccessful()) {
                     DocumentSnapshot document = task.getResult();
                     if (document.exists()) {
-                        Lesson lesson = document.toObject(Lesson.class);
+                        lesson = document.toObject(Lesson.class);
                         courseTitle.setText(mParam1);
                         courseNumber.setText(mParam2);
                         courseMaterial.setText(lesson.getMaterial());
@@ -92,7 +95,11 @@ public class CourseMaterialFragment extends Fragment {
         practiceBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                Fragment fragment = CoursePracticeFragment.newInstance(lesson);
+                FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+                transaction.replace(R.id.frame_layout, fragment, "fragment_course_practice");
+                transaction.addToBackStack(null);
+                transaction.commit();
             }
         });
     }
