@@ -34,6 +34,10 @@ public class UserCourses implements Parcelable {
         return courseProgress;
     }
 
+    public void setCourseProgress(String progress) {
+        courseProgress = progress;
+    }
+
     public UserCourses(String courseName, String courseProgress) {
         this.courseName = courseName;
         this.courseProgress = courseProgress;

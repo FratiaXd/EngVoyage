@@ -74,6 +74,7 @@ public class CourseMaterialFragment extends Fragment {
         TextView courseTitle = (TextView) view.findViewById(R.id.courseTitle);
         TextView courseNumber = (TextView) view.findViewById(R.id.courseNumber);
         TextView courseMaterial = (TextView) view.findViewById(R.id.courseMaterial);
+        String showProgress = "Lesson " + userCourseInfo.getCourseProgress() + "/" + currentCourse.getCourseDuration();
         docRefCourse.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
@@ -82,7 +83,7 @@ public class CourseMaterialFragment extends Fragment {
                     if (document.exists()) {
                         lesson = document.toObject(Lesson.class);
                         courseTitle.setText(userCourseInfo.getCourseName());
-                        courseNumber.setText(userCourseInfo.getCourseProgress());
+                        courseNumber.setText(showProgress);
                         courseMaterial.setText(lesson.getMaterial());
                     }
                 }

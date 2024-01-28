@@ -50,4 +50,23 @@
         android:layout_marginTop="450dp"
         android:background="@drawable/round_btn_green" />
 
+    <TextView
+        android:id="@+id/result"
+        android:layout_marginTop="550dp"
+        android:visibility="invisible"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/hello_blank_fragment" />
+
+    <android.widget.Button
+        style="@style/WhiteText"
+        android:id="@+id/nextLesson"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="invisible"
+        android:layout_marginHorizontal="50dp"
+        android:layout_marginTop="630dp"
+        android:text="Go to next lesson"
+        android:background="@drawable/round_btn_green" />
+
 </FrameLayout>
