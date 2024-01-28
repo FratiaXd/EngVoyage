@@ -105,8 +105,11 @@ public class CoursePracticeFragment extends Fragment {
         nextBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (courseInfo.getCourseDuration() == userCoursesInfo.getCourseProgress()) {
-                    //LOGIC
+                if (courseInfo.getCourseDuration().equals(userCoursesInfo.getCourseProgress())) {
+                    Fragment fragment = CourseCompletedFragment.newInstance("","");
+                    FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+                    transaction.replace(R.id.frame_layout, fragment, "fragment_course_completed");
+                    transaction.commit();
                 } else {
                     updateUserProgress();
                     Fragment fragment = CourseMaterialFragment.newInstance(userCoursesInfo, courseInfo);
@@ -164,6 +167,10 @@ public class CoursePracticeFragment extends Fragment {
             result.setText("Incorrect! Try again!");
         }
         result.setVisibility(View.VISIBLE);
+
+        if (courseInfo.getCourseDuration().equals(userCoursesInfo.getCourseProgress())) {
+            nextBtn.setText("COMPLETE COURSE");
+        }
     }
 
     public void updateUserProgress() {
