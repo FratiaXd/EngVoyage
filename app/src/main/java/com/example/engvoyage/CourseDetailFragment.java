@@ -84,7 +84,7 @@ public class CourseDetailFragment extends Fragment {
         enrollBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                UserCourses userCourse = new UserCourses(courseInfo.getCourseName(), "1");
+                UserCourses userCourse = new UserCourses(courseInfo.getCourseName(), "1", courseInfo.getCourseDuration());
                 docRefUser.collection("userCourses").document(courseInfo.getCourseName())
                         .set(userCourse)
                         .addOnSuccessListener(new OnSuccessListener<Void>() {

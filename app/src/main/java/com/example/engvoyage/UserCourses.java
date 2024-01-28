@@ -8,11 +8,12 @@ import androidx.annotation.NonNull;
 public class UserCourses implements Parcelable {
     private String courseName;
     private String courseProgress;
-    private Course courseInfo;
+    private String courseDuration;
 
     protected UserCourses(Parcel in) {
         courseName = in.readString();
         courseProgress = in.readString();
+        courseDuration = in.readString();
     }
 
     public static final Creator<UserCourses> CREATOR = new Creator<UserCourses>() {
@@ -35,21 +36,17 @@ public class UserCourses implements Parcelable {
         return courseProgress;
     }
 
-    public Course getCourseInfo() {
-        return courseInfo;
-    }
+    public String getCourseDuration() { return courseDuration; }
 
     public void setCourseProgress(String progress) {
         courseProgress = progress;
     }
+    public void setCourseDuration(String duration) { courseDuration = duration; }
 
-    public void setCourseInfo(Course course) {
-        courseInfo = course;
-    }
-
-    public UserCourses(String courseName, String courseProgress) {
+    public UserCourses(String courseName, String courseProgress, String courseDuration) {
         this.courseName = courseName;
         this.courseProgress = courseProgress;
+        this.courseDuration = courseDuration;
     }
 
     @Override
@@ -61,5 +58,6 @@ public class UserCourses implements Parcelable {
     public void writeToParcel(@NonNull Parcel dest, int flags) {
         dest.writeString(courseName);
         dest.writeString(courseProgress);
+        dest.writeString(courseDuration);
     }
 }

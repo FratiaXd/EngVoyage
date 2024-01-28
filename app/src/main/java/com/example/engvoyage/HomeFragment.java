@@ -74,21 +74,11 @@ public class HomeFragment extends Fragment implements CourseProgressAdapter.Item
         View view = inflater.inflate(R.layout.fragment_home, container, false);
         initRecyclerView(view);
         initRecyclerProgressView(view);
-        readCourses();
-        readUserCourses();
         openAllCourses(view);
         greetUser(view);
         logout(view);
-
-/*        courseLayout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                courseLayout.setBackgroundResource(R.drawable.box_design_pressed);
-                FragmentTransaction fr = getParentFragmentManager().beginTransaction();
-                fr.replace(R.id.frame_layout, new BuilderFragment());
-                fr.commit();
-            }
-        });*/
+        readCourses();
+        readUserCourses();
         return view;
     }
 
@@ -146,20 +136,10 @@ public class HomeFragment extends Fragment implements CourseProgressAdapter.Item
     private void buildListProgressData(QueryDocumentSnapshot document) {
         String name = document.getString("courseName");
         String progress = document.getString("courseProgress");
-        Course courseInformation = getCourseByName(name);
+        String duration = document.getString("courseDuration");
 
-        UserCourses userCourses = new UserCourses(name, progress);
-        userCourses.setCourseInfo(courseInformation);
+        UserCourses userCourses = new UserCourses(name, progress, duration);
         courseListProgress.add(userCourses);
-    }
-
-    private Course getCourseByName(String courseName) {
-        for (Course course : courseListPreview) {
-            if (course.getCourseName().equals(courseName)) {
-                return new Course(course.getCourseName(), course.getCourseDuration(), course.getCourseDesc());
-            }
-        }
-        return null;
     }
 
     public void openAllCourses(View view) {
@@ -204,9 +184,19 @@ public class HomeFragment extends Fragment implements CourseProgressAdapter.Item
 
     @Override
     public void onItemClick(UserCourses userCourses) {
-        Fragment fragment = CourseMaterialFragment.newInstance(userCourses, userCourses.getCourseInfo());
+        Course selectedCourse = findSelectedCourseInfo(userCourses.getCourseName());
+        Fragment fragment = CourseMaterialFragment.newInstance(userCourses, selectedCourse);
         FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.frame_layout, fragment, "fragment_course_material");
         transaction.commit();
+    }
+
+    public Course findSelectedCourseInfo(String courseName) {
+        for (Course course : courseListPreview) {
+            if (course.getCourseName().equals(courseName)) {
+                return course;
+            }
+        }
+        return null;
     }
 }

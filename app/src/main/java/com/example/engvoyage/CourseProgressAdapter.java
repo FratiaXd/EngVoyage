@@ -1,5 +1,6 @@
 package com.example.engvoyage;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -51,8 +52,7 @@ public class CourseProgressAdapter extends RecyclerView.Adapter<CourseProgressAd
 
         public void bind(UserCourses userCourses) {
             nameTxt.setText(userCourses.getCourseName());
-            String dur = userCourses.getCourseProgress() +
-                    "/" + userCourses.getCourseInfo().getCourseDuration();
+            String dur = userCourses.getCourseProgress() + "/" + userCourses.getCourseDuration();
             durTxt.setText(dur);
         }
     }
