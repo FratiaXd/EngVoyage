@@ -12,9 +12,9 @@ import java.util.List;
 
 public class CourseProgressAdapter extends RecyclerView.Adapter<CourseProgressAdapter.CourseProgressViewHolder> {
 
-    private List<Course> courseList;
-    public CourseProgressAdapter(List<Course> courseList) {
-        this.courseList = courseList;
+    private List<UserCourses> userCoursesList;
+    public CourseProgressAdapter(List<UserCourses> userCoursesList) {
+        this.userCoursesList = userCoursesList;
     }
 
     @NonNull
@@ -26,13 +26,13 @@ public class CourseProgressAdapter extends RecyclerView.Adapter<CourseProgressAd
 
     @Override
     public void onBindViewHolder(@NonNull CourseProgressAdapter.CourseProgressViewHolder holder, int position) {
-        Course course = courseList.get(position);
-        holder.bind(course);
+        UserCourses userCourses = userCoursesList.get(position);
+        holder.bind(userCourses);
     }
 
     @Override
     public int getItemCount() {
-        return courseList.size();
+        return userCoursesList.size();
     }
 
     public static class CourseProgressViewHolder extends RecyclerView.ViewHolder {
@@ -43,9 +43,10 @@ public class CourseProgressAdapter extends RecyclerView.Adapter<CourseProgressAd
             durTxt = itemView.findViewById(R.id.courseDurProgress);
         }
 
-        public void bind(Course course) {
-            nameTxt.setText(course.courseName);
-            durTxt.setText(course.courseDuration);
+        public void bind(UserCourses userCourses) {
+            nameTxt.setText(userCourses.getCourseName());
+            String dur = userCourses.getCourseProgress() + "/" + userCourses.getCourseDuration();
+            durTxt.setText(dur);
         }
     }
 }

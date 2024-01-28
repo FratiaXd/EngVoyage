@@ -44,7 +44,7 @@ public class HomeFragment extends Fragment {
     private DocumentReference docRefUser;
     private CoursePreviewAdapter coursePreviewAdapter;
     private List<Course> courseListPreview;
-    private List<Course> courseListProgress;
+    private List<UserCourses> courseListProgress;
     private RecyclerView recyclerView;
     private RecyclerView recyclerViewProgress;
     private CourseProgressAdapter courseProgressAdapter;
@@ -75,6 +75,7 @@ public class HomeFragment extends Fragment {
         initRecyclerView(view);
         initRecyclerProgressView(view);
         readCourses();
+        readUserCourses();
         openAllCourses(view);
         greetUser(view);
         logout(view);
@@ -112,6 +113,20 @@ public class HomeFragment extends Fragment {
                             buildListData(document);
                         }
                         coursePreviewAdapter.notifyDataSetChanged();
+                    } else {
+                        Log.d("CourseListFragment", "Error", task.getException());
+                    }
+                });
+    }
+
+    private void readUserCourses() {
+        docRefUser.collection("userCourses")
+                .get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        for (QueryDocumentSnapshot document : task.getResult()) {
+                            buildListProgressData(document);
+                        }
                         courseProgressAdapter.notifyDataSetChanged();
                     } else {
                         Log.d("CourseListFragment", "Error", task.getException());
@@ -126,7 +141,25 @@ public class HomeFragment extends Fragment {
 
         Course course = new Course(name, duration, desc);
         courseListPreview.add(course);
-        courseListProgress.add(course);
+    }
+
+    private void buildListProgressData(QueryDocumentSnapshot document) {
+        String name = document.getString("courseName");
+        String progress = document.getString("courseProgress");
+        String duration = getCourseDurationByName(name);
+
+        UserCourses userCourses = new UserCourses(name, progress);
+        userCourses.setCourseDuration(duration);
+        courseListProgress.add(userCourses);
+    }
+
+    private String getCourseDurationByName(String courseName) {
+        for (Course course : courseListPreview) {
+            if (course.getCourseName().equals(courseName)) {
+                return course.getCourseDuration();
+            }
+        }
+        return "";
     }
 
     public void openAllCourses(View view) {

@@ -8,6 +8,7 @@ import androidx.annotation.NonNull;
 public class UserCourses implements Parcelable {
     private String courseName;
     private String courseProgress;
+    private String courseDuration;
 
     protected UserCourses(Parcel in) {
         courseName = in.readString();
@@ -34,8 +35,16 @@ public class UserCourses implements Parcelable {
         return courseProgress;
     }
 
+    public String getCourseDuration() {
+        return courseDuration;
+    }
+
     public void setCourseProgress(String progress) {
         courseProgress = progress;
+    }
+
+    public void setCourseDuration(String duration) {
+        courseDuration = duration;
     }
 
     public UserCourses(String courseName, String courseProgress) {
