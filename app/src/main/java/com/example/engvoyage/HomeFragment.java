@@ -43,8 +43,11 @@ public class HomeFragment extends Fragment {
     private FirebaseFirestore db;
     private DocumentReference docRefUser;
     private CoursePreviewAdapter coursePreviewAdapter;
-    private List<Course> courseList;
+    private List<Course> courseListPreview;
+    private List<Course> courseListProgress;
     private RecyclerView recyclerView;
+    private RecyclerView recyclerViewProgress;
+    private CourseProgressAdapter courseProgressAdapter;
 
     public HomeFragment() {
         // Required empty public constructor
@@ -58,8 +61,10 @@ public class HomeFragment extends Fragment {
         db = FirebaseFirestore.getInstance();
         String uid = currentUser.getUid();
         docRefUser = db.collection("users").document(uid);
-        courseList = new ArrayList<>();
-        coursePreviewAdapter = new CoursePreviewAdapter(courseList);
+        courseListPreview = new ArrayList<>();
+        courseListProgress = new ArrayList<>();
+        coursePreviewAdapter = new CoursePreviewAdapter(courseListPreview);
+        courseProgressAdapter = new CourseProgressAdapter(courseListProgress);
     }
 
     @Override
@@ -68,6 +73,7 @@ public class HomeFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_home, container, false);
         initRecyclerView(view);
+        initRecyclerProgressView(view);
         readCourses();
         openAllCourses(view);
         greetUser(view);
@@ -91,6 +97,12 @@ public class HomeFragment extends Fragment {
         recyclerView.setAdapter(coursePreviewAdapter);
     }
 
+    private void initRecyclerProgressView(View view) {
+        recyclerViewProgress = view.findViewById(R.id.recyclerViewProgress);
+        recyclerViewProgress.setLayoutManager(new LinearLayoutManager(getContext()));
+        recyclerViewProgress.setAdapter(courseProgressAdapter);
+    }
+
     private void readCourses() {
         db.collection("courses")
                 .get()
@@ -100,6 +112,7 @@ public class HomeFragment extends Fragment {
                             buildListData(document);
                         }
                         coursePreviewAdapter.notifyDataSetChanged();
+                        courseProgressAdapter.notifyDataSetChanged();
                     } else {
                         Log.d("CourseListFragment", "Error", task.getException());
                     }
@@ -112,7 +125,8 @@ public class HomeFragment extends Fragment {
         String desc = document.getString("courseDesc");
 
         Course course = new Course(name, duration, desc);
-        courseList.add(course);
+        courseListPreview.add(course);
+        courseListProgress.add(course);
     }
 
     public void openAllCourses(View view) {
