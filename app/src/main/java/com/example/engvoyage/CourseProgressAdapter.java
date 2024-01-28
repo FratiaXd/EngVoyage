@@ -13,8 +13,10 @@ import java.util.List;
 public class CourseProgressAdapter extends RecyclerView.Adapter<CourseProgressAdapter.CourseProgressViewHolder> {
 
     private List<UserCourses> userCoursesList;
-    public CourseProgressAdapter(List<UserCourses> userCoursesList) {
+    private ItemClickListener clickListener;
+    public CourseProgressAdapter(List<UserCourses> userCoursesList, ItemClickListener clickListener) {
         this.userCoursesList = userCoursesList;
+        this.clickListener = clickListener;
     }
 
     @NonNull
@@ -28,6 +30,10 @@ public class CourseProgressAdapter extends RecyclerView.Adapter<CourseProgressAd
     public void onBindViewHolder(@NonNull CourseProgressAdapter.CourseProgressViewHolder holder, int position) {
         UserCourses userCourses = userCoursesList.get(position);
         holder.bind(userCourses);
+
+        holder.itemView.setOnClickListener(v -> {
+            clickListener.onItemClick(userCourses);
+        });
     }
 
     @Override
@@ -45,8 +51,13 @@ public class CourseProgressAdapter extends RecyclerView.Adapter<CourseProgressAd
 
         public void bind(UserCourses userCourses) {
             nameTxt.setText(userCourses.getCourseName());
-            String dur = userCourses.getCourseProgress() + "/" + userCourses.getCourseDuration();
+            String dur = userCourses.getCourseProgress() +
+                    "/" + userCourses.getCourseInfo().getCourseDuration();
             durTxt.setText(dur);
         }
+    }
+
+    public interface ItemClickListener {
+        public void onItemClick(UserCourses userCourses);
     }
 }

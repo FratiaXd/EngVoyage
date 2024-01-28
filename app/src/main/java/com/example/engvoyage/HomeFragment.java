@@ -37,7 +37,7 @@ import java.util.List;
  * Use the {} factory method to
  * create an instance of this fragment.
  */
-public class HomeFragment extends Fragment {
+public class HomeFragment extends Fragment implements CourseProgressAdapter.ItemClickListener{
     private FirebaseAuth mAuth;
     private FirebaseUser currentUser;
     private FirebaseFirestore db;
@@ -64,7 +64,7 @@ public class HomeFragment extends Fragment {
         courseListPreview = new ArrayList<>();
         courseListProgress = new ArrayList<>();
         coursePreviewAdapter = new CoursePreviewAdapter(courseListPreview);
-        courseProgressAdapter = new CourseProgressAdapter(courseListProgress);
+        courseProgressAdapter = new CourseProgressAdapter(courseListProgress, this);
     }
 
     @Override
@@ -146,20 +146,20 @@ public class HomeFragment extends Fragment {
     private void buildListProgressData(QueryDocumentSnapshot document) {
         String name = document.getString("courseName");
         String progress = document.getString("courseProgress");
-        String duration = getCourseDurationByName(name);
+        Course courseInformation = getCourseByName(name);
 
         UserCourses userCourses = new UserCourses(name, progress);
-        userCourses.setCourseDuration(duration);
+        userCourses.setCourseInfo(courseInformation);
         courseListProgress.add(userCourses);
     }
 
-    private String getCourseDurationByName(String courseName) {
+    private Course getCourseByName(String courseName) {
         for (Course course : courseListPreview) {
             if (course.getCourseName().equals(courseName)) {
-                return course.getCourseDuration();
+                return new Course(course.getCourseName(), course.getCourseDuration(), course.getCourseDesc());
             }
         }
-        return "";
+        return null;
     }
 
     public void openAllCourses(View view) {
@@ -200,5 +200,13 @@ public class HomeFragment extends Fragment {
                 startActivity(intent);
             }
         });
+    }
+
+    @Override
+    public void onItemClick(UserCourses userCourses) {
+        Fragment fragment = CourseMaterialFragment.newInstance(userCourses, userCourses.getCourseInfo());
+        FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.frame_layout, fragment, "fragment_course_material");
+        transaction.commit();
     }
 }
