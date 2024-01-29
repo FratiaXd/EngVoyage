@@ -78,7 +78,7 @@ public class HomeFragment extends Fragment implements CourseProgressAdapter.Item
         greetUser(view);
         logout(view);
         readCourses();
-        readUserCourses();
+        readUserCourses(view);
         return view;
     }
 
@@ -109,7 +109,8 @@ public class HomeFragment extends Fragment implements CourseProgressAdapter.Item
                 });
     }
 
-    private void readUserCourses() {
+    private void readUserCourses(View view) {
+        TextView msg = (TextView) view.findViewById(R.id.noCourses);
         docRefUser.collection("userCourses")
                 .get()
                 .addOnCompleteListener(task -> {
@@ -118,10 +119,14 @@ public class HomeFragment extends Fragment implements CourseProgressAdapter.Item
                             buildListProgressData(document);
                         }
                         courseProgressAdapter.notifyDataSetChanged();
+                        msg.setVisibility(View.INVISIBLE);
                     } else {
                         Log.d("HomeFragment", "Error", task.getException());
                     }
                 });
+        if (courseListProgress.isEmpty()) {
+            msg.setVisibility(View.VISIBLE);
+        }
     }
 
     private void buildListData(QueryDocumentSnapshot document) {
