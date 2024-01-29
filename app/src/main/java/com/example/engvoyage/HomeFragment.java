@@ -104,7 +104,7 @@ public class HomeFragment extends Fragment implements CourseProgressAdapter.Item
                         }
                         coursePreviewAdapter.notifyDataSetChanged();
                     } else {
-                        Log.d("CourseListFragment", "Error", task.getException());
+                        Log.d("HomeFragment", "Error", task.getException());
                     }
                 });
     }
@@ -119,7 +119,7 @@ public class HomeFragment extends Fragment implements CourseProgressAdapter.Item
                         }
                         courseProgressAdapter.notifyDataSetChanged();
                     } else {
-                        Log.d("CourseListFragment", "Error", task.getException());
+                        Log.d("HomeFragment", "Error", task.getException());
                     }
                 });
     }

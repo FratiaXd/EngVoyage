@@ -23,9 +23,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CourseListFragment extends Fragment implements CourseAdapter.ItemClickListener{
+    private FirebaseAuth mAuth;
+    private FirebaseUser currentUser;
+    private DocumentReference docRefUser;
     private FirebaseFirestore db;
     private CourseAdapter courseAdapter;
+    private UserCourses selectedUserCourse;
     private List<Course> courseList;
+    private List<UserCourses> userCoursesList;
     private RecyclerView recyclerView;
 
     public CourseListFragment() {
@@ -35,9 +40,15 @@ public class CourseListFragment extends Fragment implements CourseAdapter.ItemCl
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        mAuth = FirebaseAuth.getInstance();
+        currentUser = mAuth.getCurrentUser();
         db = FirebaseFirestore.getInstance();
+        String uid = currentUser.getUid();
+        docRefUser = db.collection("users").document(uid);
+        userCoursesList = new ArrayList<>();
         courseList = new ArrayList<>();
         courseAdapter = new CourseAdapter(courseList, this);
+        getUserEnrolledCourses();
     }
 
     @Override
@@ -94,12 +105,52 @@ public class CourseListFragment extends Fragment implements CourseAdapter.ItemCl
         });
     }
 
+    public void getUserEnrolledCourses() {
+        docRefUser.collection("userCourses")
+                .get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        for (QueryDocumentSnapshot document : task.getResult()) {
+                            buildCourseListData(document);
+                        }
+                    } else {
+                        Log.d("CourseListFragment", "Error", task.getException());
+                    }
+                });
+    }
+
+    private void buildCourseListData(QueryDocumentSnapshot document) {
+        String name = document.getString("courseName");
+        String progress = document.getString("courseProgress");
+        String duration = document.getString("courseDuration");
+
+        UserCourses userCourses = new UserCourses(name, progress, duration);
+        userCoursesList.add(userCourses);
+    }
+
     @Override
     public void onItemClick(Course course) {
-        Fragment fragment = CourseDetailFragment.newInstance(course);
-        FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
-        transaction.replace(R.id.frame_layout, fragment, "fragment_course_detail");
-        transaction.addToBackStack(null);
-        transaction.commit();
+        if (isEnrolled(course.getCourseName())) {
+            Fragment fragment = CourseMaterialFragment.newInstance(selectedUserCourse, course);
+            FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+            transaction.replace(R.id.frame_layout, fragment, "fragment_course_material");
+            transaction.commit();
+        } else {
+            Fragment fragment = CourseDetailFragment.newInstance(course);
+            FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+            transaction.replace(R.id.frame_layout, fragment, "fragment_course_detail");
+            transaction.addToBackStack(null);
+            transaction.commit();
+        }
+    }
+
+    public boolean isEnrolled(String selectedCourse) {
+        for (UserCourses course : userCoursesList) {
+            if (course.getCourseName().equals(selectedCourse)) {
+                selectedUserCourse = course;
+                return true;
+            }
+        }
+        return false;
     }
 }
