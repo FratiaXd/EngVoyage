@@ -143,8 +143,10 @@ public class HomeFragment extends Fragment implements CourseProgressAdapter.Item
         String progress = document.getString("courseProgress");
         String duration = document.getString("courseDuration");
 
-        UserCourses userCourses = new UserCourses(name, progress, duration);
-        courseListProgress.add(userCourses);
+        if (!progress.equals(duration)) {
+            UserCourses userCourses = new UserCourses(name, progress, duration);
+            courseListProgress.add(userCourses);
+        }
     }
 
     public void openAllCourses(View view) {

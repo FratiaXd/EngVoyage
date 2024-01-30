@@ -4,6 +4,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -44,16 +45,21 @@ public class CourseProgressAdapter extends RecyclerView.Adapter<CourseProgressAd
 
     public static class CourseProgressViewHolder extends RecyclerView.ViewHolder {
         TextView nameTxt, durTxt;
+        ProgressBar progressBar;
+        int currentProgress;
         public CourseProgressViewHolder(View view) {
             super(view);
             nameTxt = itemView.findViewById(R.id.courseNameProgress);
             durTxt = itemView.findViewById(R.id.courseDurProgress);
+            progressBar = itemView.findViewById(R.id.progressBar);
         }
 
         public void bind(UserCourses userCourses) {
             nameTxt.setText(userCourses.getCourseName());
             String dur = userCourses.getCourseProgress() + "/" + userCourses.getCourseDuration();
             durTxt.setText(dur);
+            progressBar.setProgress(Integer.parseInt(userCourses.getCourseProgress()));
+            progressBar.setMax(Integer.parseInt(userCourses.getCourseDuration()));
         }
     }
 
