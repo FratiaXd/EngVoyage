@@ -14,12 +14,6 @@
         android:layout_marginLeft="23dp"
         android:layout_marginTop="20dp"/>
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/logout"
-        android:text="logout"/>
-
     <TextView
         style="@style/StreakText"
         android:layout_width="wrap_content"

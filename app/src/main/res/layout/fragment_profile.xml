@@ -16,7 +16,7 @@
     <TextView
         style="@style/UserameText"
         android:id="@+id/username"
-        android:layout_marginTop="100dp"
+        android:layout_marginTop="80dp"
         android:gravity="center"
         android:layout_marginHorizontal="23dp"
         android:layout_width="match_parent"
@@ -26,7 +26,7 @@
     <TextView
         style="@style/CourseDescr"
         android:id="@+id/email"
-        android:layout_marginTop="140dp"
+        android:layout_marginTop="120dp"
         android:gravity="center"
         android:layout_marginHorizontal="23dp"
         android:layout_width="match_parent"
@@ -39,8 +39,18 @@
         android:layout_width="match_parent"
         android:layout_height="30dp"
         android:layout_marginHorizontal="140dp"
-        android:layout_marginTop="180dp"
+        android:layout_marginTop="160dp"
         android:text="EDIT"
+        android:background="@drawable/box_design_white" />
+
+    <android.widget.Button
+        style="@style/CourseNameText"
+        android:id="@+id/logout"
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:layout_marginHorizontal="140dp"
+        android:layout_marginTop="205dp"
+        android:text="LOG OUT"
         android:background="@drawable/box_design_white" />
 
     <TextView
@@ -60,5 +70,36 @@
         android:gravity="start"
         android:layout_marginLeft="23dp"
         android:layout_marginTop="400dp"/>
+
+    <LinearLayout
+        android:id="@+id/mycoursesProfile"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:minHeight="290dp"
+        android:layout_weight="1"
+        android:layout_marginTop="445dp"
+        android:background="@drawable/box_design"
+        android:clickable="true"
+        android:layout_marginHorizontal="19dp"
+        android:descendantFocusability="blocksDescendants"
+        android:gravity="top"
+        android:orientation="vertical">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerViewCompleted"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
+
+    <TextView
+        style="@style/StreakText"
+        android:id="@+id/noCoursesTxt"
+        android:layout_width="wrap_content"
+        android:layout_gravity="bottom|center"
+        android:layout_marginBottom="143dp"
+        android:visibility="invisible"
+        android:layout_height="wrap_content"
+        android:text="complete more courses"/>
 
 </FrameLayout>

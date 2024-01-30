@@ -76,7 +76,6 @@ public class HomeFragment extends Fragment implements CourseProgressAdapter.Item
         initRecyclerProgressView(view);
         openAllCourses(view);
         greetUser(view);
-        logout(view);
         readCourses();
         readUserCourses(view);
         return view;
@@ -175,18 +174,6 @@ public class HomeFragment extends Fragment implements CourseProgressAdapter.Item
                         greeting.setText("Hi " + user.getName() + "!");
                     }
                 }
-            }
-        });
-    }
-
-    private void logout(View view) {
-        Button logoutBtn = (Button) view.findViewById(R.id.logout);
-        logoutBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mAuth.signOut();
-                Intent intent = new Intent(getActivity(), MainActivity.class);
-                startActivity(intent);
             }
         });
     }

@@ -1,11 +1,15 @@
 package com.example.engvoyage;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,8 +23,12 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
 
-public class ProfileFragment extends Fragment {
+import java.util.ArrayList;
+import java.util.List;
+
+public class ProfileFragment extends Fragment implements CourseProgressAdapter.ItemClickListener{
 
     private FirebaseAuth mAuth;
     private FirebaseUser currentUser;
@@ -32,6 +40,9 @@ public class ProfileFragment extends Fragment {
 
     private String mParam1;
     private String mParam2;
+    private List<UserCourses> courseListProgress;
+    private RecyclerView recyclerView;
+    private CourseProgressAdapter courseProgressAdapter;
 
     public ProfileFragment() {
         // Required empty public constructor
@@ -58,6 +69,8 @@ public class ProfileFragment extends Fragment {
         db = FirebaseFirestore.getInstance();
         String uid = currentUser.getUid();
         docRefUser = db.collection("users").document(uid);
+        courseListProgress = new ArrayList<>();
+        courseProgressAdapter = new CourseProgressAdapter(courseListProgress, this);
     }
 
     @Override
@@ -67,7 +80,49 @@ public class ProfileFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_profile, container, false);
         getUserDetails(view);
         updateUserDetails(view);
+        initRecyclerView(view);
+        readUserCourses(view);
+        logout(view);
         return view;
+    }
+
+    private void initRecyclerView(View view) {
+        recyclerView = view.findViewById(R.id.recyclerViewCompleted);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        recyclerView.setAdapter(courseProgressAdapter);
+    }
+
+    private void readUserCourses(View view) {
+        TextView msg = (TextView) view.findViewById(R.id.noCoursesTxt);
+        docRefUser.collection("userCourses")
+                .get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        for (QueryDocumentSnapshot document : task.getResult()) {
+                            buildListProgressData(document);
+                        }
+                        courseProgressAdapter.notifyDataSetChanged();
+                        msg.setVisibility(View.INVISIBLE);
+                    } else {
+                        Log.d("HomeFragment", "Error", task.getException());
+                    }
+                });
+        if (courseListProgress.isEmpty()) {
+            msg.setVisibility(View.VISIBLE);
+        }
+    }
+
+    private void buildListProgressData(QueryDocumentSnapshot document) {
+        String name = document.getString("courseName");
+        String progress = document.getString("courseProgress");
+        String duration = document.getString("courseDuration");
+        int progressInt = Integer.parseInt(progress);
+        int durationInt = Integer.parseInt(duration);
+
+        if (progressInt >= durationInt) {
+            UserCourses userCourses = new UserCourses(name, progress, duration);
+            courseListProgress.add(userCourses);
+        }
     }
 
     public void updateUserDetails(View view) {
@@ -99,5 +154,22 @@ public class ProfileFragment extends Fragment {
                 }
             }
         });
+    }
+
+    private void logout(View view) {
+        Button logoutBtn = (Button) view.findViewById(R.id.logout);
+        logoutBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mAuth.signOut();
+                Intent intent = new Intent(getActivity(), MainActivity.class);
+                startActivity(intent);
+            }
+        });
+    }
+
+    @Override
+    public void onItemClick(UserCourses userCourses) {
+
     }
 }
