@@ -56,6 +56,12 @@
         <item name="android:fontFamily">@font/worksansmed</item>
     </style>
 
+    <style name="UserameText">
+        <item name="android:textColor">@color/dark_brown</item>
+        <item name="android:textSize">23sp</item>
+        <item name="android:fontFamily">@font/worksansmed</item>
+    </style>
+
     <style name="CourseNameTextList">
         <item name="android:textColor">@color/dark_brown</item>
         <item name="android:textSize">22sp</item>
