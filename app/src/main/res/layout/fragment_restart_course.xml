@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".RestartCourseFragment">
+
+    <LinearLayout
+        android:id="@+id/courseTop"
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
+        android:layout_weight="1"
+        android:background="@drawable/course_page"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <TextView
+            style="@style/CompletedText"
+            android:gravity="center"
+            android:layout_marginHorizontal="25dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="This course is completed"/>
+
+    </LinearLayout>
+
+    <ImageButton
+        android:id="@+id/closeRestart"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_gravity="top|end"
+        android:background="@drawable/add"/>
+
+    <TextView
+        style="@style/CourseDescr"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:layout_marginHorizontal="30dp"
+        android:layout_marginTop="350dp"
+        android:text="@string/start_again" />
+
+    <android.widget.Button
+        style="@style/WhiteText"
+        android:id="@+id/startAgain"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="50dp"
+        android:layout_gravity="bottom"
+        android:layout_marginBottom="25dp"
+        android:background="@drawable/round_btn_green"
+        android:text="Yes"/>
+
+</FrameLayout>

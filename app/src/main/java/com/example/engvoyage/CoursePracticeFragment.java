@@ -108,6 +108,7 @@ public class CoursePracticeFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 if (courseInfo.getCourseDuration().equals(userCoursesInfo.getCourseProgress())) {
+                    updateUserProgress();
                     Fragment fragment = CourseCompletedFragment.newInstance("","");
                     FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
                     transaction.replace(R.id.frame_layout, fragment, "fragment_course_completed");
@@ -176,7 +177,7 @@ public class CoursePracticeFragment extends Fragment {
     }
 
     public void updateUserProgress() {
-        Integer updProgressInt = Integer.parseInt(userCoursesInfo.getCourseProgress()) + 1;;
+        Integer updProgressInt = Integer.parseInt(userCoursesInfo.getCourseProgress()) + 1;
         String updProgress = updProgressInt.toString();
         docRefUserCourse.update("courseProgress", updProgress)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {

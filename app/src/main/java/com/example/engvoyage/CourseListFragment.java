@@ -131,10 +131,19 @@ public class CourseListFragment extends Fragment implements CourseAdapter.ItemCl
     @Override
     public void onItemClick(Course course) {
         if (isEnrolled(course.getCourseName())) {
-            Fragment fragment = CourseMaterialFragment.newInstance(selectedUserCourse, course);
-            FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
-            transaction.replace(R.id.frame_layout, fragment, "fragment_course_material");
-            transaction.commit();
+            int progressInt = Integer.parseInt(selectedUserCourse.getCourseProgress());
+            int durationInt = Integer.parseInt(selectedUserCourse.getCourseDuration());
+            if (progressInt > durationInt) {
+                Fragment fragment = RestartCourseFragment.newInstance(course, selectedUserCourse);
+                FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+                transaction.replace(R.id.frame_layout, fragment, "fragment_restart_course");
+                transaction.commit();
+            } else {
+                Fragment fragment = CourseMaterialFragment.newInstance(selectedUserCourse, course);
+                FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+                transaction.replace(R.id.frame_layout, fragment, "fragment_course_material");
+                transaction.commit();
+            }
         } else {
             Fragment fragment = CourseDetailFragment.newInstance(course);
             FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
