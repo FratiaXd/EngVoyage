@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.google.android.gms.tasks.OnFailureListener;
@@ -81,6 +82,7 @@ public class CoursePracticeFragment extends Fragment {
         setPracticeInfo(view);
         openNext(view);
         receiveAnswer(view);
+        closePractice(view);
         return view;
     }
 
@@ -190,5 +192,17 @@ public class CoursePracticeFragment extends Fragment {
                     }
                 });
         userCoursesInfo.setCourseProgress(updProgress);
+    }
+
+    public void closePractice(View view) {
+        ImageButton close = (ImageButton) view.findViewById(R.id.closePractice);
+        close.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FragmentTransaction fr = getParentFragmentManager().beginTransaction();
+                fr.replace(R.id.frame_layout, new HomeFragment());
+                fr.commit();
+            }
+        });
     }
 }

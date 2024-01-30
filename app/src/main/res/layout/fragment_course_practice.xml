@@ -8,26 +8,36 @@
     <TextView
         android:id="@+id/courseTitle1"
         android:layout_width="match_parent"
+        style="@style/HeadingText"
+        android:layout_marginTop="15dp"
+        android:layout_marginStart="23dp"
         android:layout_height="wrap_content"
-        android:text="@string/hello_blank_fragment" />
+        android:text="Course name" />
 
     <TextView
         android:id="@+id/coursePracticeNumber"
-        android:layout_marginTop="80dp"
+        android:layout_marginTop="60dp"
+        style="@style/MyTextView"
+        android:layout_marginStart="25dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/hello_blank_fragment" />
 
     <TextView
         android:id="@+id/practiceInfo"
-        android:layout_marginTop="160dp"
+        android:layout_marginTop="140dp"
+        style="@style/CourseDescr"
+        android:layout_marginStart="25dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Pick the correct option to complete the sentence." />
+        android:text="Pick the correct option to complete the sentence or select true/false." />
 
     <TextView
+        style="@style/CourseNameTextList"
         android:id="@+id/practiceTask"
         android:layout_marginTop="250dp"
+        android:gravity="center"
+        android:layout_marginHorizontal="25dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/hello_blank_fragment" />
@@ -42,26 +52,30 @@
         android:background="@drawable/add"/>
 
     <android.widget.Button
-        style="@style/WhiteText"
+        style="@style/CourseNameTextList"
         android:id="@+id/practiceAnswer1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="50dp"
-        android:layout_marginTop="320dp"
-        android:background="@drawable/round_btn_green" />
+        android:layout_marginTop="360dp"
+        android:text="ee"
+        android:background="@drawable/practice_button" />
 
     <android.widget.Button
-        style="@style/WhiteText"
+        style="@style/CourseNameTextList"
         android:id="@+id/practiceAnswer2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="50dp"
-        android:layout_marginTop="450dp"
-        android:background="@drawable/round_btn_green" />
+        android:layout_marginTop="460dp"
+        android:text="ee"
+        android:background="@drawable/practice_button" />
 
     <TextView
         android:id="@+id/result"
-        android:layout_marginTop="550dp"
+        android:layout_marginTop="560dp"
+        android:gravity="center"
+        style="@style/HeadingText"
         android:visibility="invisible"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -74,7 +88,8 @@
         android:layout_height="wrap_content"
         android:visibility="invisible"
         android:layout_marginHorizontal="50dp"
-        android:layout_marginTop="630dp"
+        android:layout_gravity="bottom"
+        android:layout_marginBottom="25dp"
         android:text="Go to next lesson"
         android:background="@drawable/round_btn_green" />
 

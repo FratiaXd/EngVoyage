@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -67,6 +68,7 @@ public class CourseMaterialFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_course_material, container, false);
         displayCourseMaterial(view);
         goToPractice(view);
+        closeMaterial(view);
         return view;
     }
 
@@ -100,6 +102,18 @@ public class CourseMaterialFragment extends Fragment {
                 FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
                 transaction.replace(R.id.frame_layout, fragment, "fragment_course_practice");
                 transaction.commit();
+            }
+        });
+    }
+
+    public void closeMaterial(View view) {
+        ImageButton close = (ImageButton) view.findViewById(R.id.closeMaterial);
+        close.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FragmentTransaction fr = getParentFragmentManager().beginTransaction();
+                fr.replace(R.id.frame_layout, new HomeFragment());
+                fr.commit();
             }
         });
     }

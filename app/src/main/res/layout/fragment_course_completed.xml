@@ -5,10 +5,38 @@
     android:layout_height="match_parent"
     tools:context=".CourseCompletedFragment">
 
-    <TextView
+    <LinearLayout
+        android:id="@+id/courseTop"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:layout_height="300dp"
+        android:layout_weight="1"
+        android:background="@drawable/course_page"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <TextView
+            style="@style/CompletedText"
+            android:gravity="center"
+            android:layout_marginHorizontal="25dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Congratulations! Course is completed"/>
+
+    </LinearLayout>
+
+    <TextView
+        style="@style/CourseDescr"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:layout_marginTop="350dp"
+        android:text="You received an award" />
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:src="@drawable/nc_design_proposal"
+        android:layout_marginTop="420dp"/>
 
     <android.widget.Button
         style="@style/WhiteText"

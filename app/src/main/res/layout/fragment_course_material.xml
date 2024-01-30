@@ -7,20 +7,27 @@
 
     <TextView
         android:id="@+id/courseTitle"
+        style="@style/HeadingText"
+        android:layout_marginTop="15dp"
+        android:layout_marginStart="23dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/hello_blank_fragment" />
+        android:text="Course name" />
 
     <TextView
         android:id="@+id/courseNumber"
-        android:layout_marginTop="80dp"
+        android:layout_marginTop="60dp"
+        style="@style/MyTextView"
+        android:layout_marginStart="25dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/hello_blank_fragment" />
 
     <TextView
         android:id="@+id/courseMaterial"
-        android:layout_marginTop="160dp"
+        android:layout_marginTop="140dp"
+        style="@style/CourseDescr"
+        android:layout_marginStart="25dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/hello_blank_fragment" />

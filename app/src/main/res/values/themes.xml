@@ -114,6 +114,12 @@
         <item name="android:textSize">18sp</item>
     </style>
 
+    <style name="CompletedText">
+        <item name="android:textColor">@color/beige</item>
+        <item name="android:fontFamily">@font/worksanssemibold</item>
+        <item name="android:textSize">32sp</item>
+    </style>
+
     <style name="MyTextInputEdit">
         <item name="android:paddingBottom">8dp</item>
         <item name="android:paddingTop">8dp</item>
