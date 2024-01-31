@@ -2,18 +2,30 @@ package com.example.engvoyage;
 
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
+import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.io.BufferedReader;
 
 public class EditProfileFragment extends Fragment {
 
@@ -24,6 +36,9 @@ public class EditProfileFragment extends Fragment {
     private FirebaseUser currentUser;
     private FirebaseFirestore db;
     private DocumentReference docRefUser;
+    private TextInputEditText nameValue;
+    private TextInputEditText surnameValue;
+    private TextInputEditText emailValue;
 
     public EditProfileFragment() {
         // Required empty public constructor
@@ -56,6 +71,8 @@ public class EditProfileFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_edit_profile, container, false);
         cancelEdit(view);
+        setCurrentDetails(view);
+        onClickSave(view);
         return view;
     }
 
@@ -71,11 +88,52 @@ public class EditProfileFragment extends Fragment {
         });
     }
 
-    public void updateDetails(View view) {
-        Button update = (Button) view.findViewById(R.id.saveBtn);
-        update.setOnClickListener(new View.OnClickListener() {
+    public void onClickSave(View view) {
+        Button saveBtn = (Button) view.findViewById(R.id.saveBtn);
+        saveBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                setNewDetails();
+            }
+        });
+    }
+
+    public void setNewDetails() {
+        String name = nameValue.getText().toString().trim();
+        String surname = surnameValue.getText().toString().trim();
+        //String email = emailValue.getText().toString().trim();
+        docRefUser.update("name",name, "surname", surname)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void unused) {
+                        Log.d("EditProfileFragment", "DocumentSnapshot successfully updated!");
+                        Toast.makeText(getActivity(),"Details updated!",Toast.LENGTH_SHORT).show();
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.w("EditProfileFragment", "Error updating document", e);
+                        Toast.makeText(getActivity(),"Error! Changes were not applied",Toast.LENGTH_SHORT).show();
+                    }
+                });
+    }
+
+    private void setCurrentDetails(View view) {
+        nameValue = (TextInputEditText) view.findViewById(R.id.nameInputEdit);
+        surnameValue = (TextInputEditText) view.findViewById(R.id.surnameInputEdit);
+        emailValue = (TextInputEditText) view.findViewById(R.id.emailInputEdit);
+        docRefUser.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    if (document.exists()) {
+                        User user = document.toObject(User.class);
+                        nameValue.setText(user.getName());
+                        surnameValue.setText(user.getSurname());
+                        emailValue.setText(user.getEmail());
+                    }
+                }
             }
         });
     }
