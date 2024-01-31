@@ -5,10 +5,92 @@
     android:layout_height="match_parent"
     tools:context=".BuilderFragment">
 
-    <!-- TODO: Update blank fragment layout -->
     <TextView
+        style="@style/AppName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/app_name"
+        android:layout_marginLeft="23dp"
+        android:layout_marginTop="20dp"/>
+
+    <TextView
+        style="@style/HeadingText"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/title_vocbuilder" />
+        android:layout_height="wrap_content"
+        android:text="Vocabulary Builder"
+        android:gravity="center"
+        android:layout_marginTop="90dp"/>
+
+    <TextView
+        style="@style/GreetingText"
+        android:id="@+id/greeting"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Pick difficulty level"
+        android:gravity="center"
+        android:layout_marginTop="140dp"/>
+
+    <android.widget.Button
+        style="@style/CourseNameTextList"
+        android:id="@+id/easyLevel"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="75dp"
+        android:layout_marginTop="200dp"
+        android:text="easy"
+        android:background="@drawable/practice_button" />
+
+    <android.widget.Button
+        style="@style/CourseNameTextList"
+        android:id="@+id/intermediateLevel"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="75dp"
+        android:layout_marginTop="280dp"
+        android:text="intermediate"
+        android:background="@drawable/round_btn_green" />
+
+    <android.widget.Button
+        style="@style/CourseNameTextList"
+        android:id="@+id/advancedLevel"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="75dp"
+        android:layout_marginTop="360dp"
+        android:text="advanced"
+        android:background="@drawable/round_btn_orange" />
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:src="@drawable/builder_icon"
+        android:layout_marginTop="440dp"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="650dp"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <android.widget.Button
+            android:id="@+id/vocabulary"
+            style="@style/MyButtonMain"
+            android:layout_width="180dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="5dp"
+            android:background="@drawable/round_button"
+            android:text="My vocabulary" />
+
+        <android.widget.Button
+            android:id="@+id/builderPractice"
+            style="@style/MyButtonMain"
+            android:layout_width="180dp"
+            android:layout_marginStart="5dp"
+            android:layout_height="wrap_content"
+            android:background="@drawable/round_button"
+            android:text="Practice" />
+
+    </LinearLayout>
 
 </FrameLayout>

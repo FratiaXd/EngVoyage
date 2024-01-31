@@ -120,6 +120,12 @@
         <item name="android:textSize">18sp</item>
     </style>
 
+    <style name="WordPreview">
+        <item name="android:textColor">@color/dark_brown</item>
+        <item name="android:fontFamily">@font/worksansmed</item>
+        <item name="android:textSize">18sp</item>
+    </style>
+
     <style name="CompletedText">
         <item name="android:textColor">@color/beige</item>
         <item name="android:fontFamily">@font/worksanssemibold</item>
