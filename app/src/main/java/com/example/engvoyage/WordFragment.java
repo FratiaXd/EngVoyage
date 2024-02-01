@@ -2,6 +2,7 @@ package com.example.engvoyage;
 
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
@@ -9,8 +10,17 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,12 +28,14 @@ import java.util.List;
 public class WordFragment extends Fragment {
 
     private static final String ARG_PARAM1 = "wordList";
-    private static final String ARG_PARAM2 = "param2";
-
-    private String mParam1;
-    private String mParam2;
 
     private List<Word> receivedWordList;
+    private FirebaseFirestore db;
+    private FirebaseAuth mAuth;
+    private FirebaseUser currentUser;
+    private DocumentReference docRefUser;
+    private Button saveBtn;
+    private Button nextWord;
 
     public WordFragment() {
         // Required empty public constructor
@@ -40,6 +52,11 @@ public class WordFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        db = FirebaseFirestore.getInstance();
+        mAuth = FirebaseAuth.getInstance();
+        currentUser = mAuth.getCurrentUser();
+        String uid = currentUser.getUid();
+        docRefUser = db.collection("users").document(uid);
         Bundle args = getArguments();
         if (args != null) {
             receivedWordList = args.getParcelableArrayList(ARG_PARAM1);
@@ -59,7 +76,9 @@ public class WordFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_word, container, false);
         setWordInfo(view);
+        onSaveClick(view);
         returnToBuilder(view);
+        openNextWord();
         return view;
     }
 
@@ -74,6 +93,56 @@ public class WordFragment extends Fragment {
         pronunciationTxt.setText(receivedWordList.get(0).getPronunciation());
         fullTxt.setText(receivedWordList.get(0).getMeaningFull());
         usageTxt.setText(receivedWordList.get(0).getUsage());
+    }
+
+    public void onSaveClick(View view) {
+        saveBtn = (Button) view.findViewById(R.id.saveWord);
+        nextWord = (Button) view.findViewById(R.id.proceed);
+        saveBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Word addWord = receivedWordList.get(0);
+                addWordToUserWords(addWord);
+            }
+        });
+    }
+
+    public void addWordToUserWords(Word newWord) {
+        docRefUser.collection("userWords")
+                .document(newWord.getWord())
+                .set(newWord)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void unused) {
+                        Log.d("WordFragment", "Added: " + newWord.getWord());
+                        Toast.makeText(getActivity(),"Word saved!",Toast.LENGTH_SHORT).show();
+                        removeLearnedWord();
+                        saveBtn.setVisibility(View.INVISIBLE);
+                        nextWord.setVisibility(View.VISIBLE);
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.w("WordFragment", "Could not add word", e);
+                        Toast.makeText(getActivity(),"Could not save word. Try again!",Toast.LENGTH_SHORT).show();
+                    }
+                });
+    }
+
+    public void removeLearnedWord() {
+        receivedWordList.remove(0);
+    }
+
+    public void openNextWord() {
+        nextWord.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Fragment fragment = WordFragment.newInstance(receivedWordList);
+                FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+                transaction.replace(R.id.frame_layout, fragment, "fragment_word");
+                transaction.commit();
+            }
+        });
     }
 
     private void returnToBuilder(View view) {
