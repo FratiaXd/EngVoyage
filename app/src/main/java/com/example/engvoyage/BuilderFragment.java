@@ -82,6 +82,7 @@ public class BuilderFragment extends Fragment {
         openAdvancedWords(view);
         openIntermediateWords(view);
         openVocabulary(view);
+        openFlashcards(view);
         return view;
     }
 
@@ -134,6 +135,19 @@ public class BuilderFragment extends Fragment {
                 Fragment fragment = VocabularyFragment.newInstance(userWordList);
                 FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
                 transaction.replace(R.id.frame_layout, fragment, "fragment_word");
+                transaction.commit();
+            }
+        });
+    }
+
+    public void openFlashcards(View view) {
+        Button flashBtn = (Button) view.findViewById(R.id.builderPractice);
+        flashBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Fragment fragment = FlashcardFragment.newInstance(userWordList);
+                FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+                transaction.replace(R.id.frame_layout, fragment, "fragment_flashcard");
                 transaction.commit();
             }
         });

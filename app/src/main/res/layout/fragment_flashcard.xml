@@ -16,12 +16,13 @@
 
     <TextView
         style="@style/GreetingText"
+        android:id="@+id/remember"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="40dp"
         android:text="Try to remember the meaning"
         android:gravity="center"
-        android:layout_marginTop="100dp"/>
+        android:layout_marginTop="80dp"/>
 
     <TextView
         style="@style/HeadingText"
@@ -31,7 +32,19 @@
         android:text="Vocabulary Builder"
         android:layout_marginHorizontal="20dp"
         android:gravity="center"
-        android:layout_marginTop="210dp"/>
+        android:layout_marginTop="180dp"/>
+
+    <TextView
+        style="@style/GreetingText"
+        android:id="@+id/wordFlashcardMeaning"
+        android:layout_width="match_parent"
+        android:visibility="invisible"
+        android:background="@color/grey"
+        android:layout_height="wrap_content"
+        android:text="Vocabulary Builder"
+        android:layout_marginHorizontal="20dp"
+        android:gravity="center"
+        android:layout_marginTop="255dp"/>
 
     <ImageView
         android:layout_width="match_parent"
@@ -49,5 +62,17 @@
         android:layout_marginBottom="25dp"
         android:background="@drawable/round_btn_green"
         android:text="reveal"/>
+
+    <android.widget.Button
+        style="@style/WhiteText"
+        android:id="@+id/nextFlashcard"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="invisible"
+        android:layout_marginHorizontal="50dp"
+        android:layout_gravity="bottom"
+        android:layout_marginBottom="25dp"
+        android:background="@drawable/round_btn_green"
+        android:text="next flashcard"/>
 
 </FrameLayout>
