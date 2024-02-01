@@ -23,6 +23,10 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
@@ -31,6 +35,7 @@ public class MainActivity extends AppCompatActivity {
     private Button openRegister;
     private DocumentReference docRefUser;
     private User userInformation;
+    private List<Course> courseList;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,6 +46,7 @@ public class MainActivity extends AppCompatActivity {
         openRegister = findViewById(R.id.registerBtn);
         currentUser = mAuth.getCurrentUser();
         db = FirebaseFirestore.getInstance();
+        courseList = new ArrayList<>();
 
         openRegister.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -84,6 +90,7 @@ public class MainActivity extends AppCompatActivity {
     public void openApp() {
         Intent intent = new Intent(MainActivity.this, Navigation.class);
         intent.putExtra("user", userInformation);
+        intent.putParcelableArrayListExtra("courseList", new ArrayList<>(courseList));
         startActivity(intent);
     }
 
@@ -95,11 +102,35 @@ public class MainActivity extends AppCompatActivity {
                     DocumentSnapshot document = task.getResult();
                     if (document.exists()) {
                         userInformation = document.toObject(User.class);
-                        openApp();
+                        readCourses();
                     }
                 }
             }
         });
+    }
+
+    private void readCourses() {
+        db.collection("courses")
+                .get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        for (QueryDocumentSnapshot document : task.getResult()) {
+                            buildListData(document);
+                        }
+                        openApp();
+                    } else {
+                        Log.d("MainActivity", "Error loading courses", task.getException());
+                    }
+                });
+    }
+
+    private void buildListData(QueryDocumentSnapshot document) {
+        String name = document.getString("courseName");
+        String duration = document.getString("courseDuration");
+        String desc = document.getString("courseDesc");
+
+        Course course = new Course(name, duration, desc);
+        courseList.add(course);
     }
 
     public void logInClicked(View view) {

@@ -11,28 +11,34 @@ import android.os.Bundle;
 import com.example.engvoyage.databinding.ActivityMainBinding;
 import com.example.engvoyage.databinding.ActivityNavigationBinding;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Navigation extends AppCompatActivity implements EditProfileFragment.OnProfileUpdatedListener{
 
     private User receivedUser;
+    private List<Course> receivedCourses;
     ActivityNavigationBinding binding;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = ActivityNavigationBinding.inflate(getLayoutInflater());
+        receivedCourses = new ArrayList<>();
 
         Intent intent = getIntent();
         if (intent != null && intent.hasExtra("user")) {
             receivedUser = (User) intent.getParcelableExtra("user");
+            receivedCourses = intent.getParcelableArrayListExtra("courseList");
         }
 
         setContentView(binding.getRoot());
-        replaceFragment(HomeFragment.newInstance(receivedUser));
+        replaceFragment(HomeFragment.newInstance(receivedUser, receivedCourses));
 
         binding.bottomNavigationView.setOnItemSelectedListener(item -> {
 
             int id = item.getItemId();
             if (id == R.id.home) {
-                replaceFragment(HomeFragment.newInstance(receivedUser));
+                replaceFragment(HomeFragment.newInstance(receivedUser, receivedCourses));
             } else if (id == R.id.vocBuilder) {
                 replaceFragment(new BuilderFragment());
             } else if (id == R.id.profile) {

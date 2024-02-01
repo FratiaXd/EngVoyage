@@ -29,25 +29,41 @@ public class CourseListFragment extends Fragment implements CourseAdapter.ItemCl
     private FirebaseFirestore db;
     private CourseAdapter courseAdapter;
     private UserCourses selectedUserCourse;
-    private List<Course> courseList;
     private List<UserCourses> userCoursesList;
     private RecyclerView recyclerView;
+
+    private static final String ARG_USER = "user";
+    private static final String ARG_COURSES = "courseList";
+    private User userCurrent;
+    private List<Course> availableCourses;
 
     public CourseListFragment() {
         // Required empty public constructor
     }
 
+    public static CourseListFragment newInstance(User currentuser, List<Course> coursesList) {
+        CourseListFragment fragment = new CourseListFragment();
+        Bundle args = new Bundle();
+        args.putParcelable(ARG_USER, currentuser);
+        args.putParcelableArrayList(ARG_COURSES, new ArrayList<>(coursesList));
+        fragment.setArguments(args);
+        return fragment;
+    }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if (getArguments() != null) {
+            userCurrent = getArguments().getParcelable(ARG_USER);
+            availableCourses = getArguments().getParcelableArrayList(ARG_COURSES);
+        }
         mAuth = FirebaseAuth.getInstance();
         currentUser = mAuth.getCurrentUser();
         db = FirebaseFirestore.getInstance();
         String uid = currentUser.getUid();
         docRefUser = db.collection("users").document(uid);
         userCoursesList = new ArrayList<>();
-        courseList = new ArrayList<>();
-        courseAdapter = new CourseAdapter(courseList, this);
+        courseAdapter = new CourseAdapter(availableCourses, this);
         getUserEnrolledCourses();
     }
 
@@ -58,7 +74,6 @@ public class CourseListFragment extends Fragment implements CourseAdapter.ItemCl
 
         initRecyclerView(view);
         returnHome(view);
-        readCourses();
 
         return view;
     }
@@ -69,37 +84,13 @@ public class CourseListFragment extends Fragment implements CourseAdapter.ItemCl
         recyclerView.setAdapter(courseAdapter);
     }
 
-    private void readCourses() {
-        db.collection("courses")
-                .get()
-                .addOnCompleteListener(task -> {
-                    if (task.isSuccessful()) {
-                        for (QueryDocumentSnapshot document : task.getResult()) {
-                            buildListData(document);
-                        }
-                        courseAdapter.notifyDataSetChanged();
-                    } else {
-                        Log.d("CourseListFragment", "Error", task.getException());
-                    }
-                });
-    }
-
-    private void buildListData(QueryDocumentSnapshot document) {
-        String name = document.getString("courseName");
-        String duration = document.getString("courseDuration");
-        String desc = document.getString("courseDesc");
-
-        Course course = new Course(name, duration, desc);
-        courseList.add(course);
-    }
-
     private void returnHome(View view) {
         ImageButton back = (ImageButton) view.findViewById(R.id.goBack);
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 FragmentTransaction fr = getParentFragmentManager().beginTransaction();
-                fr.replace(R.id.frame_layout, new HomeFragment());
+                fr.replace(R.id.frame_layout, HomeFragment.newInstance(userCurrent, availableCourses));
                 fr.commit();
             }
         });

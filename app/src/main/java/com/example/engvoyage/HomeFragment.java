@@ -38,22 +38,24 @@ public class HomeFragment extends Fragment implements CourseProgressAdapter.Item
     private FirebaseFirestore db;
     private DocumentReference docRefUser;
     private CoursePreviewAdapter coursePreviewAdapter;
-    private List<Course> courseListPreview;
     private List<UserCourses> courseListProgress;
     private RecyclerView recyclerView;
     private RecyclerView recyclerViewProgress;
     private CourseProgressAdapter courseProgressAdapter;
 
     private static final String ARG_USER = "user";
+    private static final String ARG_COURSES = "courseList";
     private User userCurrent;
+    private List<Course> availableCourses;
 
     public HomeFragment() {
         // Required empty public constructor
     }
-    public static HomeFragment newInstance(User currentuser) {
+    public static HomeFragment newInstance(User currentuser, List<Course> coursesList) {
         HomeFragment fragment = new HomeFragment();
         Bundle args = new Bundle();
         args.putParcelable(ARG_USER, currentuser);
+        args.putParcelableArrayList(ARG_COURSES, new ArrayList<>(coursesList));
         fragment.setArguments(args);
         return fragment;
     }
@@ -63,15 +65,15 @@ public class HomeFragment extends Fragment implements CourseProgressAdapter.Item
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             userCurrent = getArguments().getParcelable(ARG_USER);
+            availableCourses = getArguments().getParcelableArrayList(ARG_COURSES);
         }
         mAuth = FirebaseAuth.getInstance();
         currentUser = mAuth.getCurrentUser();
         db = FirebaseFirestore.getInstance();
         String uid = currentUser.getUid();
         docRefUser = db.collection("users").document(uid);
-        courseListPreview = new ArrayList<>();
         courseListProgress = new ArrayList<>();
-        coursePreviewAdapter = new CoursePreviewAdapter(courseListPreview);
+        coursePreviewAdapter = new CoursePreviewAdapter(availableCourses);
         courseProgressAdapter = new CourseProgressAdapter(courseListProgress, this);
     }
 
@@ -84,7 +86,6 @@ public class HomeFragment extends Fragment implements CourseProgressAdapter.Item
         initRecyclerProgressView(view);
         openAllCourses(view);
         greetUser(view);
-        readCourses();
         readUserCourses(view);
         return view;
     }
@@ -99,21 +100,6 @@ public class HomeFragment extends Fragment implements CourseProgressAdapter.Item
         recyclerViewProgress = view.findViewById(R.id.recyclerViewProgress);
         recyclerViewProgress.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerViewProgress.setAdapter(courseProgressAdapter);
-    }
-
-    private void readCourses() {
-        db.collection("courses")
-                .get()
-                .addOnCompleteListener(task -> {
-                    if (task.isSuccessful()) {
-                        for (QueryDocumentSnapshot document : task.getResult()) {
-                            buildListData(document);
-                        }
-                        coursePreviewAdapter.notifyDataSetChanged();
-                    } else {
-                        Log.d("HomeFragment", "Error", task.getException());
-                    }
-                });
     }
 
     private void readUserCourses(View view) {
@@ -137,15 +123,6 @@ public class HomeFragment extends Fragment implements CourseProgressAdapter.Item
                 });
     }
 
-    private void buildListData(QueryDocumentSnapshot document) {
-        String name = document.getString("courseName");
-        String duration = document.getString("courseDuration");
-        String desc = document.getString("courseDesc");
-
-        Course course = new Course(name, duration, desc);
-        courseListPreview.add(course);
-    }
-
     private void buildListProgressData(QueryDocumentSnapshot document) {
         String name = document.getString("courseName");
         String progress = document.getString("courseProgress");
@@ -165,7 +142,7 @@ public class HomeFragment extends Fragment implements CourseProgressAdapter.Item
             @Override
             public void onClick(View v) {
                 FragmentTransaction fr = getParentFragmentManager().beginTransaction();
-                fr.replace(R.id.frame_layout, new CourseListFragment());
+                fr.replace(R.id.frame_layout, CourseListFragment.newInstance(userCurrent, availableCourses));
                 fr.commit();
             }
         });
@@ -186,7 +163,7 @@ public class HomeFragment extends Fragment implements CourseProgressAdapter.Item
     }
 
     public Course findSelectedCourseInfo(String courseName) {
-        for (Course course : courseListPreview) {
+        for (Course course : availableCourses) {
             if (course.getCourseName().equals(courseName)) {
                 return course;
             }
