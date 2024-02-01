@@ -126,14 +126,15 @@ public class HomeFragment extends Fragment implements CourseProgressAdapter.Item
                             buildListProgressData(document);
                         }
                         courseProgressAdapter.notifyDataSetChanged();
-                        msg.setVisibility(View.INVISIBLE);
+                        if (courseListProgress.isEmpty()) {
+                            msg.setVisibility(View.VISIBLE);
+                        } else {
+                            msg.setVisibility(View.INVISIBLE);
+                        }
                     } else {
                         Log.d("HomeFragment", "Error", task.getException());
                     }
                 });
-        if (courseListProgress.isEmpty()) {
-            msg.setVisibility(View.VISIBLE);
-        }
     }
 
     private void buildListData(QueryDocumentSnapshot document) {
@@ -173,18 +174,6 @@ public class HomeFragment extends Fragment implements CourseProgressAdapter.Item
     private void greetUser(View view) {
         TextView greeting = (TextView) view.findViewById(R.id.greeting);
         greeting.setText("Hi " + userCurrent.getName() + "!");
-/*        docRefUser.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                if (task.isSuccessful()) {
-                    DocumentSnapshot document = task.getResult();
-                    if (document.exists()) {
-                        User user = document.toObject(User.class);
-                        greeting.setText("Hi " + user.getName() + "!");
-                    }
-                }
-            }
-        });*/
     }
 
     @Override
