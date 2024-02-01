@@ -36,7 +36,7 @@
 
     <TextView
         style="@style/MyTextView"
-        android:layout_marginTop="290dp"
+        android:layout_marginTop="280dp"
         android:layout_marginStart="23dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -44,7 +44,7 @@
 
     <TextView
         android:id="@+id/pronunciation"
-        android:layout_marginTop="325dp"
+        android:layout_marginTop="315dp"
         style="@style/CourseDescr"
         android:layout_marginHorizontal="23dp"
         android:layout_width="match_parent"
@@ -53,7 +53,7 @@
 
     <TextView
         style="@style/MyTextView"
-        android:layout_marginTop="380dp"
+        android:layout_marginTop="370dp"
         android:layout_marginStart="23dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -61,7 +61,7 @@
 
     <TextView
         android:id="@+id/meaningFull"
-        android:layout_marginTop="415dp"
+        android:layout_marginTop="405dp"
         style="@style/CourseDescr"
         android:layout_marginHorizontal="23dp"
         android:layout_width="match_parent"
@@ -70,7 +70,7 @@
 
     <TextView
         style="@style/MyTextView"
-        android:layout_marginTop="550dp"
+        android:layout_marginTop="510dp"
         android:layout_marginStart="23dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -78,7 +78,7 @@
 
     <TextView
         android:id="@+id/usage"
-        android:layout_marginTop="585dp"
+        android:layout_marginTop="545dp"
         style="@style/CourseDescr"
         android:layout_marginHorizontal="23dp"
         android:layout_width="match_parent"
@@ -90,7 +90,7 @@
         android:layout_height="wrap_content"
         android:src="@drawable/play_icon"
         android:background="@color/beige"
-        android:layout_marginTop="292dp"
+        android:layout_marginTop="282dp"
         android:layout_marginStart="155dp"/>
 
     <android.widget.Button
@@ -100,8 +100,20 @@
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="50dp"
         android:layout_gravity="bottom"
-        android:layout_marginBottom="25dp"
+        android:layout_marginBottom="85dp"
         android:background="@drawable/round_btn_green"
-        android:text="got it"/>
+        android:text="save word"/>
+
+    <android.widget.Button
+        style="@style/WhiteText"
+        android:id="@+id/proceed"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="50dp"
+        android:visibility="invisible"
+        android:layout_gravity="bottom"
+        android:layout_marginBottom="20dp"
+        android:background="@drawable/round_btn_green"
+        android:text="continue"/>
 
 </FrameLayout>
