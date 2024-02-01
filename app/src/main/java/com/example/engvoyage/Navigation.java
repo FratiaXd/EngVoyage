@@ -11,7 +11,7 @@ import android.os.Bundle;
 import com.example.engvoyage.databinding.ActivityMainBinding;
 import com.example.engvoyage.databinding.ActivityNavigationBinding;
 
-public class Navigation extends AppCompatActivity {
+public class Navigation extends AppCompatActivity implements EditProfileFragment.OnProfileUpdatedListener{
 
     private User receivedUser;
     ActivityNavigationBinding binding;
@@ -26,13 +26,13 @@ public class Navigation extends AppCompatActivity {
         }
 
         setContentView(binding.getRoot());
-        replaceFragment(new HomeFragment());
+        replaceFragment(HomeFragment.newInstance(receivedUser));
 
         binding.bottomNavigationView.setOnItemSelectedListener(item -> {
 
             int id = item.getItemId();
             if (id == R.id.home) {
-                replaceFragment(new HomeFragment());
+                replaceFragment(HomeFragment.newInstance(receivedUser));
             } else if (id == R.id.vocBuilder) {
                 replaceFragment(new BuilderFragment());
             } else if (id == R.id.profile) {
@@ -47,5 +47,11 @@ public class Navigation extends AppCompatActivity {
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.frame_layout, fragment);
         fragmentTransaction.commit();
+    }
+
+    @Override
+    public void onProfileUpdated(User updatedUser) {
+        // Update the receivedUser when the profile is updated
+        receivedUser = updatedUser;
     }
 }

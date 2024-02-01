@@ -1,5 +1,6 @@
 package com.example.engvoyage;
 
+import android.content.Context;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -30,7 +31,6 @@ import java.io.BufferedReader;
 public class EditProfileFragment extends Fragment {
 
     private static final String ARG_PARAM1 = "param1";
-
     private User user;
     private FirebaseAuth mAuth;
     private FirebaseUser currentUser;
@@ -39,6 +39,7 @@ public class EditProfileFragment extends Fragment {
     private TextInputEditText nameValue;
     private TextInputEditText surnameValue;
     private TextInputEditText emailValue;
+    private OnProfileUpdatedListener profileUpdatedListener;
 
     public EditProfileFragment() {
         // Required empty public constructor
@@ -50,6 +51,17 @@ public class EditProfileFragment extends Fragment {
         args.putParcelable(ARG_PARAM1, user);
         fragment.setArguments(args);
         return fragment;
+    }
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        // Make sure the host activity implements the interface
+        try {
+            profileUpdatedListener = (OnProfileUpdatedListener) context;
+        } catch (ClassCastException e) {
+            throw new ClassCastException(context.toString() + " must implement OnProfileUpdatedListener");
+        }
     }
 
     @Override
@@ -109,6 +121,7 @@ public class EditProfileFragment extends Fragment {
                         Toast.makeText(getActivity(),"Details updated!",Toast.LENGTH_SHORT).show();
                         user.setName(name);
                         user.setSurname(surname);
+                        profileUpdatedListener.onProfileUpdated(user);
                     }
                 }).addOnFailureListener(new OnFailureListener() {
                     @Override
@@ -126,5 +139,9 @@ public class EditProfileFragment extends Fragment {
         nameValue.setText(user.getName());
         surnameValue.setText(user.getSurname());
         emailValue.setText(user.getEmail());
+    }
+
+    public interface OnProfileUpdatedListener {
+        void onProfileUpdated(User updatedUser);
     }
 }

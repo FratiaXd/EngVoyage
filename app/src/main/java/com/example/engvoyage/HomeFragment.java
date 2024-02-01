@@ -32,11 +32,6 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {} factory method to
- * create an instance of this fragment.
- */
 public class HomeFragment extends Fragment implements CourseProgressAdapter.ItemClickListener{
     private FirebaseAuth mAuth;
     private FirebaseUser currentUser;
@@ -49,13 +44,26 @@ public class HomeFragment extends Fragment implements CourseProgressAdapter.Item
     private RecyclerView recyclerViewProgress;
     private CourseProgressAdapter courseProgressAdapter;
 
+    private static final String ARG_USER = "user";
+    private User userCurrent;
+
     public HomeFragment() {
         // Required empty public constructor
+    }
+    public static HomeFragment newInstance(User currentuser) {
+        HomeFragment fragment = new HomeFragment();
+        Bundle args = new Bundle();
+        args.putParcelable(ARG_USER, currentuser);
+        fragment.setArguments(args);
+        return fragment;
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if (getArguments() != null) {
+            userCurrent = getArguments().getParcelable(ARG_USER);
+        }
         mAuth = FirebaseAuth.getInstance();
         currentUser = mAuth.getCurrentUser();
         db = FirebaseFirestore.getInstance();
@@ -164,7 +172,8 @@ public class HomeFragment extends Fragment implements CourseProgressAdapter.Item
 
     private void greetUser(View view) {
         TextView greeting = (TextView) view.findViewById(R.id.greeting);
-        docRefUser.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+        greeting.setText("Hi " + userCurrent.getName() + "!");
+/*        docRefUser.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                 if (task.isSuccessful()) {
@@ -175,7 +184,7 @@ public class HomeFragment extends Fragment implements CourseProgressAdapter.Item
                     }
                 }
             }
-        });
+        });*/
     }
 
     @Override
