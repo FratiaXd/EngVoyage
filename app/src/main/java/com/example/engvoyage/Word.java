@@ -84,4 +84,14 @@ public class Word implements Parcelable {
         dest.writeString(usage);
         dest.writeString(difficulty);
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
+
+        Word other = (Word) obj;
+
+        return word != null && word.equals(other.word);
+    }
 }
