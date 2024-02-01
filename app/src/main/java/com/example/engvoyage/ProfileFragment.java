@@ -102,14 +102,16 @@ public class ProfileFragment extends Fragment implements CourseProgressAdapter.I
                             buildListProgressData(document);
                         }
                         courseProgressAdapter.notifyDataSetChanged();
-                        msg.setVisibility(View.INVISIBLE);
+
+                        if (courseListProgress.isEmpty()) {
+                            msg.setVisibility(View.VISIBLE);
+                        } else {
+                            msg.setVisibility(View.INVISIBLE);
+                        }
                     } else {
                         Log.d("HomeFragment", "Error", task.getException());
                     }
                 });
-        if (courseListProgress.isEmpty()) {
-            msg.setVisibility(View.VISIBLE);
-        }
     }
 
     private void buildListProgressData(QueryDocumentSnapshot document) {
