@@ -142,7 +142,7 @@ public class HomeFragment extends Fragment implements CourseProgressAdapter.Item
             @Override
             public void onClick(View v) {
                 FragmentTransaction fr = getParentFragmentManager().beginTransaction();
-                fr.replace(R.id.frame_layout, CourseListFragment.newInstance(userCurrent, availableCourses));
+                fr.replace(R.id.frame_layout, CourseListFragment.newInstance(userCurrent, availableCourses, courseListProgress));
                 fr.commit();
             }
         });

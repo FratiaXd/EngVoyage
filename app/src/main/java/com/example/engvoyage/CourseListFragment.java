@@ -29,23 +29,25 @@ public class CourseListFragment extends Fragment implements CourseAdapter.ItemCl
     private FirebaseFirestore db;
     private CourseAdapter courseAdapter;
     private UserCourses selectedUserCourse;
-    private List<UserCourses> userCoursesList;
     private RecyclerView recyclerView;
 
     private static final String ARG_USER = "user";
     private static final String ARG_COURSES = "courseList";
+    private static final String ARG_USER_COURSES = "userCourseList";
     private User userCurrent;
     private List<Course> availableCourses;
+    private List<UserCourses> userCourses;
 
     public CourseListFragment() {
         // Required empty public constructor
     }
 
-    public static CourseListFragment newInstance(User currentuser, List<Course> coursesList) {
+    public static CourseListFragment newInstance(User currentuser, List<Course> coursesList, List<UserCourses> coursesUser) {
         CourseListFragment fragment = new CourseListFragment();
         Bundle args = new Bundle();
         args.putParcelable(ARG_USER, currentuser);
         args.putParcelableArrayList(ARG_COURSES, new ArrayList<>(coursesList));
+        args.putParcelableArrayList(ARG_USER_COURSES, new ArrayList<>(coursesUser));
         fragment.setArguments(args);
         return fragment;
     }
@@ -56,15 +58,14 @@ public class CourseListFragment extends Fragment implements CourseAdapter.ItemCl
         if (getArguments() != null) {
             userCurrent = getArguments().getParcelable(ARG_USER);
             availableCourses = getArguments().getParcelableArrayList(ARG_COURSES);
+            userCourses = getArguments().getParcelableArrayList(ARG_USER_COURSES);
         }
         mAuth = FirebaseAuth.getInstance();
         currentUser = mAuth.getCurrentUser();
         db = FirebaseFirestore.getInstance();
         String uid = currentUser.getUid();
         docRefUser = db.collection("users").document(uid);
-        userCoursesList = new ArrayList<>();
         courseAdapter = new CourseAdapter(availableCourses, this);
-        getUserEnrolledCourses();
     }
 
     @Override
@@ -96,29 +97,6 @@ public class CourseListFragment extends Fragment implements CourseAdapter.ItemCl
         });
     }
 
-    public void getUserEnrolledCourses() {
-        docRefUser.collection("userCourses")
-                .get()
-                .addOnCompleteListener(task -> {
-                    if (task.isSuccessful()) {
-                        for (QueryDocumentSnapshot document : task.getResult()) {
-                            buildCourseListData(document);
-                        }
-                    } else {
-                        Log.d("CourseListFragment", "Error", task.getException());
-                    }
-                });
-    }
-
-    private void buildCourseListData(QueryDocumentSnapshot document) {
-        String name = document.getString("courseName");
-        String progress = document.getString("courseProgress");
-        String duration = document.getString("courseDuration");
-
-        UserCourses userCourses = new UserCourses(name, progress, duration);
-        userCoursesList.add(userCourses);
-    }
-
     @Override
     public void onItemClick(Course course) {
         if (isEnrolled(course.getCourseName())) {
@@ -145,12 +123,16 @@ public class CourseListFragment extends Fragment implements CourseAdapter.ItemCl
     }
 
     public boolean isEnrolled(String selectedCourse) {
-        for (UserCourses course : userCoursesList) {
+        for (UserCourses course : userCourses) {
             if (course.getCourseName().equals(selectedCourse)) {
                 selectedUserCourse = course;
                 return true;
             }
         }
         return false;
+    }
+
+    public void getLesson() {
+
     }
 }
