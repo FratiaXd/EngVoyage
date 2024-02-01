@@ -35,11 +35,8 @@ public class ProfileFragment extends Fragment implements CourseProgressAdapter.I
     private FirebaseFirestore db;
     private DocumentReference docRefUser;
     private User user;
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    private String mParam1;
-    private String mParam2;
+    private static final String ARG_USER = "user";
+    private User userCurrent;
     private List<UserCourses> courseListProgress;
     private RecyclerView recyclerView;
     private CourseProgressAdapter courseProgressAdapter;
@@ -48,11 +45,10 @@ public class ProfileFragment extends Fragment implements CourseProgressAdapter.I
         // Required empty public constructor
     }
 
-    public static ProfileFragment newInstance(String param1, String param2) {
+    public static ProfileFragment newInstance(User currentuser) {
         ProfileFragment fragment = new ProfileFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
+        args.putParcelable(ARG_USER, currentuser);
         fragment.setArguments(args);
         return fragment;
     }
@@ -61,8 +57,7 @@ public class ProfileFragment extends Fragment implements CourseProgressAdapter.I
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+            userCurrent = getArguments().getParcelable(ARG_USER);
         }
         mAuth = FirebaseAuth.getInstance();
         currentUser = mAuth.getCurrentUser();
@@ -143,6 +138,8 @@ public class ProfileFragment extends Fragment implements CourseProgressAdapter.I
     private void getUserDetails(View view) {
         TextView username = (TextView) view.findViewById(R.id.username);
         TextView email = (TextView) view.findViewById(R.id.email);
+        username.setText(userCurrent.getName() + " " + userCurrent.getSurname());
+        email.setText(userCurrent.getEmail());
         docRefUser.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
@@ -150,8 +147,6 @@ public class ProfileFragment extends Fragment implements CourseProgressAdapter.I
                     DocumentSnapshot document = task.getResult();
                     if (document.exists()) {
                         user = document.toObject(User.class);
-                        username.setText(user.getName() + " " + user.getSurname());
-                        email.setText(user.getEmail());
                     }
                 }
             }

@@ -48,6 +48,14 @@ public class User implements Parcelable {
         return email;
     }
 
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setSurname(String surname) {
+        this.surname = surname;
+    }
+
     @Override
     public int describeContents() {
         return 0;

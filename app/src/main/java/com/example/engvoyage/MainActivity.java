@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -27,7 +28,9 @@ public class MainActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private FirebaseUser currentUser;
     private FirebaseFirestore db;
-    Button openRegister;
+    private Button openRegister;
+    private DocumentReference docRefUser;
+    private User userInformation;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,7 +55,9 @@ public class MainActivity extends AppCompatActivity {
         super.onStart();
         currentUser = mAuth.getCurrentUser();
         if (currentUser != null) {
-            openApp();
+            String uid = currentUser.getUid();
+            docRefUser = db.collection("users").document(uid);
+            getUserDetails();
         }
     }
 
@@ -63,8 +68,10 @@ public class MainActivity extends AppCompatActivity {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             FirebaseUser user = mAuth.getCurrentUser();
+                            String uid = user.getUid();
+                            docRefUser = db.collection("users").document(uid);
+                            getUserDetails();
                             Toast.makeText(MainActivity.this, "Authentication complete", Toast.LENGTH_SHORT).show();
-                            openApp();
                         } else {
                             Log.w("MainActivity", "logInWithEmail:failure", task.getException());
                             Toast.makeText(MainActivity.this, "Authentication failed.",
@@ -76,7 +83,23 @@ public class MainActivity extends AppCompatActivity {
 
     public void openApp() {
         Intent intent = new Intent(MainActivity.this, Navigation.class);
+        intent.putExtra("user", userInformation);
         startActivity(intent);
+    }
+
+    private void getUserDetails() {
+        docRefUser.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    if (document.exists()) {
+                        userInformation = document.toObject(User.class);
+                        openApp();
+                    }
+                }
+            }
+        });
     }
 
     public void logInClicked(View view) {

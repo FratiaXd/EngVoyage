@@ -5,17 +5,26 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import com.example.engvoyage.databinding.ActivityMainBinding;
 import com.example.engvoyage.databinding.ActivityNavigationBinding;
 
 public class Navigation extends AppCompatActivity {
+
+    private User receivedUser;
     ActivityNavigationBinding binding;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = ActivityNavigationBinding.inflate(getLayoutInflater());
+
+        Intent intent = getIntent();
+        if (intent != null && intent.hasExtra("user")) {
+            receivedUser = (User) intent.getParcelableExtra("user");
+        }
+
         setContentView(binding.getRoot());
         replaceFragment(new HomeFragment());
 
@@ -27,7 +36,7 @@ public class Navigation extends AppCompatActivity {
             } else if (id == R.id.vocBuilder) {
                 replaceFragment(new BuilderFragment());
             } else if (id == R.id.profile) {
-                replaceFragment(new ProfileFragment());
+                replaceFragment(ProfileFragment.newInstance(receivedUser));
             }
             return true;
         });

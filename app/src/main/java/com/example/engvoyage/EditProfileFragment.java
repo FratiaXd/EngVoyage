@@ -82,7 +82,7 @@ public class EditProfileFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 FragmentTransaction fr = getParentFragmentManager().beginTransaction();
-                fr.replace(R.id.frame_layout, new ProfileFragment());
+                fr.replace(R.id.frame_layout, ProfileFragment.newInstance(user));
                 fr.commit();
             }
         });
@@ -101,13 +101,14 @@ public class EditProfileFragment extends Fragment {
     public void setNewDetails() {
         String name = nameValue.getText().toString().trim();
         String surname = surnameValue.getText().toString().trim();
-        //String email = emailValue.getText().toString().trim();
         docRefUser.update("name",name, "surname", surname)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void unused) {
                         Log.d("EditProfileFragment", "DocumentSnapshot successfully updated!");
                         Toast.makeText(getActivity(),"Details updated!",Toast.LENGTH_SHORT).show();
+                        user.setName(name);
+                        user.setSurname(surname);
                     }
                 }).addOnFailureListener(new OnFailureListener() {
                     @Override
@@ -122,19 +123,8 @@ public class EditProfileFragment extends Fragment {
         nameValue = (TextInputEditText) view.findViewById(R.id.nameInputEdit);
         surnameValue = (TextInputEditText) view.findViewById(R.id.surnameInputEdit);
         emailValue = (TextInputEditText) view.findViewById(R.id.emailInputEdit);
-        docRefUser.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                if (task.isSuccessful()) {
-                    DocumentSnapshot document = task.getResult();
-                    if (document.exists()) {
-                        User user = document.toObject(User.class);
-                        nameValue.setText(user.getName());
-                        surnameValue.setText(user.getSurname());
-                        emailValue.setText(user.getEmail());
-                    }
-                }
-            }
-        });
+        nameValue.setText(user.getName());
+        surnameValue.setText(user.getSurname());
+        emailValue.setText(user.getEmail());
     }
 }
