@@ -88,6 +88,10 @@ public class VocabularyFragment extends Fragment implements WordAdapter.ItemClic
 
     @Override
     public void onItemClick(Word word) {
-
+        Fragment fragment = WordInfoFragment.newInstance(word);
+        FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.frame_layout, fragment, "fragment_word_info");
+        transaction.addToBackStack(null);
+        transaction.commit();
     }
 }

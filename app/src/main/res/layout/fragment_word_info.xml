@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".WordInfoFragment">
+
+    <ImageButton
+        android:id="@+id/goBackToWords"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_gravity="top|end"
+        android:background="@drawable/add"/>
+
+    <TextView
+        style="@style/HeadingText"
+        android:id="@+id/wordInfo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Vocabulary Builder"
+        android:layout_marginHorizontal="20dp"
+        android:gravity="center"
+        android:layout_marginTop="120dp"/>
+
+    <TextView
+        style="@style/GreetingText"
+        android:id="@+id/wordMeaningShortInfo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="20dp"
+        android:text="Pick difficulty level"
+        android:gravity="center"
+        android:layout_marginTop="180dp"/>
+
+    <TextView
+        style="@style/MyTextView"
+        android:layout_marginTop="280dp"
+        android:layout_marginStart="23dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Pronunciation"/>
+
+    <TextView
+        android:id="@+id/pronunciationInfo"
+        android:layout_marginTop="315dp"
+        style="@style/CourseDescr"
+        android:layout_marginHorizontal="23dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/hello_blank_fragment" />
+
+    <TextView
+        style="@style/MyTextView"
+        android:layout_marginTop="370dp"
+        android:layout_marginStart="23dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Meaning"/>
+
+    <TextView
+        android:id="@+id/meaningFullInfo"
+        android:layout_marginTop="405dp"
+        style="@style/CourseDescr"
+        android:layout_marginHorizontal="23dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/hello_blank_fragment" />
+
+    <TextView
+        style="@style/MyTextView"
+        android:layout_marginTop="510dp"
+        android:layout_marginStart="23dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Usage"/>
+
+    <TextView
+        android:id="@+id/usageInfo"
+        android:layout_marginTop="545dp"
+        style="@style/CourseDescr"
+        android:layout_marginHorizontal="23dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/hello_blank_fragment" />
+
+    <ImageButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/play_icon"
+        android:background="@color/beige"
+        android:layout_marginTop="282dp"
+        android:layout_marginStart="155dp"/>
+
+    <android.widget.Button
+        style="@style/WhiteText"
+        android:id="@+id/backToWords"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="50dp"
+        android:layout_gravity="bottom"
+        android:layout_marginBottom="55dp"
+        android:background="@drawable/round_btn_green"
+        android:text="got it"/>
+
+</FrameLayout>
