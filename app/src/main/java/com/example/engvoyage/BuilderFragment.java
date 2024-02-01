@@ -2,6 +2,7 @@ package com.example.engvoyage;
 
 import android.os.Bundle;
 
+import androidx.annotation.BinderThread;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
@@ -80,7 +81,7 @@ public class BuilderFragment extends Fragment {
         openEasyWords(view);
         openAdvancedWords(view);
         openIntermediateWords(view);
-        //remove user learned words
+        openVocabulary(view);
         return view;
     }
 
@@ -118,6 +119,19 @@ public class BuilderFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Fragment fragment = WordFragment.newInstance(wordListAdvanced);
+                FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+                transaction.replace(R.id.frame_layout, fragment, "fragment_word");
+                transaction.commit();
+            }
+        });
+    }
+
+    public void openVocabulary(View view) {
+        Button vocabBtn = (Button) view.findViewById(R.id.vocabulary);
+        vocabBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Fragment fragment = VocabularyFragment.newInstance(userWordList);
                 FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
                 transaction.replace(R.id.frame_layout, fragment, "fragment_word");
                 transaction.commit();
