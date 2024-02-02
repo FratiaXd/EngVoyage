@@ -14,11 +14,14 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.Random;
@@ -36,6 +39,8 @@ public class CoursePracticeFragment extends Fragment {
     private Lesson lessonInfo;
     private Course courseInfo;
     private UserCourses userCoursesInfo;
+
+    private Lesson newLesson;
 
     private Button answ1;
     private Button answ2;
@@ -72,6 +77,7 @@ public class CoursePracticeFragment extends Fragment {
                 .document(uid)
                 .collection("userCourses")
                 .document(courseInfo.getCourseName());
+        getLesson(userCoursesInfo);
     }
 
     @Override
@@ -115,7 +121,7 @@ public class CoursePracticeFragment extends Fragment {
                     transaction.commit();
                 } else {
                     updateUserProgress();
-                    Fragment fragment = CourseMaterialFragment.newInstance(userCoursesInfo, courseInfo);
+                    Fragment fragment = CourseMaterialFragment.newInstance(userCoursesInfo, courseInfo, newLesson);
                     FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
                     transaction.replace(R.id.frame_layout, fragment, "fragment_course_material");
                     transaction.commit();
@@ -200,9 +206,28 @@ public class CoursePracticeFragment extends Fragment {
         close.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                FragmentTransaction fr = getParentFragmentManager().beginTransaction();
-                fr.replace(R.id.frame_layout, new HomeFragment());
-                fr.commit();
+                getParentFragmentManager().popBackStack();
+            }
+        });
+    }
+
+    public void getLesson(UserCourses userCourseInfo) {
+        String currentLesson = "lesson" + userCourseInfo.getCourseProgress();
+        db = FirebaseFirestore.getInstance();
+        DocumentReference docRefCourse = db.collection("courses")
+                .document(userCourseInfo.getCourseName())
+                .collection("lessons")
+                .document(currentLesson);
+
+        docRefCourse.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    if (document.exists()) {
+                        newLesson = document.toObject(Lesson.class);
+                    }
+                }
             }
         });
     }

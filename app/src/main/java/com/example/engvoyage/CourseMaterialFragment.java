@@ -26,22 +26,25 @@ public class CourseMaterialFragment extends Fragment {
 
     private FirebaseFirestore db;
     private DocumentReference docRefCourse;
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+    private static final String ARG_USER_COURSE = "userCourse";
+    private static final String ARG_COURSE = "course";
+    private static final String ARG_LESSON = "lesson";
 
     public Lesson lesson;
     public UserCourses userCourseInfo;
     public Course currentCourse;
+    public Lesson currentLesson;
 
     public CourseMaterialFragment() {
         // Required empty public constructor
     }
 
-    public static CourseMaterialFragment newInstance(UserCourses userCourse, Course course) {
+    public static CourseMaterialFragment newInstance(UserCourses userCourse, Course course, Lesson lesson) {
         CourseMaterialFragment fragment = new CourseMaterialFragment();
         Bundle args = new Bundle();
-        args.putParcelable(ARG_PARAM1, userCourse);
-        args.putParcelable(ARG_PARAM2, course);
+        args.putParcelable(ARG_USER_COURSE, userCourse);
+        args.putParcelable(ARG_COURSE, course);
+        args.putParcelable(ARG_LESSON, lesson);
         fragment.setArguments(args);
         return fragment;
     }
@@ -50,15 +53,16 @@ public class CourseMaterialFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            userCourseInfo = getArguments().getParcelable(ARG_PARAM1);
-            currentCourse = getArguments().getParcelable(ARG_PARAM2);
+            userCourseInfo = getArguments().getParcelable(ARG_USER_COURSE);
+            currentCourse = getArguments().getParcelable(ARG_COURSE);
+            currentLesson = getArguments().getParcelable(ARG_LESSON);
         }
-        String currentLesson = "lesson" + userCourseInfo.getCourseProgress();
+        String currentLesson1 = "lesson" + userCourseInfo.getCourseProgress();
         db = FirebaseFirestore.getInstance();
         docRefCourse = db.collection("courses")
                 .document(userCourseInfo.getCourseName())
                 .collection("lessons")
-                .document(currentLesson);
+                .document(currentLesson1);
     }
 
     @Override
@@ -77,20 +81,9 @@ public class CourseMaterialFragment extends Fragment {
         TextView courseNumber = (TextView) view.findViewById(R.id.courseNumber);
         TextView courseMaterial = (TextView) view.findViewById(R.id.courseMaterial);
         String showProgress = "Lesson " + userCourseInfo.getCourseProgress() + "/" + currentCourse.getCourseDuration();
-        docRefCourse.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                if (task.isSuccessful()) {
-                    DocumentSnapshot document = task.getResult();
-                    if (document.exists()) {
-                        lesson = document.toObject(Lesson.class);
-                        courseTitle.setText(userCourseInfo.getCourseName());
-                        courseNumber.setText(showProgress);
-                        courseMaterial.setText(lesson.getMaterial());
-                    }
-                }
-            }
-        });
+        courseTitle.setText(userCourseInfo.getCourseName());
+        courseNumber.setText(showProgress);
+        courseMaterial.setText(currentLesson.getMaterial());
     }
 
     public void goToPractice(View view) {
@@ -98,7 +91,7 @@ public class CourseMaterialFragment extends Fragment {
         practiceBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Fragment fragment = CoursePracticeFragment.newInstance(lesson, currentCourse, userCourseInfo);
+                Fragment fragment = CoursePracticeFragment.newInstance(currentLesson, currentCourse, userCourseInfo);
                 FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
                 transaction.replace(R.id.frame_layout, fragment, "fragment_course_practice");
                 transaction.commit();
@@ -111,9 +104,7 @@ public class CourseMaterialFragment extends Fragment {
         close.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                FragmentTransaction fr = getParentFragmentManager().beginTransaction();
-                fr.replace(R.id.frame_layout, new HomeFragment());
-                fr.commit();
+                getParentFragmentManager().popBackStack();
             }
         });
     }

@@ -31,14 +31,22 @@ public class CourseDetailFragment extends Fragment {
     private FirebaseFirestore db;
     private DocumentReference docRefUser;
     private List<UserCourses> userCoursesList;
-    private static final String ARG_PARAM1 = "param1";
+    private static final String ARG_USER_COURSE = "userCourse";
+    private static final String ARG_COURSE = "course";
+    private static final String ARG_LESSON = "lesson";
 
     private Course courseInfo;
 
-    public static CourseDetailFragment newInstance(Course course) {
+    public UserCourses userCourseInfo;
+    public Course currentCourse;
+    public Lesson currentLesson;
+
+    public static CourseDetailFragment newInstance(UserCourses userCourse, Course course, Lesson lesson) {
         CourseDetailFragment fragment = new CourseDetailFragment();
         Bundle args = new Bundle();
-        args.putParcelable(ARG_PARAM1, course);
+        args.putParcelable(ARG_USER_COURSE, userCourse);
+        args.putParcelable(ARG_COURSE, course);
+        args.putParcelable(ARG_LESSON, lesson);
         fragment.setArguments(args);
         return fragment;
     }
@@ -51,7 +59,9 @@ public class CourseDetailFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            courseInfo = getArguments().getParcelable(ARG_PARAM1);
+            userCourseInfo = getArguments().getParcelable(ARG_USER_COURSE);
+            currentCourse = getArguments().getParcelable(ARG_COURSE);
+            currentLesson = getArguments().getParcelable(ARG_LESSON);
         }
         mAuth = FirebaseAuth.getInstance();
         currentUser = mAuth.getCurrentUser();
@@ -69,9 +79,9 @@ public class CourseDetailFragment extends Fragment {
         TextView detailsName = view.findViewById(R.id.detailsCourseName);
         TextView detailsDur = view.findViewById(R.id.detailsCourseDur);
         TextView detailsDesc = view.findViewById(R.id.detailsCourseDesc);
-        detailsName.setText(courseInfo.getCourseName());
-        detailsDur.setText(courseInfo.getCourseDuration());
-        detailsDesc.setText(courseInfo.getCourseDesc());
+        detailsName.setText(currentCourse.getCourseName());
+        detailsDur.setText(currentCourse.getCourseDuration());
+        detailsDesc.setText(currentCourse.getCourseDesc());
 
         enrollUser(view);
         returnToList(view);
@@ -84,14 +94,13 @@ public class CourseDetailFragment extends Fragment {
         enrollBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                UserCourses userCourse = new UserCourses(courseInfo.getCourseName(), "1", courseInfo.getCourseDuration());
-                docRefUser.collection("userCourses").document(courseInfo.getCourseName())
-                        .set(userCourse)
+                docRefUser.collection("userCourses").document(currentCourse.getCourseName())
+                        .set(userCourseInfo)
                         .addOnSuccessListener(new OnSuccessListener<Void>() {
                             @Override
                             public void onSuccess(Void unused) {
                                 Log.d("CourseDetailFragment", "User enrolled");
-                                Fragment fragment = CourseMaterialFragment.newInstance(userCourse, courseInfo);
+                                Fragment fragment = CourseMaterialFragment.newInstance(userCourseInfo, currentCourse, currentLesson);
                                 FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
                                 transaction.replace(R.id.frame_layout, fragment, "fragment_course_material");
                                 transaction.commit();
@@ -111,9 +120,7 @@ public class CourseDetailFragment extends Fragment {
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                FragmentTransaction fr = getParentFragmentManager().beginTransaction();
-                fr.replace(R.id.frame_layout, new CourseListFragment());
-                fr.commit();
+                getParentFragmentManager().popBackStack();
             }
         });
     }

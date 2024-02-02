@@ -10,6 +10,10 @@ public class UserCourses implements Parcelable {
     private String courseProgress;
     private String courseDuration;
 
+    public UserCourses() {
+
+    }
+
     protected UserCourses(Parcel in) {
         courseName = in.readString();
         courseProgress = in.readString();
@@ -37,6 +41,10 @@ public class UserCourses implements Parcelable {
     }
 
     public String getCourseDuration() { return courseDuration; }
+
+    public void setCourseName(String courseName) {
+        this.courseName = courseName;
+    }
 
     public void setCourseProgress(String progress) {
         courseProgress = progress;

@@ -47,6 +47,7 @@ public class HomeFragment extends Fragment implements CourseProgressAdapter.Item
     private static final String ARG_COURSES = "courseList";
     private User userCurrent;
     private List<Course> availableCourses;
+    private List<UserCourses> allUserCourses;
 
     public HomeFragment() {
         // Required empty public constructor
@@ -73,6 +74,7 @@ public class HomeFragment extends Fragment implements CourseProgressAdapter.Item
         String uid = currentUser.getUid();
         docRefUser = db.collection("users").document(uid);
         courseListProgress = new ArrayList<>();
+        allUserCourses = new ArrayList<>();
         coursePreviewAdapter = new CoursePreviewAdapter(availableCourses);
         courseProgressAdapter = new CourseProgressAdapter(courseListProgress, this);
     }
@@ -129,10 +131,13 @@ public class HomeFragment extends Fragment implements CourseProgressAdapter.Item
         String duration = document.getString("courseDuration");
         int progressInt = Integer.parseInt(progress);
         int durationInt = Integer.parseInt(duration);
+        UserCourses userCourses = new UserCourses(name, progress, duration);
 
         if (progressInt <= durationInt) {
-            UserCourses userCourses = new UserCourses(name, progress, duration);
             courseListProgress.add(userCourses);
+            allUserCourses.add(userCourses);
+        } else {
+            allUserCourses.add(userCourses);
         }
     }
 
@@ -142,7 +147,8 @@ public class HomeFragment extends Fragment implements CourseProgressAdapter.Item
             @Override
             public void onClick(View v) {
                 FragmentTransaction fr = getParentFragmentManager().beginTransaction();
-                fr.replace(R.id.frame_layout, CourseListFragment.newInstance(userCurrent, availableCourses, courseListProgress));
+                fr.replace(R.id.frame_layout, CourseListFragment.newInstance(userCurrent, availableCourses, allUserCourses));
+                fr.addToBackStack(null);
                 fr.commit();
             }
         });
@@ -154,12 +160,12 @@ public class HomeFragment extends Fragment implements CourseProgressAdapter.Item
     }
 
     @Override
-    public void onItemClick(UserCourses userCourses) {
+    public void onItemClick(UserCourses userCourses) {/*
         Course selectedCourse = findSelectedCourseInfo(userCourses.getCourseName());
         Fragment fragment = CourseMaterialFragment.newInstance(userCourses, selectedCourse);
         FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.frame_layout, fragment, "fragment_course_material");
-        transaction.commit();
+        transaction.commit();*/
     }
 
     public Course findSelectedCourseInfo(String courseName) {

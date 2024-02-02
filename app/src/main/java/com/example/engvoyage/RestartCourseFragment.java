@@ -26,8 +26,12 @@ public class RestartCourseFragment extends Fragment {
     private DocumentReference docRefUserCourse;
     private FirebaseAuth mAuth;
     private FirebaseUser currentUser;
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+    private static final String ARG_USER_COURSE = "userCourse";
+    private static final String ARG_COURSE = "course";
+    private static final String ARG_LESSON = "lesson";
+    public UserCourses userCourseInfo;
+    public Course currentCourse;
+    public Lesson currentLesson;
 
     private Course courseInfo;
     private UserCourses userCoursesInfo;
@@ -36,11 +40,12 @@ public class RestartCourseFragment extends Fragment {
         // Required empty public constructor
     }
 
-    public static RestartCourseFragment newInstance(Course course, UserCourses userCourse) {
+    public static RestartCourseFragment newInstance(UserCourses userCourse, Course course, Lesson lesson) {
         RestartCourseFragment fragment = new RestartCourseFragment();
         Bundle args = new Bundle();
-        args.putParcelable(ARG_PARAM1, course);
-        args.putParcelable(ARG_PARAM2, userCourse);
+        args.putParcelable(ARG_USER_COURSE, userCourse);
+        args.putParcelable(ARG_COURSE, course);
+        args.putParcelable(ARG_LESSON, lesson);
         fragment.setArguments(args);
         return fragment;
     }
@@ -49,8 +54,9 @@ public class RestartCourseFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            courseInfo = getArguments().getParcelable(ARG_PARAM1);
-            userCoursesInfo = getArguments().getParcelable(ARG_PARAM2);
+            userCourseInfo = getArguments().getParcelable(ARG_USER_COURSE);
+            currentCourse = getArguments().getParcelable(ARG_COURSE);
+            currentLesson = getArguments().getParcelable(ARG_LESSON);
         }
         mAuth = FirebaseAuth.getInstance();
         currentUser = mAuth.getCurrentUser();
@@ -59,7 +65,7 @@ public class RestartCourseFragment extends Fragment {
         docRefUserCourse = db.collection("users")
                 .document(uid)
                 .collection("userCourses")
-                .document(courseInfo.getCourseName());
+                .document(currentCourse.getCourseName());
     }
 
     @Override
@@ -78,7 +84,7 @@ public class RestartCourseFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 restartCourse();
-                Fragment fragment = CourseMaterialFragment.newInstance(userCoursesInfo, courseInfo);
+                Fragment fragment = CourseMaterialFragment.newInstance(userCourseInfo, currentCourse, currentLesson);
                 FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
                 transaction.replace(R.id.frame_layout, fragment, "fragment_course_material");
                 transaction.commit();
@@ -102,7 +108,7 @@ public class RestartCourseFragment extends Fragment {
                         Log.w("CoursePracticeFragment", "Could not update user progress", e);
                     }
                 });
-        userCoursesInfo.setCourseProgress(updProgress);
+        userCourseInfo.setCourseProgress(updProgress);
     }
 
     public void closeRestart(View view) {

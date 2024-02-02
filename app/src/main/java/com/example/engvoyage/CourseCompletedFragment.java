@@ -55,9 +55,7 @@ public class CourseCompletedFragment extends Fragment {
         completeBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                FragmentTransaction fr = getParentFragmentManager().beginTransaction();
-                fr.replace(R.id.frame_layout, new HomeFragment());
-                fr.commit();
+                getParentFragmentManager().popBackStack();
             }
         });
     }

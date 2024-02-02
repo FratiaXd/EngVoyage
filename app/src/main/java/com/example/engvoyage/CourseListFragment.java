@@ -2,6 +2,7 @@ package com.example.engvoyage;
 
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -13,9 +14,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.android.gms.tasks.TaskCompletionSource;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 
@@ -37,6 +42,8 @@ public class CourseListFragment extends Fragment implements CourseAdapter.ItemCl
     private User userCurrent;
     private List<Course> availableCourses;
     private List<UserCourses> userCourses;
+
+    private Lesson lesson;
 
     public CourseListFragment() {
         // Required empty public constructor
@@ -103,22 +110,48 @@ public class CourseListFragment extends Fragment implements CourseAdapter.ItemCl
             int progressInt = Integer.parseInt(selectedUserCourse.getCourseProgress());
             int durationInt = Integer.parseInt(selectedUserCourse.getCourseDuration());
             if (progressInt > durationInt) {
-                Fragment fragment = RestartCourseFragment.newInstance(course, selectedUserCourse);
-                FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
-                transaction.replace(R.id.frame_layout, fragment, "fragment_restart_course");
-                transaction.commit();
-            } else {
-                Fragment fragment = CourseMaterialFragment.newInstance(selectedUserCourse, course);
-                FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
-                transaction.replace(R.id.frame_layout, fragment, "fragment_course_material");
-                transaction.commit();
+                selectedUserCourse.setCourseProgress("1");
             }
+            Task<Void> getLessonTask = getLesson(selectedUserCourse);
+            getLessonTask.addOnCompleteListener(new OnCompleteListener<Void>() {
+                @Override
+                public void onComplete(@NonNull Task<Void> task) {
+                    if (task.isSuccessful()) {
+                        if (progressInt > durationInt) {
+                            Fragment fragment = RestartCourseFragment.newInstance(selectedUserCourse, course, lesson);
+                            FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+                            transaction.replace(R.id.frame_layout, fragment, "fragment_restart_course");
+                            transaction.commit();
+                        } else {
+                            Fragment fragment = CourseMaterialFragment.newInstance(selectedUserCourse, course, lesson);
+                            FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+                            transaction.replace(R.id.frame_layout, fragment, "fragment_course_material");
+                            transaction.commit();
+                        }
+                    } else {
+                        // Handle the failure scenario if needed
+                        Log.e("OnItemClick", "Failed to get lesson", task.getException());
+                    }
+                }
+            });
         } else {
-            Fragment fragment = CourseDetailFragment.newInstance(course);
-            FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
-            transaction.replace(R.id.frame_layout, fragment, "fragment_course_detail");
-            transaction.addToBackStack(null);
-            transaction.commit();
+            UserCourses courseDetail = new UserCourses(course.getCourseName(), "1", course.getCourseDuration());
+            Task<Void> getLessonTask = getLesson(courseDetail);
+            getLessonTask.addOnCompleteListener(new OnCompleteListener<Void>() {
+                @Override
+                public void onComplete(@NonNull Task<Void> task) {
+                    if (task.isSuccessful()) {
+                        Fragment fragment = CourseDetailFragment.newInstance(courseDetail, course, lesson);
+                        FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+                        transaction.replace(R.id.frame_layout, fragment, "fragment_course_detail");
+                        transaction.addToBackStack(null);
+                        transaction.commit();
+                    } else {
+                        // Handle the failure scenario if needed
+                        Log.e("OnItemClick", "Failed to get lesson", task.getException());
+                    }
+                }
+            });
         }
     }
 
@@ -132,7 +165,32 @@ public class CourseListFragment extends Fragment implements CourseAdapter.ItemCl
         return false;
     }
 
-    public void getLesson() {
+    public Task<Void> getLesson(UserCourses userCourseInfo) {
+        String currentLesson = "lesson" + userCourseInfo.getCourseProgress();
+        DocumentReference docRefCourse = db.collection("courses")
+                .document(userCourseInfo.getCourseName())
+                .collection("lessons")
+                .document(currentLesson);
 
+        TaskCompletionSource<Void> taskCompletionSource = new TaskCompletionSource<>();
+
+        docRefCourse.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    if (document.exists()) {
+                        lesson = document.toObject(Lesson.class);
+                        taskCompletionSource.setResult(null); // Complete the Task
+                    } else {
+                        taskCompletionSource.setException(new Exception("Document does not exist"));
+                    }
+                } else {
+                    taskCompletionSource.setException(task.getException());
+                }
+            }
+        });
+
+        return taskCompletionSource.getTask();
     }
 }
