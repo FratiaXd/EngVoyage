@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -91,10 +92,14 @@ public class BuilderFragment extends Fragment {
         easyBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Fragment fragment = WordFragment.newInstance(wordListEasy);
-                FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
-                transaction.replace(R.id.frame_layout, fragment, "fragment_word");
-                transaction.commit();
+                if (!wordListEasy.isEmpty()) {
+                    Fragment fragment = WordFragment.newInstance(wordListEasy);
+                    FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+                    transaction.replace(R.id.frame_layout, fragment, "fragment_word");
+                    transaction.commit();
+                } else {
+                    Toast.makeText(getActivity(),"You learned all available words. Wait for new updates!",Toast.LENGTH_SHORT).show();
+                }
             }
         });
     }
@@ -105,10 +110,14 @@ public class BuilderFragment extends Fragment {
         intermediateBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Fragment fragment = WordFragment.newInstance(wordListIntermediate);
-                FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
-                transaction.replace(R.id.frame_layout, fragment, "fragment_word");
-                transaction.commit();
+                if (!wordListIntermediate.isEmpty()) {
+                    Fragment fragment = WordFragment.newInstance(wordListIntermediate);
+                    FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+                    transaction.replace(R.id.frame_layout, fragment, "fragment_word");
+                    transaction.commit();
+                } else {
+                    Toast.makeText(getActivity(),"You learned all available words. Wait for new updates!",Toast.LENGTH_SHORT).show();
+                }
             }
         });
     }
@@ -119,10 +128,14 @@ public class BuilderFragment extends Fragment {
         advancedBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Fragment fragment = WordFragment.newInstance(wordListAdvanced);
-                FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
-                transaction.replace(R.id.frame_layout, fragment, "fragment_word");
-                transaction.commit();
+                if (!wordListAdvanced.isEmpty()) {
+                    Fragment fragment = WordFragment.newInstance(wordListAdvanced);
+                    FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+                    transaction.replace(R.id.frame_layout, fragment, "fragment_word");
+                    transaction.commit();
+                } else {
+                    Toast.makeText(getActivity(),"You learned all available words. Wait for new updates!",Toast.LENGTH_SHORT).show();
+                }
             }
         });
     }
@@ -145,10 +158,14 @@ public class BuilderFragment extends Fragment {
         flashBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Fragment fragment = FlashcardFragment.newInstance(userWordList);
-                FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
-                transaction.replace(R.id.frame_layout, fragment, "fragment_flashcard");
-                transaction.commit();
+                if (!userWordList.isEmpty()) {
+                    Fragment fragment = FlashcardFragment.newInstance(userWordList);
+                    FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+                    transaction.replace(R.id.frame_layout, fragment, "fragment_flashcard");
+                    transaction.commit();
+                } else {
+                    Toast.makeText(getActivity(),"You have not learned any words yet!",Toast.LENGTH_SHORT).show();
+                }
             }
         });
     }

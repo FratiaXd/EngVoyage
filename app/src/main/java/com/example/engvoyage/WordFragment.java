@@ -137,10 +137,17 @@ public class WordFragment extends Fragment {
         nextWord.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Fragment fragment = WordFragment.newInstance(receivedWordList);
-                FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
-                transaction.replace(R.id.frame_layout, fragment, "fragment_word");
-                transaction.commit();
+                if (!receivedWordList.isEmpty()) {
+                    Fragment fragment = WordFragment.newInstance(receivedWordList);
+                    FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+                    transaction.replace(R.id.frame_layout, fragment, "fragment_word");
+                    transaction.commit();
+                } else {
+                    Toast.makeText(getActivity(),"You learned all available words. Wait for new updates!",Toast.LENGTH_SHORT).show();
+                    FragmentTransaction fr = getParentFragmentManager().beginTransaction();
+                    fr.replace(R.id.frame_layout, new BuilderFragment());
+                    fr.commit();
+                }
             }
         });
     }

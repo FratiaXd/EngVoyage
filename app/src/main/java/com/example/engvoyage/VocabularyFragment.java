@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,13 +20,7 @@ import java.util.List;
 public class VocabularyFragment extends Fragment implements WordAdapter.ItemClickListener{
 
     private static final String ARG_PARAM1 = "wordList";
-
     private List<Word> receivedWordList;
-    private static final String ARG_PARAM2 = "param2";
-
-    private String mParam1;
-    private String mParam2;
-
     private RecyclerView recyclerView;
     private WordAdapter wordAdapter;
 
@@ -63,6 +58,7 @@ public class VocabularyFragment extends Fragment implements WordAdapter.ItemClic
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_vocabulary, container, false);
+        displayEmptyText(view);
         returnToBuilder(view);
         initRecyclerView(view);
         return view;
@@ -72,6 +68,15 @@ public class VocabularyFragment extends Fragment implements WordAdapter.ItemClic
         recyclerView = view.findViewById(R.id.recyclerViewWords);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setAdapter(wordAdapter);
+    }
+
+    public void displayEmptyText(View view) {
+        TextView empty = (TextView) view.findViewById(R.id.noWords);
+        if (receivedWordList.isEmpty()) {
+            empty.setVisibility(View.VISIBLE);
+        } else {
+            empty.setVisibility(View.INVISIBLE);
+        }
     }
 
     private void returnToBuilder(View view) {
