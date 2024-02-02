@@ -109,33 +109,40 @@ public class CourseListFragment extends Fragment implements CourseAdapter.ItemCl
         if (isEnrolled(course.getCourseName())) {
             int progressInt = Integer.parseInt(selectedUserCourse.getCourseProgress());
             int durationInt = Integer.parseInt(selectedUserCourse.getCourseDuration());
+            UserCourses tempUserCourse = new UserCourses(selectedUserCourse.getCourseName(),
+                    selectedUserCourse.getCourseProgress(),
+                    selectedUserCourse.getCourseDuration());
             if (progressInt > durationInt) {
-                selectedUserCourse.setCourseProgress("1");
-            }
-            Task<Void> getLessonTask = getLesson(selectedUserCourse);
-            getLessonTask.addOnCompleteListener(new OnCompleteListener<Void>() {
-                @Override
-                public void onComplete(@NonNull Task<Void> task) {
-                    if (task.isSuccessful()) {
-                        if (progressInt > durationInt) {
-                            Fragment fragment = RestartCourseFragment.newInstance(selectedUserCourse, course, lesson);
-                            FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
-                            transaction.replace(R.id.frame_layout, fragment, "fragment_restart_course");
-                            transaction.addToBackStack(null);
-                            transaction.commit();
-                        } else {
+                tempUserCourse.setCourseProgress("1");
+                Task<Void> getLessonRestartTask = getLesson(tempUserCourse);
+                getLessonRestartTask.addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        Fragment fragment = RestartCourseFragment.newInstance(tempUserCourse, course, lesson);
+                        FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+                        transaction.replace(R.id.frame_layout, fragment, "fragment_restart_course");
+                        transaction.addToBackStack(null);
+                        transaction.commit();
+                    }
+                });
+            } else {
+                Task<Void> getLessonTask = getLesson(selectedUserCourse);
+                getLessonTask.addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (task.isSuccessful()) {
                             Fragment fragment = CourseMaterialFragment.newInstance(selectedUserCourse, course, lesson);
                             FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
                             transaction.replace(R.id.frame_layout, fragment, "fragment_course_material");
                             transaction.addToBackStack(null);
                             transaction.commit();
+                        } else {
+                            // Handle the failure scenario if needed
+                            Log.e("OnItemClick", "Failed to get lesson", task.getException());
                         }
-                    } else {
-                        // Handle the failure scenario if needed
-                        Log.e("OnItemClick", "Failed to get lesson", task.getException());
                     }
-                }
-            });
+                });
+            }
         } else {
             UserCourses courseDetail = new UserCourses(course.getCourseName(), "1", course.getCourseDuration());
             Task<Void> getLessonTask = getLesson(courseDetail);
