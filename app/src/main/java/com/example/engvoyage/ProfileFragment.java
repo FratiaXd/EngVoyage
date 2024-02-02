@@ -116,7 +116,7 @@ public class ProfileFragment extends Fragment implements CourseProgressAdapter.I
         int progressInt = Integer.parseInt(progress);
         int durationInt = Integer.parseInt(duration);
 
-        if (progressInt >= durationInt) {
+        if (progressInt > durationInt) {
             UserCourses userCourses = new UserCourses(name, progress, duration);
             courseListProgress.add(userCourses);
         }

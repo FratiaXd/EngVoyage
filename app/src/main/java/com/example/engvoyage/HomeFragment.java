@@ -22,6 +22,7 @@ import android.widget.TextView;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.gms.tasks.TaskCompletionSource;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
@@ -42,13 +43,13 @@ public class HomeFragment extends Fragment implements CourseProgressAdapter.Item
     private RecyclerView recyclerView;
     private RecyclerView recyclerViewProgress;
     private CourseProgressAdapter courseProgressAdapter;
-
     private static final String ARG_USER = "user";
     private static final String ARG_COURSES = "courseList";
     private User userCurrent;
     private List<Course> availableCourses;
     private List<UserCourses> allUserCourses;
     private String fragmentTag;
+    private Lesson currentLesson;
 
     public HomeFragment() {
         // Required empty public constructor
@@ -164,12 +165,21 @@ public class HomeFragment extends Fragment implements CourseProgressAdapter.Item
     }
 
     @Override
-    public void onItemClick(UserCourses userCourses) {/*
-        Course selectedCourse = findSelectedCourseInfo(userCourses.getCourseName());
-        Fragment fragment = CourseMaterialFragment.newInstance(userCourses, selectedCourse);
-        FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
-        transaction.replace(R.id.frame_layout, fragment, "fragment_course_material");
-        transaction.commit();*/
+    public void onItemClick(UserCourses userCourses) {
+        Task<Void> getLessonRestartTask = retrieveLesson(userCourses);
+
+        getLessonRestartTask.addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                fragmentTag = "HomeFragmentTag";
+                Course selectedCourse = findSelectedCourseInfo(userCourses.getCourseName());
+                Fragment fragment = CourseMaterialFragment.newInstance(userCourses, selectedCourse, currentLesson);
+                FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+                transaction.replace(R.id.frame_layout, fragment, "fragment_course_material");
+                transaction.addToBackStack(fragmentTag);
+                transaction.commit();
+            }
+        });
     }
 
     public Course findSelectedCourseInfo(String courseName) {
@@ -179,5 +189,34 @@ public class HomeFragment extends Fragment implements CourseProgressAdapter.Item
             }
         }
         return null;
+    }
+
+    public Task<Void> retrieveLesson(UserCourses userCourseInfo) {
+        String lessonToResume = "lesson" + userCourseInfo.getCourseProgress();
+        DocumentReference docRefCourse = db.collection("courses")
+                .document(userCourseInfo.getCourseName())
+                .collection("lessons")
+                .document(lessonToResume);
+
+        TaskCompletionSource<Void> taskCompletionSource = new TaskCompletionSource<>();
+
+        docRefCourse.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    if (document.exists()) {
+                        currentLesson = document.toObject(Lesson.class);
+                        taskCompletionSource.setResult(null); // Complete the Task
+                    } else {
+                        taskCompletionSource.setException(new Exception("Document does not exist"));
+                    }
+                } else {
+                    taskCompletionSource.setException(task.getException());
+                }
+            }
+        });
+
+        return taskCompletionSource.getTask();
     }
 }
