@@ -4,6 +4,7 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import android.util.Log;
@@ -87,6 +88,7 @@ public class RestartCourseFragment extends Fragment {
                 Fragment fragment = CourseMaterialFragment.newInstance(userCourseInfo, currentCourse, currentLesson);
                 FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
                 transaction.replace(R.id.frame_layout, fragment, "fragment_course_material");
+                transaction.addToBackStack(null);
                 transaction.commit();
             }
         });
@@ -113,12 +115,11 @@ public class RestartCourseFragment extends Fragment {
 
     public void closeRestart(View view) {
         ImageButton close = (ImageButton) view.findViewById(R.id.closeRestart);
+        String fragmentTagToRemoveUpTo = "HomeFragmentTag";
         close.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                FragmentTransaction fr = getParentFragmentManager().beginTransaction();
-                fr.replace(R.id.frame_layout, new CourseListFragment());
-                fr.commit();
+                getParentFragmentManager().popBackStack(fragmentTagToRemoveUpTo, FragmentManager.POP_BACK_STACK_INCLUSIVE);
             }
         });
     }

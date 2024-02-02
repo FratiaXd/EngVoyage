@@ -38,10 +38,13 @@ public class Navigation extends AppCompatActivity implements EditProfileFragment
 
             int id = item.getItemId();
             if (id == R.id.home) {
+                clearBackStack();
                 replaceFragment(HomeFragment.newInstance(receivedUser, receivedCourses));
             } else if (id == R.id.vocBuilder) {
+                clearBackStack();
                 replaceFragment(new BuilderFragment());
             } else if (id == R.id.profile) {
+                clearBackStack();
                 replaceFragment(ProfileFragment.newInstance(receivedUser));
             }
             return true;
@@ -53,6 +56,13 @@ public class Navigation extends AppCompatActivity implements EditProfileFragment
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.frame_layout, fragment);
         fragmentTransaction.commit();
+    }
+
+    private void clearBackStack() {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        while (fragmentManager.getBackStackEntryCount() > 0) {
+            fragmentManager.popBackStackImmediate();
+        }
     }
 
     @Override

@@ -4,6 +4,7 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import android.util.Log;
@@ -118,12 +119,14 @@ public class CoursePracticeFragment extends Fragment {
                     Fragment fragment = CourseCompletedFragment.newInstance("","");
                     FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
                     transaction.replace(R.id.frame_layout, fragment, "fragment_course_completed");
+                    transaction.addToBackStack(null);
                     transaction.commit();
                 } else {
                     updateUserProgress();
                     Fragment fragment = CourseMaterialFragment.newInstance(userCoursesInfo, courseInfo, newLesson);
                     FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
                     transaction.replace(R.id.frame_layout, fragment, "fragment_course_material");
+                    transaction.addToBackStack(null);
                     transaction.commit();
                 }
             }
@@ -203,10 +206,11 @@ public class CoursePracticeFragment extends Fragment {
 
     public void closePractice(View view) {
         ImageButton close = (ImageButton) view.findViewById(R.id.closePractice);
+        String fragmentTagToRemoveUpTo = "HomeFragmentTag";
         close.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                getParentFragmentManager().popBackStack();
+                getParentFragmentManager().popBackStack(fragmentTagToRemoveUpTo, FragmentManager.POP_BACK_STACK_INCLUSIVE);
             }
         });
     }

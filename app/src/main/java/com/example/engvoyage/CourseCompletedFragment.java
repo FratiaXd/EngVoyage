@@ -3,6 +3,7 @@ package com.example.engvoyage;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import android.view.LayoutInflater;
@@ -51,11 +52,11 @@ public class CourseCompletedFragment extends Fragment {
 
     public void completeCourse(View view) {
         Button completeBtn = (Button) view.findViewById(R.id.finishCourse);
-
+        String fragmentTagToRemoveUpTo = "HomeFragmentTag";
         completeBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                getParentFragmentManager().popBackStack();
+                getParentFragmentManager().popBackStack(fragmentTagToRemoveUpTo, FragmentManager.POP_BACK_STACK_INCLUSIVE);
             }
         });
     }

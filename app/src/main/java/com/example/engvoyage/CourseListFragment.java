@@ -121,11 +121,13 @@ public class CourseListFragment extends Fragment implements CourseAdapter.ItemCl
                             Fragment fragment = RestartCourseFragment.newInstance(selectedUserCourse, course, lesson);
                             FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
                             transaction.replace(R.id.frame_layout, fragment, "fragment_restart_course");
+                            transaction.addToBackStack(null);
                             transaction.commit();
                         } else {
                             Fragment fragment = CourseMaterialFragment.newInstance(selectedUserCourse, course, lesson);
                             FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
                             transaction.replace(R.id.frame_layout, fragment, "fragment_course_material");
+                            transaction.addToBackStack(null);
                             transaction.commit();
                         }
                     } else {

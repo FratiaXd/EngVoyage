@@ -103,6 +103,7 @@ public class CourseDetailFragment extends Fragment {
                                 Fragment fragment = CourseMaterialFragment.newInstance(userCourseInfo, currentCourse, currentLesson);
                                 FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
                                 transaction.replace(R.id.frame_layout, fragment, "fragment_course_material");
+                                transaction.addToBackStack(null);
                                 transaction.commit();
                             }
                         }).addOnFailureListener(new OnFailureListener() {

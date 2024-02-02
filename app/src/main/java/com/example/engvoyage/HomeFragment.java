@@ -48,6 +48,7 @@ public class HomeFragment extends Fragment implements CourseProgressAdapter.Item
     private User userCurrent;
     private List<Course> availableCourses;
     private List<UserCourses> allUserCourses;
+    private String fragmentTag;
 
     public HomeFragment() {
         // Required empty public constructor
@@ -146,9 +147,10 @@ public class HomeFragment extends Fragment implements CourseProgressAdapter.Item
         showCourses.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                fragmentTag = "HomeFragmentTag";
                 FragmentTransaction fr = getParentFragmentManager().beginTransaction();
-                fr.replace(R.id.frame_layout, CourseListFragment.newInstance(userCurrent, availableCourses, allUserCourses));
-                fr.addToBackStack(null);
+                fr.replace(R.id.frame_layout, CourseListFragment.newInstance(userCurrent, availableCourses, allUserCourses), fragmentTag);
+                fr.addToBackStack(fragmentTag);
                 fr.commit();
             }
         });
