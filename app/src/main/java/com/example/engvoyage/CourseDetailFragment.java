@@ -30,13 +30,9 @@ public class CourseDetailFragment extends Fragment {
     private FirebaseUser currentUser;
     private FirebaseFirestore db;
     private DocumentReference docRefUser;
-    private List<UserCourses> userCoursesList;
     private static final String ARG_USER_COURSE = "userCourse";
     private static final String ARG_COURSE = "course";
     private static final String ARG_LESSON = "lesson";
-
-    private Course courseInfo;
-
     public UserCourses userCourseInfo;
     public Course currentCourse;
     public Lesson currentLesson;
@@ -68,7 +64,6 @@ public class CourseDetailFragment extends Fragment {
         db = FirebaseFirestore.getInstance();
         String uid = currentUser.getUid();
         docRefUser = db.collection("users").document(uid);
-        userCoursesList = new ArrayList<>();
     }
 
     @Override

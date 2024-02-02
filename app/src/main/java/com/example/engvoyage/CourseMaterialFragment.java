@@ -25,13 +25,10 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 
 public class CourseMaterialFragment extends Fragment {
 
-    private FirebaseFirestore db;
-    private DocumentReference docRefCourse;
     private static final String ARG_USER_COURSE = "userCourse";
     private static final String ARG_COURSE = "course";
     private static final String ARG_LESSON = "lesson";
 
-    public Lesson lesson;
     public UserCourses userCourseInfo;
     public Course currentCourse;
     public Lesson currentLesson;
@@ -59,11 +56,6 @@ public class CourseMaterialFragment extends Fragment {
             currentLesson = getArguments().getParcelable(ARG_LESSON);
         }
         String currentLesson1 = "lesson" + userCourseInfo.getCourseProgress();
-        db = FirebaseFirestore.getInstance();
-        docRefCourse = db.collection("courses")
-                .document(userCourseInfo.getCourseName())
-                .collection("lessons")
-                .document(currentLesson1);
     }
 
     @Override

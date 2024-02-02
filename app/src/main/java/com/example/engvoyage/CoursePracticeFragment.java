@@ -116,7 +116,7 @@ public class CoursePracticeFragment extends Fragment {
             public void onClick(View v) {
                 if (courseInfo.getCourseDuration().equals(userCoursesInfo.getCourseProgress())) {
                     updateUserProgress();
-                    Fragment fragment = CourseCompletedFragment.newInstance("","");
+                    Fragment fragment = new CourseCompletedFragment();
                     FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
                     transaction.replace(R.id.frame_layout, fragment, "fragment_course_completed");
                     transaction.addToBackStack(null);

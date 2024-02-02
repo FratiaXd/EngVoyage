@@ -28,9 +28,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CourseListFragment extends Fragment implements CourseAdapter.ItemClickListener{
-    private FirebaseAuth mAuth;
-    private FirebaseUser currentUser;
-    private DocumentReference docRefUser;
     private FirebaseFirestore db;
     private CourseAdapter courseAdapter;
     private UserCourses selectedUserCourse;
@@ -42,7 +39,6 @@ public class CourseListFragment extends Fragment implements CourseAdapter.ItemCl
     private User userCurrent;
     private List<Course> availableCourses;
     private List<UserCourses> userCourses;
-
     private Lesson lesson;
 
     public CourseListFragment() {
@@ -67,11 +63,7 @@ public class CourseListFragment extends Fragment implements CourseAdapter.ItemCl
             availableCourses = getArguments().getParcelableArrayList(ARG_COURSES);
             userCourses = getArguments().getParcelableArrayList(ARG_USER_COURSES);
         }
-        mAuth = FirebaseAuth.getInstance();
-        currentUser = mAuth.getCurrentUser();
         db = FirebaseFirestore.getInstance();
-        String uid = currentUser.getUid();
-        docRefUser = db.collection("users").document(uid);
         courseAdapter = new CourseAdapter(availableCourses, this);
     }
 

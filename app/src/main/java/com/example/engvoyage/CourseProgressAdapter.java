@@ -58,14 +58,14 @@ public class CourseProgressAdapter extends RecyclerView.Adapter<CourseProgressAd
             nameTxt.setText(userCourses.getCourseName());
             int progressInt = Integer.parseInt(userCourses.getCourseProgress());
             int durationInt = Integer.parseInt(userCourses.getCourseDuration());
-            if (progressInt < durationInt) {
+            if (progressInt <= durationInt) {
                 String dur = userCourses.getCourseProgress() + "/" + userCourses.getCourseDuration();
                 durTxt.setText(dur);
             } else {
                 durTxt.setText("Completed");
             }
             progressBar.setProgress(Integer.parseInt(userCourses.getCourseProgress()));
-            progressBar.setMax(Integer.parseInt(userCourses.getCourseDuration()));
+            progressBar.setMax(Integer.parseInt(userCourses.getCourseDuration()) + 1);
         }
     }
 
