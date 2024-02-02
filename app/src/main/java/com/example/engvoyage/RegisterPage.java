@@ -75,11 +75,46 @@ public class RegisterPage extends AppCompatActivity {
         TextInputEditText surnameValue = findViewById(R.id.surnameInput);
         TextInputEditText emailValue = findViewById(R.id.emailInput);
         TextInputEditText passwordValue = findViewById(R.id.passwordInput);
+        TextInputEditText passwordValueRepeat = findViewById(R.id.repeatPasswordInput);
 
         String name = nameValue.getText().toString().trim();
         String surname = surnameValue.getText().toString().trim();
         String email = emailValue.getText().toString().trim();
         String password = passwordValue.getText().toString().trim();
+        String passwordRepeat = passwordValueRepeat.getText().toString().trim();
+
+        if (name.isEmpty()) {
+            nameValue.setError("The name is required");
+            nameValue.requestFocus();
+            return;
+        }
+        if (surname.isEmpty()) {
+            surnameValue.setError("The surname is required");
+            surnameValue.requestFocus();
+            return;
+        }
+        if (email.isEmpty()) {
+            emailValue.setError("The email is required");
+            emailValue.requestFocus();
+            return;
+        }
+        if (password.isEmpty()) {
+            passwordValue.setError("The password is required");
+            passwordValue.requestFocus();
+            return;
+        }
+        if (passwordRepeat.isEmpty()) {
+            passwordValueRepeat.setError("The password is required");
+            passwordValueRepeat.requestFocus();
+            return;
+        }
+        if (!password.equals(passwordRepeat)) {
+            passwordValue.setError("Passwords do not match!");
+            passwordValue.requestFocus();
+            passwordValueRepeat.setError("Passwords do not match!");
+            passwordValueRepeat.requestFocus();
+            return;
+        }
 
         User user1 = new User(name, surname, email);
         register(user1, password);

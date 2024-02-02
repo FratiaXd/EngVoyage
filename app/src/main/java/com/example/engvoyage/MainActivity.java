@@ -140,6 +140,17 @@ public class MainActivity extends AppCompatActivity {
         String email = emailValue.getText().toString().trim();
         String password = passwordValue.getText().toString().trim();
 
+        if (email.isEmpty()) {
+            emailValue.setError("The email is required");
+            emailValue.requestFocus();
+            return;
+        }
+        if (password.isEmpty()) {
+            passwordValue.setError("The email is required");
+            passwordValue.requestFocus();
+            return;
+        }
+
         logInUser(email, password);
     }
 }

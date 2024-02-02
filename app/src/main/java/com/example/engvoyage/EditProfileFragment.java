@@ -113,6 +113,18 @@ public class EditProfileFragment extends Fragment {
     public void setNewDetails() {
         String name = nameValue.getText().toString().trim();
         String surname = surnameValue.getText().toString().trim();
+
+        if (name.isEmpty()) {
+            nameValue.setError("The name cannot be empty");
+            nameValue.requestFocus();
+            return;
+        }
+        if (surname.isEmpty()) {
+            surnameValue.setError("The name cannot be empty");
+            surnameValue.requestFocus();
+            return;
+        }
+
         docRefUser.update("name",name, "surname", surname)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
@@ -135,10 +147,8 @@ public class EditProfileFragment extends Fragment {
     private void setCurrentDetails(View view) {
         nameValue = (TextInputEditText) view.findViewById(R.id.nameInputEdit);
         surnameValue = (TextInputEditText) view.findViewById(R.id.surnameInputEdit);
-        emailValue = (TextInputEditText) view.findViewById(R.id.emailInputEdit);
         nameValue.setText(user.getName());
         surnameValue.setText(user.getSurname());
-        emailValue.setText(user.getEmail());
     }
 
     public interface OnProfileUpdatedListener {

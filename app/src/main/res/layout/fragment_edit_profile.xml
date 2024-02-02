@@ -17,7 +17,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="200dp"
+        android:layout_gravity="center"
         android:orientation="vertical"
         app:layout_constraintTop_toTopOf="parent">
 
@@ -67,32 +67,6 @@
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/surnameInputEdit"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                style="@style/MyTextInputEdit"/>
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <TextView
-            style="@style/MyTextView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="35dp"
-            android:layout_marginBottom="5dp"
-            android:layout_marginTop="10dp"
-            android:text="Email:"/>
-
-        <com.google.android.material.textfield.TextInputLayout
-            style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginHorizontal="35dp"
-            app:hintEnabled="false"
-            app:boxStrokeWidth="2dp"
-            app:boxStrokeColor="@color/dark_grey"
-            app:shapeAppearance="@style/Rounded">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/emailInputEdit"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 style="@style/MyTextInputEdit"/>

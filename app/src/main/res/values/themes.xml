@@ -133,8 +133,8 @@
     </style>
 
     <style name="MyTextInputEdit">
-        <item name="android:paddingBottom">8dp</item>
-        <item name="android:paddingTop">8dp</item>
+        <item name="android:paddingBottom">12dp</item>
+        <item name="android:paddingTop">12dp</item>
         <item name="android:textSize">14sp</item>
         <item name="android:fontFamily">@font/worksanslight</item>
     </style>
