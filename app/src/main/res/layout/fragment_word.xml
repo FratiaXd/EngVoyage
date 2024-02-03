@@ -44,7 +44,7 @@
 
     <TextView
         android:id="@+id/pronunciation"
-        android:layout_marginTop="315dp"
+        android:layout_marginTop="310dp"
         style="@style/CourseDescr"
         android:layout_marginHorizontal="23dp"
         android:layout_width="match_parent"
@@ -61,7 +61,7 @@
 
     <TextView
         android:id="@+id/meaningFull"
-        android:layout_marginTop="405dp"
+        android:layout_marginTop="400dp"
         style="@style/CourseDescr"
         android:layout_marginHorizontal="23dp"
         android:layout_width="match_parent"
@@ -78,7 +78,7 @@
 
     <TextView
         android:id="@+id/usage"
-        android:layout_marginTop="545dp"
+        android:layout_marginTop="540dp"
         style="@style/CourseDescr"
         android:layout_marginHorizontal="23dp"
         android:layout_width="match_parent"
