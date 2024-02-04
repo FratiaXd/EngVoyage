@@ -30,7 +30,7 @@
         android:layout_height="wrap_content"
         android:gravity="center"
         android:layout_marginTop="350dp"
-        android:text="You received an award" />
+        android:text="Well done!" />
 
     <ImageView
         android:layout_width="match_parent"
