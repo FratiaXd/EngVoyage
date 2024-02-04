@@ -57,7 +57,7 @@
         android:layout_marginStart="23dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Meaning"/>
+        android:text="Etymology"/>
 
     <TextView
         android:id="@+id/meaningFullInfo"

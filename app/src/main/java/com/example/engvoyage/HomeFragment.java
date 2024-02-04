@@ -122,6 +122,8 @@ public class HomeFragment extends Fragment implements CourseProgressAdapter.Item
                             msg.setVisibility(View.VISIBLE);
                         } else {
                             msg.setVisibility(View.INVISIBLE);
+                            TextView count = (TextView) view.findViewById(R.id.courseCount);
+                            count.setText("Total: " + courseListProgress.size());
                         }
                     } else {
                         Log.d("HomeFragment", "Error", task.getException());

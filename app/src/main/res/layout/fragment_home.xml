@@ -55,6 +55,13 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="19dp"
+        android:scrollbarTrackHorizontal="@color/grey"
+        android:scrollbars="horizontal"
+        android:scrollbarSize="5dp"
+        android:fadeScrollbars="true"
+        android:scrollbarStyle="insideInset"
+        android:scrollbarThumbHorizontal="@color/dark_grey"
+        android:scrollbarAlwaysDrawHorizontalTrack="true"
         android:layout_marginTop="160dp"/>
 
     <TextView
@@ -64,6 +71,16 @@
         android:text="My Courses"
         android:layout_marginLeft="23dp"
         android:layout_marginTop="370dp"/>
+
+    <TextView
+        android:id="@+id/courseCount"
+        style="@style/CourseDurationText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="390dp"
+        android:text="Total: 0"
+        android:layout_gravity="right"
+        android:layout_marginEnd="30dp"/>
 
     <LinearLayout
         android:id="@+id/mycourses"
@@ -84,6 +101,13 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
+            android:scrollbarTrackVertical="@color/grey"
+            android:scrollbars="vertical"
+            android:scrollbarSize="5dp"
+            android:fadeScrollbars="true"
+            android:scrollbarStyle="insideInset"
+            android:scrollbarThumbVertical="@color/dark_grey"
+            android:scrollbarAlwaysDrawVerticalTrack="true"
             android:layout_marginBottom="10dp"/>
 
     </LinearLayout>
@@ -93,7 +117,7 @@
         android:id="@+id/noCourses"
         android:layout_width="wrap_content"
         android:layout_gravity="bottom|center"
-        android:layout_marginBottom="147dp"
+        android:layout_marginBottom="160dp"
         android:visibility="invisible"
         android:layout_height="wrap_content"
         android:text="enroll to more courses"/>
