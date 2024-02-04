@@ -15,15 +15,6 @@
         android:layout_marginTop="20dp"/>
 
     <TextView
-        style="@style/StreakText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Streak"
-        android:layout_gravity="top|right"
-        android:layout_marginRight="70dp"
-        android:layout_marginTop="27dp"/>
-
-    <TextView
         style="@style/GreetingText"
         android:id="@+id/greeting"
         android:layout_width="wrap_content"

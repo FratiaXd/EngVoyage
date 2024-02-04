@@ -93,6 +93,41 @@
         android:layout_marginTop="282dp"
         android:layout_marginStart="155dp"/>
 
+    <LinearLayout
+        android:layout_marginTop="80dp"
+        android:visibility="invisible"
+        android:id="@+id/wordsLearned"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:background="@color/beige" >
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_marginHorizontal="23dp"
+            android:layout_marginTop="100dp"
+            style="@style/GreetingText"
+            android:text="You learned all available words for this level."/>
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_marginTop="60dp"
+            android:layout_height="wrap_content"
+            android:src="@drawable/start_img"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_marginHorizontal="23dp"
+            android:layout_marginTop="50dp"
+            style="@style/GreetingText"
+            android:text="Wait for new updates."/>
+
+    </LinearLayout>
+
     <android.widget.Button
         style="@style/WhiteText"
         android:id="@+id/saveWord"

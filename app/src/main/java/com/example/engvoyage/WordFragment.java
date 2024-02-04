@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -78,7 +79,7 @@ public class WordFragment extends Fragment {
         setWordInfo(view);
         onSaveClick(view);
         returnToBuilder(view);
-        openNextWord();
+        openNextWord(view);
         return view;
     }
 
@@ -133,7 +134,7 @@ public class WordFragment extends Fragment {
         receivedWordList.remove(0);
     }
 
-    public void openNextWord() {
+    public void openNextWord(View view) {
         nextWord.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -143,10 +144,10 @@ public class WordFragment extends Fragment {
                     transaction.replace(R.id.frame_layout, fragment, "fragment_word");
                     transaction.commit();
                 } else {
-                    Toast.makeText(getActivity(),"You learned all available words. Wait for new updates!",Toast.LENGTH_SHORT).show();
-                    FragmentTransaction fr = getParentFragmentManager().beginTransaction();
-                    fr.replace(R.id.frame_layout, new BuilderFragment());
-                    fr.commit();
+                    LinearLayout completed = (LinearLayout) view.findViewById(R.id.wordsLearned);
+                    completed.setVisibility(View.VISIBLE);
+                    saveBtn.setVisibility(View.INVISIBLE);
+                    nextWord.setVisibility(View.INVISIBLE);
                 }
             }
         });
