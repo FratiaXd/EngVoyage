@@ -217,12 +217,13 @@ public class CoursePracticeFragment extends Fragment {
     }
 
     public void getLesson(UserCourses userCourseInfo) {
-        String currentLesson = "lesson" + userCourseInfo.getCourseProgress();
+        Integer updProgressInt = Integer.parseInt(userCoursesInfo.getCourseProgress()) + 1;
+        String updProgress = "lesson" + updProgressInt.toString();
         db = FirebaseFirestore.getInstance();
         DocumentReference docRefCourse = db.collection("courses")
                 .document(userCourseInfo.getCourseName())
                 .collection("lessons")
-                .document(currentLesson);
+                .document(updProgress);
 
         docRefCourse.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
