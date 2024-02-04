@@ -45,6 +45,7 @@ public class ProfileFragment extends Fragment implements CourseProgressAdapter.I
         // Required empty public constructor
     }
 
+    //New instance receives user details
     public static ProfileFragment newInstance(User currentuser) {
         ProfileFragment fragment = new ProfileFragment();
         Bundle args = new Bundle();
@@ -56,6 +57,7 @@ public class ProfileFragment extends Fragment implements CourseProgressAdapter.I
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        //Initializes arguments and firebase elements
         if (getArguments() != null) {
             userCurrent = getArguments().getParcelable(ARG_USER);
         }
@@ -73,7 +75,7 @@ public class ProfileFragment extends Fragment implements CourseProgressAdapter.I
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_profile, container, false);
-        getUserDetails(view);
+        setUserDetails(view);
         updateUserDetails(view);
         initRecyclerView(view);
         readUserCourses(view);
@@ -81,12 +83,14 @@ public class ProfileFragment extends Fragment implements CourseProgressAdapter.I
         return view;
     }
 
+    //Initializes recyclerview for completed courses
     private void initRecyclerView(View view) {
         recyclerView = view.findViewById(R.id.recyclerViewCompleted);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setAdapter(courseProgressAdapter);
     }
 
+    //Reads user courses from the database
     private void readUserCourses(View view) {
         TextView msg = (TextView) view.findViewById(R.id.noCoursesTxt);
         docRefUser.collection("userCourses")
@@ -97,7 +101,7 @@ public class ProfileFragment extends Fragment implements CourseProgressAdapter.I
                             buildListProgressData(document);
                         }
                         courseProgressAdapter.notifyDataSetChanged();
-
+                        //Displays message if there are no courses
                         if (courseListProgress.isEmpty()) {
                             msg.setVisibility(View.VISIBLE);
                         } else {
@@ -109,6 +113,7 @@ public class ProfileFragment extends Fragment implements CourseProgressAdapter.I
                 });
     }
 
+    //Build list with completed user courses
     private void buildListProgressData(QueryDocumentSnapshot document) {
         String name = document.getString("courseName");
         String progress = document.getString("courseProgress");
@@ -116,18 +121,21 @@ public class ProfileFragment extends Fragment implements CourseProgressAdapter.I
         int progressInt = Integer.parseInt(progress);
         int durationInt = Integer.parseInt(duration);
 
+        //If user progress is higher than total course duration adds it to the list
         if (progressInt > durationInt) {
             UserCourses userCourses = new UserCourses(name, progress, duration);
             courseListProgress.add(userCourses);
         }
     }
 
+    //Opens edit profile fragment
     public void updateUserDetails(View view) {
         Button updateDetails = (Button) view.findViewById(R.id.editProfile);
         updateDetails.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Fragment fragment = EditProfileFragment.newInstance(user);
+                //Passes user object with user details
+                Fragment fragment = EditProfileFragment.newInstance(userCurrent);
                 FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
                 transaction.replace(R.id.frame_layout, fragment, "fragment_edit_profile");
                 transaction.commit();
@@ -135,30 +143,22 @@ public class ProfileFragment extends Fragment implements CourseProgressAdapter.I
         });
     }
 
-    private void getUserDetails(View view) {
+    //Displays user details
+    private void setUserDetails(View view) {
         TextView username = (TextView) view.findViewById(R.id.username);
         TextView email = (TextView) view.findViewById(R.id.email);
         username.setText(userCurrent.getName() + " " + userCurrent.getSurname());
         email.setText(userCurrent.getEmail());
-        docRefUser.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                if (task.isSuccessful()) {
-                    DocumentSnapshot document = task.getResult();
-                    if (document.exists()) {
-                        user = document.toObject(User.class);
-                    }
-                }
-            }
-        });
     }
 
+    //Logs out user
     private void logout(View view) {
         Button logoutBtn = (Button) view.findViewById(R.id.logout);
         logoutBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 mAuth.signOut();
+                //Opens main activity
                 Intent intent = new Intent(getActivity(), MainActivity.class);
                 startActivity(intent);
             }

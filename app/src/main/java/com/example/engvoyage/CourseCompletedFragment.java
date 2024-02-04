@@ -22,6 +22,7 @@ public class CourseCompletedFragment extends Fragment {
         super.onCreate(savedInstanceState);
     }
 
+    //Course completed fragment
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -31,6 +32,7 @@ public class CourseCompletedFragment extends Fragment {
         return view;
     }
 
+    //Closes this fragment and takes user to the home fragment
     public void completeCourse(View view) {
         Button completeBtn = (Button) view.findViewById(R.id.finishCourse);
         String fragmentTagToRemoveUpTo = "HomeFragmentTag";

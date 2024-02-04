@@ -30,12 +30,14 @@ public class RegisterPage extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register_page);
-
+        //Initializes firebase elements
         mAuth = FirebaseAuth.getInstance();
         db = FirebaseFirestore.getInstance();
     }
 
+    //Registers user
     public void register(User user1, String password) {
+        //Creates user in firebase with the provided credentials
         mAuth.createUserWithEmailAndPassword(user1.getEmail(), password).addOnCompleteListener(this,
                 new OnCompleteListener<AuthResult>() {
             @Override
@@ -46,7 +48,8 @@ public class RegisterPage extends AppCompatActivity {
                     String uid = user.getUid(); //get user id?
                     //get database ref with user id (customer reg 5:10)
                     Toast.makeText(RegisterPage.this, "Account created successfully.", Toast.LENGTH_SHORT).show();
-
+                    //If user created
+                    //Saves user details in firestore document
                     db.collection("users")
                             .document(uid)
                             .set(user1)
@@ -61,6 +64,7 @@ public class RegisterPage extends AppCompatActivity {
                                     Log.w("RegisterPage", "Error writing document", e);
                                 }
                             });
+                    //Once user created goes back to the main activity
                     finish();
                 } else {
                     Log.w("RegisterPage", "createUserWithEmail:failure", task.getException());
@@ -70,6 +74,7 @@ public class RegisterPage extends AppCompatActivity {
         });
     }
 
+    //Gets user input and then calls register()
     public void registerButtonClicked(View view) {
         TextInputEditText nameValue = findViewById(R.id.nameInput);
         TextInputEditText surnameValue = findViewById(R.id.surnameInput);
@@ -83,6 +88,7 @@ public class RegisterPage extends AppCompatActivity {
         String password = passwordValue.getText().toString().trim();
         String passwordRepeat = passwordValueRepeat.getText().toString().trim();
 
+        //Validates user input
         if (name.isEmpty()) {
             nameValue.setError("The name is required");
             nameValue.requestFocus();
@@ -115,11 +121,13 @@ public class RegisterPage extends AppCompatActivity {
             passwordValueRepeat.requestFocus();
             return;
         }
-
+        //Creates user object instance
         User user1 = new User(name, surname, email);
+        //Tries to register user with the provided credentials
         register(user1, password);
     }
 
+    //Takes back to the main activity
     public void goBackToLogIn(View view) {
         finish();
     }

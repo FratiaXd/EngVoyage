@@ -28,6 +28,7 @@ public class VocabularyFragment extends Fragment implements WordAdapter.ItemClic
         // Required empty public constructor
     }
 
+    //New instance receives user learned words
     public static VocabularyFragment newInstance(List<Word> wordList) {
         VocabularyFragment fragment = new VocabularyFragment();
         Bundle args = new Bundle();
@@ -39,6 +40,7 @@ public class VocabularyFragment extends Fragment implements WordAdapter.ItemClic
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        //Initializes arguments
         Bundle args = getArguments();
         if (args != null) {
             receivedWordList = args.getParcelableArrayList(ARG_PARAM1);
@@ -64,12 +66,14 @@ public class VocabularyFragment extends Fragment implements WordAdapter.ItemClic
         return view;
     }
 
+    //Initializes recyclerview with user learned words
     private void initRecyclerView(View view) {
         recyclerView = view.findViewById(R.id.recyclerViewWords);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setAdapter(wordAdapter);
     }
 
+    //Displays message is there are no learned words yet
     public void displayEmptyText(View view) {
         TextView empty = (TextView) view.findViewById(R.id.noWords);
         if (receivedWordList.isEmpty()) {
@@ -79,6 +83,7 @@ public class VocabularyFragment extends Fragment implements WordAdapter.ItemClic
         }
     }
 
+    //Closes vocabulary fragment and opens builder fragment
     private void returnToBuilder(View view) {
         ImageButton back = (ImageButton) view.findViewById(R.id.goBackToBuilder1);
         back.setOnClickListener(new View.OnClickListener() {
@@ -91,8 +96,10 @@ public class VocabularyFragment extends Fragment implements WordAdapter.ItemClic
         });
     }
 
+    //Opens word info fragment
     @Override
     public void onItemClick(Word word) {
+        //Passes the selected word object to the word info fragment
         Fragment fragment = WordInfoFragment.newInstance(word);
         FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.frame_layout, fragment, "fragment_word_info");

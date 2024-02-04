@@ -23,8 +23,10 @@ public class WordInfoFragment extends Fragment {
         // Required empty public constructor
     }
 
+    //New instance receives user selected word
     public static WordInfoFragment newInstance(Word word) {
         WordInfoFragment fragment = new WordInfoFragment();
+        //Initializes arguments
         Bundle args = new Bundle();
         args.putParcelable(ARG_PARAM1, word);
         fragment.setArguments(args);
@@ -49,6 +51,7 @@ public class WordInfoFragment extends Fragment {
         return view;
     }
 
+    //Displays received word object information
     public void setWordInfo(View view) {
         TextView wordTxt = (TextView) view.findViewById(R.id.wordInfo);
         TextView shortTxt = (TextView) view.findViewById(R.id.wordMeaningShortInfo);
@@ -62,6 +65,7 @@ public class WordInfoFragment extends Fragment {
         usageTxt.setText(wordInfo.getUsage());
     }
 
+    //Closes word info fragment and opens builder fragment
     public void closeInfo(View view) {
         ImageButton goBack1 = (ImageButton) view.findViewById(R.id.goBackToWords);
         Button goBack2 = (Button) view.findViewById(R.id.backToWords);

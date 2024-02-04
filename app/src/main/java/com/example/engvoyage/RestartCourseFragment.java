@@ -41,6 +41,7 @@ public class RestartCourseFragment extends Fragment {
         // Required empty public constructor
     }
 
+    //New instance receives course and lesson details
     public static RestartCourseFragment newInstance(UserCourses userCourse, Course course, Lesson lesson) {
         RestartCourseFragment fragment = new RestartCourseFragment();
         Bundle args = new Bundle();
@@ -54,6 +55,7 @@ public class RestartCourseFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        //Initializes arguments and firebase elements
         if (getArguments() != null) {
             userCourseInfo = getArguments().getParcelable(ARG_USER_COURSE);
             currentCourse = getArguments().getParcelable(ARG_COURSE);
@@ -79,12 +81,14 @@ public class RestartCourseFragment extends Fragment {
         return view;
     }
 
+    //Opens course material fragment with first lesson details and calls restartCourse()
     public void onClickRestart(View view) {
         Button restartBtn = (Button) view.findViewById(R.id.startAgain);
         restartBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 restartCourse();
+                //Passes details about restarted course
                 Fragment fragment = CourseMaterialFragment.newInstance(userCourseInfo, currentCourse, currentLesson);
                 FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
                 transaction.replace(R.id.frame_layout, fragment, "fragment_course_material");
@@ -94,7 +98,9 @@ public class RestartCourseFragment extends Fragment {
         });
     }
 
+    //Updates user course in the database when restart is clicked
     public void restartCourse() {
+        //Sets progress to 1
         Integer updProgressInt = 1;
         String updProgress = updProgressInt.toString();
         docRefUserCourse.update("courseProgress", updProgress)
@@ -113,6 +119,7 @@ public class RestartCourseFragment extends Fragment {
         userCourseInfo.setCourseProgress(updProgress);
     }
 
+    //Closes restart course fragment and opens home fragment
     public void closeRestart(View view) {
         ImageButton close = (ImageButton) view.findViewById(R.id.closeRestart);
         String fragmentTagToRemoveUpTo = "HomeFragmentTag";

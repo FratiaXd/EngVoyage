@@ -5,12 +5,14 @@ import android.os.Parcelable;
 
 import androidx.annotation.NonNull;
 
+//Lesson class hold information about course lessons
 public class Lesson implements Parcelable {
     private String material;
     private String practiceTask;
     private String practiceTrue;
     private String practiceFalse;
 
+    //Default empty constructor
     public Lesson() {}
 
     public Lesson(String material, String practiceTask, String practiceTrue, String practiceFalse) {

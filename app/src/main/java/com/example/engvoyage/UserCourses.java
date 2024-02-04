@@ -5,11 +5,13 @@ import android.os.Parcelable;
 
 import androidx.annotation.NonNull;
 
+//UserCourses class holds information about the courses user enrolled to
 public class UserCourses implements Parcelable {
     private String courseName;
     private String courseProgress;
     private String courseDuration;
 
+    //Default empty constructor
     public UserCourses() {
 
     }

@@ -37,6 +37,7 @@ public class CourseDetailFragment extends Fragment {
     public Course currentCourse;
     public Lesson currentLesson;
 
+    //New instance receives details about the course and first lesson
     public static CourseDetailFragment newInstance(UserCourses userCourse, Course course, Lesson lesson) {
         CourseDetailFragment fragment = new CourseDetailFragment();
         Bundle args = new Bundle();
@@ -54,6 +55,7 @@ public class CourseDetailFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        //Initializes arguments and firebase elements
         if (getArguments() != null) {
             userCourseInfo = getArguments().getParcelable(ARG_USER_COURSE);
             currentCourse = getArguments().getParcelable(ARG_COURSE);
@@ -70,7 +72,7 @@ public class CourseDetailFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_course_detail, container, false);
-
+        //Sets course information on the screen
         TextView detailsName = view.findViewById(R.id.detailsCourseName);
         TextView detailsDur = view.findViewById(R.id.detailsCourseDur);
         TextView detailsDesc = view.findViewById(R.id.detailsCourseDesc);
@@ -84,17 +86,20 @@ public class CourseDetailFragment extends Fragment {
         return view;
     }
 
+    //Enrolls user to the course
     public void enrollUser(View view) {
         Button enrollBtn = (Button) view.findViewById(R.id.enrollUser);
         enrollBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //Saves the course as user course in the database
                 docRefUser.collection("userCourses").document(currentCourse.getCourseName())
                         .set(userCourseInfo)
                         .addOnSuccessListener(new OnSuccessListener<Void>() {
                             @Override
                             public void onSuccess(Void unused) {
                                 Log.d("CourseDetailFragment", "User enrolled");
+                                //Opens course material fragment
                                 Fragment fragment = CourseMaterialFragment.newInstance(userCourseInfo, currentCourse, currentLesson);
                                 FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
                                 transaction.replace(R.id.frame_layout, fragment, "fragment_course_material");
@@ -111,6 +116,7 @@ public class CourseDetailFragment extends Fragment {
         });
     }
 
+    //Goes back to the previous fragment
     private void returnToList(View view) {
         ImageButton back = (ImageButton) view.findViewById(R.id.goBackToList);
         back.setOnClickListener(new View.OnClickListener() {

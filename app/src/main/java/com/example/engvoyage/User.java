@@ -7,11 +7,13 @@ import androidx.annotation.NonNull;
 
 import java.util.List;
 
+//User class holds information about the user
 public class User implements Parcelable {
     private String name;
     private String surname;
     private String email;
 
+    //Default empty constructor
     public User() {}
 
     public User(String name, String surname, String email) {

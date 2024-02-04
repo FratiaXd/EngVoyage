@@ -32,6 +32,7 @@ public class FlashcardFragment extends Fragment {
         // Required empty public constructor
     }
 
+    //New instance receives user learned words
     public static FlashcardFragment newInstance(List<Word> wordList) {
         FlashcardFragment fragment = new FlashcardFragment();
         Bundle args = new Bundle();
@@ -43,6 +44,7 @@ public class FlashcardFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        //Initializes arguments
         Bundle args = getArguments();
         if (args != null) {
             receivedWordList = args.getParcelableArrayList(ARG_PARAM1);
@@ -54,6 +56,7 @@ public class FlashcardFragment extends Fragment {
         } else {
             Log.e("VocabularyFragment", "Arguments are null");
         }
+        //Shuffles words in a random order
         Collections.shuffle(receivedWordList);
     }
 
@@ -70,6 +73,7 @@ public class FlashcardFragment extends Fragment {
         return view;
     }
 
+    //Displays word information on a flashcard
     public void setFlashcard(View view) {
         word = (TextView) view.findViewById(R.id.wordFlashcard);
         meaning = (TextView) view.findViewById(R.id.wordFlashcardMeaning);
@@ -78,6 +82,7 @@ public class FlashcardFragment extends Fragment {
         meaning.setText(receivedWordList.get(0).getMeaningShort());
     }
 
+    //Reveals the meaning of the word
     public void onRevealClicked(View view) {
         reveal = (Button) view.findViewById(R.id.revealFlashcard);
         nextFlashcard = (Button) view.findViewById(R.id.nextFlashcard);
@@ -87,15 +92,18 @@ public class FlashcardFragment extends Fragment {
                 meaning.setVisibility(View.VISIBLE);
                 reveal.setVisibility(View.INVISIBLE);
                 nextFlashcard.setVisibility(View.VISIBLE);
+                //Removes current word from the list to avoid dublication
                 removeUsedWord();
             }
         });
     }
 
+    //Removes current word from the list
     public void removeUsedWord() {
         receivedWordList.remove(0);
     }
 
+    //Opens next flashcard fragment instance
     public void openNextFlashcard() {
         nextFlashcard.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -105,14 +113,19 @@ public class FlashcardFragment extends Fragment {
         });
     }
 
+    //Checks if user completed all possible flashcards
     public void trainingCompleted() {
+        //If there are no more words in the list
         if (receivedWordList.isEmpty()) {
+            //Notifies user that flashcard training is completed
             word.setText("You completed all available flashcards!");
             remember.setVisibility(View.INVISIBLE);
             meaning.setVisibility(View.INVISIBLE);
             reveal.setVisibility(View.INVISIBLE);
             nextFlashcard.setVisibility(View.INVISIBLE);
         } else {
+            //If list is not empty opens new flashcard instance fragment
+            //Passes updated word list
             Fragment fragment = FlashcardFragment.newInstance(receivedWordList);
             FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
             transaction.replace(R.id.frame_layout, fragment, "fragment_flashcard");
@@ -120,6 +133,7 @@ public class FlashcardFragment extends Fragment {
         }
     }
 
+    //Closes flashcard fragment and opens builder fragment
     private void returnToBuilder(View view) {
         ImageButton back = (ImageButton) view.findViewById(R.id.goBackToBuilder2);
         back.setOnClickListener(new View.OnClickListener() {

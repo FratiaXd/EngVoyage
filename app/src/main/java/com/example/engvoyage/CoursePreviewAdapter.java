@@ -12,6 +12,7 @@ import org.w3c.dom.Text;
 
 import java.util.List;
 
+//Adapter to display course preview on the home fragment
 public class CoursePreviewAdapter extends RecyclerView.Adapter<CoursePreviewAdapter.CoursePreviewViewHolder> {
     private List<Course> courseList;
 

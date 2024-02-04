@@ -14,6 +14,7 @@ import org.w3c.dom.Text;
 
 import java.util.List;
 
+//Adapter to display a complete course list
 public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.CourseViewHolder> {
     private List<Course> courseList;
     private ItemClickListener clickListener;

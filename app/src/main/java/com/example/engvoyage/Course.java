@@ -4,12 +4,13 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 import androidx.annotation.NonNull;
-
+//Class that holds course details
 public class Course implements Parcelable {
     public String courseName;
     public String courseDuration;
     public String courseDesc;
 
+    //Default empty constructor
     public Course() {}
 
     public Course(String name, String duration, String desc) {

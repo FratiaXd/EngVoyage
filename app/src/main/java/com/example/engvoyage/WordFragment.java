@@ -42,6 +42,7 @@ public class WordFragment extends Fragment {
         // Required empty public constructor
     }
 
+    //New instance receives a word list of selected difficulty
     public static WordFragment newInstance(List<Word> wordList) {
         WordFragment fragment = new WordFragment();
         Bundle args = new Bundle();
@@ -53,6 +54,7 @@ public class WordFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        //Initializes arguments and firebase elements
         db = FirebaseFirestore.getInstance();
         mAuth = FirebaseAuth.getInstance();
         currentUser = mAuth.getCurrentUser();
@@ -83,6 +85,7 @@ public class WordFragment extends Fragment {
         return view;
     }
 
+    //Displays first word information from the list
     public void setWordInfo(View view) {
         TextView wordTxt = (TextView) view.findViewById(R.id.word);
         TextView shortTxt = (TextView) view.findViewById(R.id.wordMeaningShort);
@@ -96,6 +99,7 @@ public class WordFragment extends Fragment {
         usageTxt.setText(receivedWordList.get(0).getUsage());
     }
 
+    //Calls addWordToUserWords() when user clicks save button
     public void onSaveClick(View view) {
         saveBtn = (Button) view.findViewById(R.id.saveWord);
         nextWord = (Button) view.findViewById(R.id.proceed);
@@ -108,7 +112,9 @@ public class WordFragment extends Fragment {
         });
     }
 
+    //Updates user saved words in the database
     public void addWordToUserWords(Word newWord) {
+        //Saves new learned word in the database
         docRefUser.collection("userWords")
                 .document(newWord.getWord())
                 .set(newWord)
@@ -116,7 +122,9 @@ public class WordFragment extends Fragment {
                     @Override
                     public void onSuccess(Void unused) {
                         Log.d("WordFragment", "Added: " + newWord.getWord());
+                        //Notifies user
                         Toast.makeText(getActivity(),"Word saved!",Toast.LENGTH_SHORT).show();
+                        //Removes learned word from the pool of words
                         removeLearnedWord();
                         saveBtn.setVisibility(View.INVISIBLE);
                         nextWord.setVisibility(View.VISIBLE);
@@ -130,20 +138,26 @@ public class WordFragment extends Fragment {
                 });
     }
 
+    //Deletes learned word from the pool of all words
     public void removeLearnedWord() {
         receivedWordList.remove(0);
     }
 
+    //Opens new fragment with information about the new word
     public void openNextWord(View view) {
         nextWord.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //If there are still not learned words in the words pool
                 if (!receivedWordList.isEmpty()) {
+                    //Opens word fragment for the following word
                     Fragment fragment = WordFragment.newInstance(receivedWordList);
                     FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
                     transaction.replace(R.id.frame_layout, fragment, "fragment_word");
                     transaction.commit();
                 } else {
+                    //If user learned all available words
+                    //Displays message that there are no more words to learn
                     LinearLayout completed = (LinearLayout) view.findViewById(R.id.wordsLearned);
                     completed.setVisibility(View.VISIBLE);
                     saveBtn.setVisibility(View.INVISIBLE);
@@ -153,6 +167,7 @@ public class WordFragment extends Fragment {
         });
     }
 
+    //Closes this fragment and opens builder fragment
     private void returnToBuilder(View view) {
         ImageButton back = (ImageButton) view.findViewById(R.id.goBackToBuilder);
         back.setOnClickListener(new View.OnClickListener() {

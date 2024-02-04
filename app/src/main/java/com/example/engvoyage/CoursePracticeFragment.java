@@ -52,6 +52,7 @@ public class CoursePracticeFragment extends Fragment {
         // Required empty public constructor
     }
 
+    //New instance receives course and lesson details
     public static CoursePracticeFragment newInstance(Lesson lesson, Course course, UserCourses userCourse) {
         CoursePracticeFragment fragment = new CoursePracticeFragment();
         Bundle args = new Bundle();
@@ -65,6 +66,7 @@ public class CoursePracticeFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        //Initializes arguments
         if (getArguments() != null) {
             lessonInfo = getArguments().getParcelable(ARG_PARAM1);
             courseInfo = getArguments().getParcelable(ARG_PARAM2);
@@ -78,6 +80,7 @@ public class CoursePracticeFragment extends Fragment {
                 .document(uid)
                 .collection("userCourses")
                 .document(courseInfo.getCourseName());
+        //Retrieves information for the following lesson
         getLesson(userCoursesInfo);
     }
 
@@ -93,6 +96,7 @@ public class CoursePracticeFragment extends Fragment {
         return view;
     }
 
+    //Displays received lesson information to the user
     public void setPracticeInfo(View view) {
         TextView name = (TextView) view.findViewById(R.id.courseTitle1);
         TextView number = (TextView) view.findViewById(R.id.coursePracticeNumber);
@@ -106,23 +110,32 @@ public class CoursePracticeFragment extends Fragment {
         name.setText(courseInfo.getCourseName());
         number.setText(showProgress);
         task.setText(lessonInfo.getPracticeTask());
+        //Randomizes the order of answers
         randomizeAnswers();
     }
 
+    //Takes user to the next fragment
     public void openNext(View view) {
         Button nextBtn = (Button) view.findViewById(R.id.nextLesson);
         nextBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //If user progress is equal to the total course duration
+                //Course is completed
                 if (courseInfo.getCourseDuration().equals(userCoursesInfo.getCourseProgress())) {
+                    //Updates progress
                     updateUserProgress();
+                    //Opens course completed fragment
                     Fragment fragment = new CourseCompletedFragment();
                     FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
                     transaction.replace(R.id.frame_layout, fragment, "fragment_course_completed");
                     transaction.addToBackStack(null);
                     transaction.commit();
                 } else {
+                    //If user progress is less than total course duration
+                    //Updates progress
                     updateUserProgress();
+                    //Opens next material fragment for the following lesson
                     Fragment fragment = CourseMaterialFragment.newInstance(userCoursesInfo, courseInfo, newLesson);
                     FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
                     transaction.replace(R.id.frame_layout, fragment, "fragment_course_material");
@@ -133,6 +146,7 @@ public class CoursePracticeFragment extends Fragment {
         });
     }
 
+    //Randomizes the order of correct and incorrect answers
     public void randomizeAnswers() {
         Random rand = new Random();
         int val = rand.nextInt(2);
@@ -145,12 +159,14 @@ public class CoursePracticeFragment extends Fragment {
         }
     }
 
+    //Handles answer submission
     public void receiveAnswer(View view) {
         result = (TextView) view.findViewById(R.id.result);
         nextBtn = (Button) view.findViewById(R.id.nextLesson);
         answ1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //Displays response
                 updatePageOnAnswer(checkAnswer(answ1.getText().toString()));
             }
         });
@@ -158,11 +174,13 @@ public class CoursePracticeFragment extends Fragment {
         answ2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //Displays response
                 updatePageOnAnswer(checkAnswer(answ2.getText().toString()));
             }
         });
     }
 
+    //Check if the selected answer is correct
     public boolean checkAnswer(String answer) {
         if (answer == lessonInfo.getPracticeTrue()) {
             return true;
@@ -171,21 +189,28 @@ public class CoursePracticeFragment extends Fragment {
         }
     }
 
+    //Updates page according to the answer
     public void updatePageOnAnswer(Boolean isCorrect) {
         if (isCorrect) {
+            //If correct answer
+            //Display button to go to the next fragment
             result.setText("Correct!");
             nextBtn.setVisibility(View.VISIBLE);
         } else {
+            //If incorrect prompts to try again
             result.setText("Incorrect! Try again!");
         }
         result.setVisibility(View.VISIBLE);
 
+        //Updates button if there are no further lessons
         if (courseInfo.getCourseDuration().equals(userCoursesInfo.getCourseProgress())) {
             nextBtn.setText("COMPLETE COURSE");
         }
     }
 
+    //Updates user progress in the database
     public void updateUserProgress() {
+        //Increases progress by 1
         Integer updProgressInt = Integer.parseInt(userCoursesInfo.getCourseProgress()) + 1;
         String updProgress = updProgressInt.toString();
         docRefUserCourse.update("courseProgress", updProgress)
@@ -202,9 +227,11 @@ public class CoursePracticeFragment extends Fragment {
                         Log.w("CoursePracticeFragment", "Could not update user progress", e);
                     }
                 });
+        //Updates user progress inside the object
         userCoursesInfo.setCourseProgress(updProgress);
     }
 
+    //Closes fragment and opens home fragment
     public void closePractice(View view) {
         ImageButton close = (ImageButton) view.findViewById(R.id.closePractice);
         String fragmentTagToRemoveUpTo = "HomeFragmentTag";
@@ -216,7 +243,9 @@ public class CoursePracticeFragment extends Fragment {
         });
     }
 
+    //Retrieves information from the database for the next lesson
     public void getLesson(UserCourses userCourseInfo) {
+        //Increases progress to find the next lesson
         Integer updProgressInt = Integer.parseInt(userCoursesInfo.getCourseProgress()) + 1;
         String updProgress = "lesson" + updProgressInt.toString();
         db = FirebaseFirestore.getInstance();
@@ -231,6 +260,7 @@ public class CoursePracticeFragment extends Fragment {
                 if (task.isSuccessful()) {
                     DocumentSnapshot document = task.getResult();
                     if (document.exists()) {
+                        //Creates new object holding the following lesson details
                         newLesson = document.toObject(Lesson.class);
                     }
                 }

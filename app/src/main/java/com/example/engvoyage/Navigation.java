@@ -24,7 +24,7 @@ public class Navigation extends AppCompatActivity implements EditProfileFragment
         super.onCreate(savedInstanceState);
         binding = ActivityNavigationBinding.inflate(getLayoutInflater());
         receivedCourses = new ArrayList<>();
-
+        //Receives extra user details and course list from main activity
         Intent intent = getIntent();
         if (intent != null && intent.hasExtra("user")) {
             receivedUser = (User) intent.getParcelableExtra("user");
@@ -32,8 +32,11 @@ public class Navigation extends AppCompatActivity implements EditProfileFragment
         }
 
         setContentView(binding.getRoot());
+
+        //Opens home fragment by default
         replaceFragment(HomeFragment.newInstance(receivedUser, receivedCourses));
 
+        //Navigation bar functionality
         binding.bottomNavigationView.setOnItemSelectedListener(item -> {
 
             int id = item.getItemId();
@@ -58,6 +61,7 @@ public class Navigation extends AppCompatActivity implements EditProfileFragment
         fragmentTransaction.commit();
     }
 
+    //Clears back stack if user opens different parent fragment
     private void clearBackStack() {
         FragmentManager fragmentManager = getSupportFragmentManager();
         while (fragmentManager.getBackStackEntryCount() > 0) {
@@ -65,6 +69,7 @@ public class Navigation extends AppCompatActivity implements EditProfileFragment
         }
     }
 
+    //If user updates profile the user object is updated across the application
     @Override
     public void onProfileUpdated(User updatedUser) {
         // Update the receivedUser when the profile is updated

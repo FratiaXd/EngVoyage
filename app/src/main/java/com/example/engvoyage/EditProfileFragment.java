@@ -45,6 +45,7 @@ public class EditProfileFragment extends Fragment {
         // Required empty public constructor
     }
 
+    //New instance receives user details
     public static EditProfileFragment newInstance(User user) {
         EditProfileFragment fragment = new EditProfileFragment();
         Bundle args = new Bundle();
@@ -53,6 +54,7 @@ public class EditProfileFragment extends Fragment {
         return fragment;
     }
 
+    //Notifies application that user details were updated
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
@@ -67,6 +69,7 @@ public class EditProfileFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        //Initializes arguments and firebase elements
         if (getArguments() != null) {
             user = getArguments().getParcelable(ARG_PARAM1);
         }
@@ -88,6 +91,7 @@ public class EditProfileFragment extends Fragment {
         return view;
     }
 
+    //Closes fragment and opens profile fragment
     public void cancelEdit(View view) {
         Button cancelBtn = (Button) view.findViewById(R.id.backBtn);
         cancelBtn.setOnClickListener(new View.OnClickListener() {
@@ -100,6 +104,7 @@ public class EditProfileFragment extends Fragment {
         });
     }
 
+    //Calls setNewDetails() when user clicks
     public void onClickSave(View view) {
         Button saveBtn = (Button) view.findViewById(R.id.saveBtn);
         saveBtn.setOnClickListener(new View.OnClickListener() {
@@ -110,10 +115,13 @@ public class EditProfileFragment extends Fragment {
         });
     }
 
+    //Updates user details in the database
     public void setNewDetails() {
+        //Gets user input
         String name = nameValue.getText().toString().trim();
         String surname = surnameValue.getText().toString().trim();
 
+        //Validates user input
         if (name.isEmpty()) {
             nameValue.setError("The name cannot be empty");
             nameValue.requestFocus();
@@ -125,11 +133,13 @@ public class EditProfileFragment extends Fragment {
             return;
         }
 
+        //Updates user details in the database
         docRefUser.update("name",name, "surname", surname)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void unused) {
                         Log.d("EditProfileFragment", "DocumentSnapshot successfully updated!");
+                        //Notifies user if successfull
                         Toast.makeText(getActivity(),"Details updated!",Toast.LENGTH_SHORT).show();
                         user.setName(name);
                         user.setSurname(surname);
@@ -144,6 +154,7 @@ public class EditProfileFragment extends Fragment {
                 });
     }
 
+    //Sets current details in TextInput elements
     private void setCurrentDetails(View view) {
         nameValue = (TextInputEditText) view.findViewById(R.id.nameInputEdit);
         surnameValue = (TextInputEditText) view.findViewById(R.id.surnameInputEdit);
@@ -151,6 +162,7 @@ public class EditProfileFragment extends Fragment {
         surnameValue.setText(user.getSurname());
     }
 
+    //Listener
     public interface OnProfileUpdatedListener {
         void onProfileUpdated(User updatedUser);
     }

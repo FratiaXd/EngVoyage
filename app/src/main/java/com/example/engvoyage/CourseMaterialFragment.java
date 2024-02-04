@@ -37,6 +37,7 @@ public class CourseMaterialFragment extends Fragment {
         // Required empty public constructor
     }
 
+    //New instance receives course and lesson details
     public static CourseMaterialFragment newInstance(UserCourses userCourse, Course course, Lesson lesson) {
         CourseMaterialFragment fragment = new CourseMaterialFragment();
         Bundle args = new Bundle();
@@ -50,6 +51,7 @@ public class CourseMaterialFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        //Initializes arguments
         if (getArguments() != null) {
             userCourseInfo = getArguments().getParcelable(ARG_USER_COURSE);
             currentCourse = getArguments().getParcelable(ARG_COURSE);
@@ -69,6 +71,7 @@ public class CourseMaterialFragment extends Fragment {
         return view;
     }
 
+    //Displays received information about the lesson and the course to the user
     public void displayCourseMaterial(View view) {
         TextView courseTitle = (TextView) view.findViewById(R.id.courseTitle);
         TextView courseNumber = (TextView) view.findViewById(R.id.courseNumber);
@@ -79,11 +82,13 @@ public class CourseMaterialFragment extends Fragment {
         courseMaterial.setText(currentLesson.getMaterial());
     }
 
+    //Opens practice fragment for this lesson
     public void goToPractice(View view) {
         Button practiceBtn = (Button) view.findViewById(R.id.openPractice);
         practiceBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //Passes course and lesson information to the practice fragment
                 Fragment fragment = CoursePracticeFragment.newInstance(currentLesson, currentCourse, userCourseInfo);
                 FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
                 transaction.replace(R.id.frame_layout, fragment, "fragment_course_practice");
@@ -93,6 +98,7 @@ public class CourseMaterialFragment extends Fragment {
         });
     }
 
+    //Closes this fragment and takes user to the home fragment
     public void closeMaterial(View view) {
         ImageButton close = (ImageButton) view.findViewById(R.id.closeMaterial);
         String fragmentTagToRemoveUpTo = "HomeFragmentTag";

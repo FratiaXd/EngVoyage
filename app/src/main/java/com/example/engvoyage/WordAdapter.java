@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
 
+//Adapter to display user learned words
 public class WordAdapter extends RecyclerView.Adapter<WordAdapter.WordViewHolder>{
 
     private List<Word> wordList;

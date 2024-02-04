@@ -42,13 +42,14 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        //need loading animation
+        //Initializes buttons and firebase elements
         mAuth = FirebaseAuth.getInstance();
         openRegister = findViewById(R.id.registerBtn);
         currentUser = mAuth.getCurrentUser();
         db = FirebaseFirestore.getInstance();
         courseList = new ArrayList<>();
 
+        //Takes user to the registration activity
         openRegister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -61,25 +62,32 @@ public class MainActivity extends AppCompatActivity {
     public void onStart() {
         super.onStart();
         currentUser = mAuth.getCurrentUser();
+        //If user was logged in before
         if (currentUser != null) {
             String uid = currentUser.getUid();
             docRefUser = db.collection("users").document(uid);
+            //Find user in the database
             getUserDetails();
         }
     }
 
+    //Log in user
     public void logInUser(String email, String password) {
+        //Firebase authentication
         mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(this,
                 new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
+                        //If user credentials are correct and exist in firebase
                         if (task.isSuccessful()) {
                             FirebaseUser user = mAuth.getCurrentUser();
                             String uid = user.getUid();
                             docRefUser = db.collection("users").document(uid);
+                            //Reads user details into the user object
                             getUserDetails();
                             Toast.makeText(MainActivity.this, "Authentication complete", Toast.LENGTH_SHORT).show();
                         } else {
+                            //Credentials are incorrect or such user doesnt exist
                             Log.w("MainActivity", "logInWithEmail:failure", task.getException());
                             Toast.makeText(MainActivity.this, "Authentication failed.",
                                     Toast.LENGTH_SHORT).show();
@@ -88,14 +96,19 @@ public class MainActivity extends AppCompatActivity {
                 });
     }
 
+    //When user details and course list is retrieved opens navigation activity
+    //Navigation activity contains all application fragments
     public void openApp() {
         Intent intent = new Intent(MainActivity.this, Navigation.class);
+        //Retrieving user and course information before opening the navigation activity allows instant load of the content inside fragments
         intent.putExtra("user", userInformation);
         intent.putParcelableArrayListExtra("courseList", new ArrayList<>(courseList));
         startActivity(intent);
     }
 
+    //Gets existing user details from the database and then calls readCourses()
     private void getUserDetails() {
+        //Loading animation
         LinearLayout loading = findViewById(R.id.loadingScreen);
         loading.setVisibility(View.VISIBLE);
         docRefUser.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
@@ -104,6 +117,7 @@ public class MainActivity extends AppCompatActivity {
                 if (task.isSuccessful()) {
                     DocumentSnapshot document = task.getResult();
                     if (document.exists()) {
+                        //Creates object instance holding user data
                         userInformation = document.toObject(User.class);
                         readCourses();
                     }
@@ -112,6 +126,7 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    //Reads all existing courses from the database and then calls openApp()
     private void readCourses() {
         db.collection("courses")
                 .get()
@@ -120,6 +135,7 @@ public class MainActivity extends AppCompatActivity {
                         for (QueryDocumentSnapshot document : task.getResult()) {
                             buildListData(document);
                         }
+                        //If courses were retrevied opens application home page
                         openApp();
                     } else {
                         Log.d("MainActivity", "Error loading courses", task.getException());
@@ -127,6 +143,7 @@ public class MainActivity extends AppCompatActivity {
                 });
     }
 
+    //Builds a list of Course objects holding information about each course
     private void buildListData(QueryDocumentSnapshot document) {
         String name = document.getString("courseName");
         String duration = document.getString("courseDuration");
@@ -136,6 +153,7 @@ public class MainActivity extends AppCompatActivity {
         courseList.add(course);
     }
 
+    //Gets user input with credentials and then calls logInUser()
     public void logInClicked(View view) {
         TextInputEditText emailValue = findViewById(R.id.emailInput);
         TextInputEditText passwordValue = findViewById(R.id.passwordInput);
@@ -143,6 +161,7 @@ public class MainActivity extends AppCompatActivity {
         String email = emailValue.getText().toString().trim();
         String password = passwordValue.getText().toString().trim();
 
+        //Input validation
         if (email.isEmpty()) {
             emailValue.setError("The email is required");
             emailValue.requestFocus();
@@ -154,6 +173,7 @@ public class MainActivity extends AppCompatActivity {
             return;
         }
 
+        //Tries to log in user with provided credentials
         logInUser(email, password);
     }
 }

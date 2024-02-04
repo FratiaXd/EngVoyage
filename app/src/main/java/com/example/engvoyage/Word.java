@@ -5,6 +5,7 @@ import android.os.Parcelable;
 
 import androidx.annotation.NonNull;
 
+//Word class holds available words
 public class Word implements Parcelable {
     private String word;
     private String pronunciation;
@@ -13,6 +14,7 @@ public class Word implements Parcelable {
     private String usage;
     private String difficulty;
 
+    //Default empty constructor
     public Word() {
     }
 
