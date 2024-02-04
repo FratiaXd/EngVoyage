@@ -16,9 +16,6 @@
             android:name=".Navigation"
             android:exported="false" />
         <activity
-            android:name=".HomePage"
-            android:exported="false" />
-        <activity
             android:name=".RegisterPage"
             android:exported="false" />
         <activity
