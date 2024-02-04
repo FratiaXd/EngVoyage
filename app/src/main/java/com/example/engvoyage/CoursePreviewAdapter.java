@@ -47,7 +47,7 @@ public class CoursePreviewAdapter extends RecyclerView.Adapter<CoursePreviewAdap
 
         public void bind(Course course) {
             nameTxt.setText(course.courseName);
-            durTxt.setText(course.courseDuration);
+            durTxt.setText(course.courseDuration + " lessons");
         }
     }
 }

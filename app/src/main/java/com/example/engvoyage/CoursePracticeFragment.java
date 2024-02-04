@@ -193,6 +193,7 @@ public class CoursePracticeFragment extends Fragment {
                     @Override
                     public void onSuccess(Void unused) {
                         Log.d("CoursePracticeFragment", "User progress updated successfully");
+                        //userCoursesInfo.setCourseProgress(updProgress);
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {

@@ -55,7 +55,7 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.CourseView
 
         public void bind(Course course) {
             nameTxt.setText(course.courseName);
-            durTxt.setText(course.courseDuration);
+            durTxt.setText(course.courseDuration + " lessons");
         }
     }
 

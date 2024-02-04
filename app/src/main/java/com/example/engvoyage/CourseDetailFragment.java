@@ -75,7 +75,7 @@ public class CourseDetailFragment extends Fragment {
         TextView detailsDur = view.findViewById(R.id.detailsCourseDur);
         TextView detailsDesc = view.findViewById(R.id.detailsCourseDesc);
         detailsName.setText(currentCourse.getCourseName());
-        detailsDur.setText(currentCourse.getCourseDuration());
+        detailsDur.setText(currentCourse.getCourseDuration() + " lessons");
         detailsDesc.setText(currentCourse.getCourseDesc());
 
         enrollUser(view);
