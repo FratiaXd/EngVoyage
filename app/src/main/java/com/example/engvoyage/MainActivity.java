@@ -148,8 +148,9 @@ public class MainActivity extends AppCompatActivity {
         String name = document.getString("courseName");
         String duration = document.getString("courseDuration");
         String desc = document.getString("courseDesc");
+        String url = document.getString("coverImageUrl");
 
-        Course course = new Course(name, duration, desc);
+        Course course = new Course(name, duration, desc, url);
         courseList.add(course);
     }
 

@@ -4,6 +4,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import com.bumptech.glide.Glide;
+import com.google.android.material.imageview.ShapeableImageView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -40,15 +42,23 @@ public class CoursePreviewAdapter extends RecyclerView.Adapter<CoursePreviewAdap
     public static class CoursePreviewViewHolder extends RecyclerView.ViewHolder {
 
         TextView nameTxt, durTxt;
+        ShapeableImageView coursePic;
         public CoursePreviewViewHolder(@NonNull View itemView) {
             super(itemView);
             nameTxt = itemView.findViewById(R.id.courseName1);
             durTxt = itemView.findViewById(R.id.courseDur1);
+            coursePic = itemView.findViewById(R.id.coursePic1);
         }
 
         public void bind(Course course) {
             nameTxt.setText(course.courseName);
             durTxt.setText(course.courseDuration + " lessons");
+
+            Glide.with(itemView.getContext())
+                    .load(course.coverImageUrl)
+                    .placeholder(R.drawable.loading_img)
+                    .error(R.drawable.error)
+                    .into(coursePic);
         }
     }
 }

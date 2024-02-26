@@ -9,20 +9,23 @@ public class Course implements Parcelable {
     public String courseName;
     public String courseDuration;
     public String courseDesc;
+    public String coverImageUrl;
 
     //Default empty constructor
     public Course() {}
 
-    public Course(String name, String duration, String desc) {
+    public Course(String name, String duration, String desc, String url) {
         this.courseName = name;
         this.courseDuration = duration;
         this.courseDesc = desc;
+        this.coverImageUrl = url;
     }
 
     protected Course(Parcel in) {
         courseName = in.readString();
         courseDuration = in.readString();
         courseDesc = in.readString();
+        coverImageUrl = in.readString();
     }
 
     public static final Creator<Course> CREATOR = new Creator<Course>() {
@@ -48,6 +51,9 @@ public class Course implements Parcelable {
     public String getCourseDesc() {
         return courseDesc;
     }
+    public String getCoverUrl() {
+        return coverImageUrl;
+    }
 
     @Override
     public int describeContents() {
@@ -59,5 +65,6 @@ public class Course implements Parcelable {
         dest.writeString(courseName);
         dest.writeString(courseDuration);
         dest.writeString(courseDesc);
+        dest.writeString(coverImageUrl);
     }
 }
