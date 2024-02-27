@@ -86,6 +86,7 @@
         android:text="@string/hello_blank_fragment" />
 
     <ImageButton
+        android:id="@+id/playText1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@drawable/play_icon"

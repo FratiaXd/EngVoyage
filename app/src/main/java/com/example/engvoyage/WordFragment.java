@@ -6,6 +6,7 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.speech.tts.TextToSpeech;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,6 +26,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 public class WordFragment extends Fragment {
 
@@ -37,6 +39,8 @@ public class WordFragment extends Fragment {
     private DocumentReference docRefUser;
     private Button saveBtn;
     private Button nextWord;
+    private ImageButton play;
+    private TextToSpeech t1;
 
     public WordFragment() {
         // Required empty public constructor
@@ -71,6 +75,16 @@ public class WordFragment extends Fragment {
         } else {
             Log.e("WordFragment", "Arguments are null");
         }
+        //Sets up text to speech
+        t1 = new TextToSpeech(this.getContext(), new TextToSpeech.OnInitListener() {
+            @Override
+            public void onInit(int status) {
+                if (status != TextToSpeech.ERROR)
+                {
+                    t1.setLanguage(Locale.ENGLISH);
+                }
+            }
+        });
     }
 
     @Override
@@ -78,10 +92,19 @@ public class WordFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_word, container, false);
+        play = (ImageButton) view.findViewById(R.id.playText);
         setWordInfo(view);
         onSaveClick(view);
         returnToBuilder(view);
         openNextWord(view);
+        //Plays word pronunciation
+        play.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String wordCurrent = receivedWordList.get(0).getWord();
+                t1.speak(wordCurrent, TextToSpeech.QUEUE_FLUSH, null, "word");
+            }
+        });
         return view;
     }
 
