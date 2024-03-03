@@ -50,6 +50,9 @@ public class HomeFragment extends Fragment implements CourseProgressAdapter.Item
     private List<UserCourses> allUserCourses;
     private String fragmentTag;
     private Lesson currentLesson;
+    private StreakManager streakManager;
+    private TextView streak;
+    private int streakCount;
 
     public HomeFragment() {
         // Required empty public constructor
@@ -81,6 +84,10 @@ public class HomeFragment extends Fragment implements CourseProgressAdapter.Item
         allUserCourses = new ArrayList<>();
         coursePreviewAdapter = new CoursePreviewAdapter(availableCourses);
         courseProgressAdapter = new CourseProgressAdapter(courseListProgress, this);
+        //Initialize user daily streak
+        streakManager = new StreakManager(requireContext(), uid);
+        streakManager.updateStreak();
+        streakCount = streakManager.getStreakCount();
     }
 
     @Override
@@ -88,6 +95,9 @@ public class HomeFragment extends Fragment implements CourseProgressAdapter.Item
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_home, container, false);
+        streak = (TextView) view.findViewById(R.id.streakNum);
+        String count = String.valueOf(streakCount);
+        streak.setText(count);
         courseListProgress.clear();
         allUserCourses.clear();
         initRecyclerView(view);
