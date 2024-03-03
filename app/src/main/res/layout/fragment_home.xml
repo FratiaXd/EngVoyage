@@ -108,7 +108,7 @@
         android:id="@+id/noCourses"
         android:layout_width="wrap_content"
         android:layout_gravity="bottom|center"
-        android:layout_marginBottom="160dp"
+        android:layout_marginBottom="150dp"
         android:visibility="invisible"
         android:layout_height="wrap_content"
         android:text="enroll to more courses"/>
